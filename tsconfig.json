@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "esnext",
+    "moduleResolution": "node",
     "sourceMap": true,
     "importsNotUsedAsValues": "error",
     "esModuleInterop": true,

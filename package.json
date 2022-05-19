@@ -8,7 +8,7 @@
   "scripts": {
     "build": "rollup -c",
     "test": "jest",
-    "lint": "prettier . --write && eslint --ignore-path .gitignore ."
+    "lint": "prettier --ignore-path .gitignore . --write && eslint --ignore-path .gitignore ."
   },
   "author": "Aaron Collier",
   "license": "MIT",
@@ -20,6 +20,7 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.2",
     "@testing-library/svelte": "^3.1.1",
+    "@types/jest": "^27.5.1",
     "@types/js-yaml": "^4.0.5",
     "@types/markdown-it": "^12.2.3",
     "@typescript-eslint/eslint-plugin": "^5.25.0",

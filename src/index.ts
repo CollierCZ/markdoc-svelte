@@ -15,7 +15,9 @@ export const markdoc = (options: Options = {}) => {
 
       const ast = MarkdocSource.parse(content);
 
-      const frontmatter = ast.attributes.frontmatter
+      const isFrontmatter = Boolean(ast.attributes.frontmatter);
+
+      const frontmatter = isFrontmatter
         ? yaml.load(ast.attributes.frontmatter)
         : {};
       const transformedContent = MarkdocSource.transform(ast, {
@@ -23,19 +25,20 @@ export const markdoc = (options: Options = {}) => {
       });
 
       const svelteContent = render(transformedContent);
-      const frontmatterString =
-        `<script context="module">\n` +
-        `\texport const metadata = ${JSON.stringify(frontmatter)};\n` +
-        `\tconst { ${Object.keys(frontmatter as Record<string, unknown>).join(
-          ", "
-        )} } = metadata;\n` +
-        "</script>\n";
+      const frontmatterString = isFrontmatter
+        ? `<script context="module">\n` +
+          `\texport const metadata = ${JSON.stringify(frontmatter)};\n` +
+          `\tconst { ${Object.keys(frontmatter as Record<string, unknown>).join(
+            ", "
+          )} } = metadata;\n` +
+          "</script>\n"
+        : "";
 
       const layoutOpenString = layoutPath
         ? "<script>\n" +
           `\timport Layout_MDSVEX_DEFAULT from '${layoutPath}';\n` +
           "</script>\n" +
-          "<Layout_MDSVEX_DEFAULT {...metadata}>\n"
+          `<Layout_MDSVEX_DEFAULT${isFrontmatter ? ` {...metadata}` : ""}>\n`
         : "";
 
       const layoutCloseString = layoutPath ? "</Layout_MDSVEX_DEFAULT>\n" : "";
