@@ -4,9 +4,32 @@ import render from "./render";
 
 interface Options {
   layout?: string;
+  schema?: string;
 }
 
-export const markdoc = (options: Options = {}) => {
+interface PreprocessorReturn {
+  code: string;
+  data?: Record<string, unknown>;
+  map?: string;
+}
+
+interface Preprocessor {
+  markup: (args: {
+    content: string;
+    filename: string;
+  }) => PreprocessorReturn | undefined;
+}
+
+/**
+ * A Svelte preprocessor for Markdoc files
+ *
+ * options – An object with the following optional properties:
+ *
+ * - `layout` - The path to a layout for your Markdoc files
+ * - `schemaPath` - The path to your custom schema for Markdoc tags, nodes, and so on
+ *
+ */
+export const markdoc = (options: Options = {}): Preprocessor => {
   const layoutPath = options.layout;
 
   return {
@@ -18,8 +41,9 @@ export const markdoc = (options: Options = {}) => {
       const isFrontmatter = Boolean(ast.attributes.frontmatter);
 
       const frontmatter = isFrontmatter
-        ? yaml.load(ast.attributes.frontmatter)
+        ? (yaml.load(ast.attributes.frontmatter) as Record<string, unknown>)
         : {};
+
       const transformedContent = MarkdocSource.transform(ast, {
         variables: { frontmatter },
       });

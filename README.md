@@ -16,6 +16,42 @@ const config = {
 };
 ```
 
+## Frontmatter
+
+Frontmatter added as YAML is automatically parsed.
+So you could add frontmatter like the following:
+
+```markdown
+---
+title: A great page
+---
+
+With great content
+```
+
+You can then access it in your layouts:
+
+```javascript
+<script lang="ts">
+  export let title = ''
+</script>
+
+<h1>{title}</h1>
+
+<slot />
+```
+
+And in your content:
+
+```markdown
+---
+title: Using the Next.js plugin
+description: Integrate Markdoc into your Next.js app
+---
+
+# {% $markdoc.frontmatter.title %}
+```
+
 ## Options
 
 You can choose to customize how the Markdoc file is processed.
@@ -38,28 +74,24 @@ const config = {
 };
 ```
 
-The layout is automatically passed frontmatter from your Markdoc file if it's in YAML format.
-The data from the frontmatter are then available in the layout.
+[Frontmatter](#frontmatter) in YAML format is automatically passed to your layout.
 The content is passed to a `<slot />` tag.
 
-So this Markdoc file:
+### Schema path
 
-```markdown
----
-title: A great page
----
-
-With great content
-```
-
-Can be rendered with this layout:
+By default, the preprocessor looks for your Markdoc schema definition in a `/markdoc/` directory at the app root.
+To use a different path, define the directory in the options:
 
 ```javascript
-<script lang="ts">
-  export let title = ''
-</script>
+import { markdoc } from "markdoc-svelte";
 
-<h1>{title}</h1>
-
-<slot />
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".svelte", ".md"],
+  preprocess: [
+    markdoc({
+      schema: "/path/to/schema/directory",
+    }),
+  ],
+};
 ```

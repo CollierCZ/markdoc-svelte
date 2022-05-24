@@ -1,4 +1,4 @@
-import { markdoc } from "../src/index";
+import { markdoc } from "../src/main";
 
 const basicMarkdown = `
 # This is some basic markdown
@@ -35,21 +35,20 @@ keywords:
 Content. Such great content.
 `;
 
-const layoutObject = { layout: "/path/to/layout.svelte" }
+const layoutObject = { layout: "/path/to/layout.svelte" };
 
-const basicMarkdownObject = { content: basicMarkdown, filename: "test.md" }
-const basicMarkdownWithFrontmatterObject = { content: markdownWithFrontmatter, filename: "test.md" }
+const basicMarkdownObject = { content: basicMarkdown, filename: "test.md" };
+const basicMarkdownWithFrontmatterObject = {
+  content: markdownWithFrontmatter,
+  filename: "test.md",
+};
 
 test(`parses basic Markdown properly`, () => {
-  expect(
-    markdoc().markup(basicMarkdownObject)
-  ).toMatchSnapshot();
+  expect(markdoc().markup(basicMarkdownObject)).toMatchSnapshot();
 });
 
 test(`parses basic Markdown properly with a layout`, () => {
-  expect(
-    markdoc(layoutObject).markup(basicMarkdownObject)
-  ).toMatchSnapshot();
+  expect(markdoc(layoutObject).markup(basicMarkdownObject)).toMatchSnapshot();
 });
 
 test(`parses basic Markdown with frontmatter properly`, () => {
