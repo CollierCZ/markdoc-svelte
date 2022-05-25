@@ -10,6 +10,9 @@
     "test": "jest",
     "lint": "prettier --ignore-path .gitignore . --write && eslint --ignore-path .gitignore ."
   },
+  "files": [
+    "dist/"
+  ],
   "author": "Aaron Collier",
   "license": "MIT",
   "dependencies": {
