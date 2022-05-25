@@ -3,6 +3,7 @@ import yaml from "js-yaml";
 import render from "./render";
 
 interface Options {
+  extensions?: string[];
   layout?: string;
   schema?: string;
 }
@@ -31,10 +32,11 @@ interface Preprocessor {
  */
 export const markdoc = (options: Options = {}): Preprocessor => {
   const layoutPath = options.layout;
+  const extensions = options.extensions || [".md"];
 
   return {
     markup: ({ content = "", filename = "" }) => {
-      if (!filename.includes(".md")) return;
+      if (!extensions.find(extension => filename.endsWith(extension))) return;
 
       const ast = MarkdocSource.parse(content);
 

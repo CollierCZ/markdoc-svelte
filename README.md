@@ -56,6 +56,25 @@ description: Integrate Markdoc into your Next.js app
 
 You can choose to customize how the Markdoc file is processed.
 
+### Extensions
+
+By default, files ending in `.md` are preprocessed.
+To use other extensions, add them to the `extensions` array in the options:
+
+```javascript
+import { markdoc } from "markdoc-svelte";
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".svelte", ".markdoc", ".md"],
+  preprocess: [
+    markdoc({
+      extensions: [".markdoc", ".md"],
+    }),
+  ],
+};
+```
+
 ### Layout
 
 To give your processed Markdoc a layout, pass the path to the layout file:
