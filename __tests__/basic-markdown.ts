@@ -9,22 +9,22 @@ const basicMarkdocWithFrontmatterObject = {
   filename: "test.md",
 };
 
-test(`parses basic Markdoc properly`, () => {
-  expect(markdoc().markup(basicMarkdocObject)).toMatchSnapshot();
+test(`parses basic Markdoc properly`, async () => {
+  expect(await markdoc().markup(basicMarkdocObject)).toMatchSnapshot();
 });
 
-test(`parses basic Markdoc properly with a layout`, () => {
-  expect(markdoc(layoutObject).markup(basicMarkdocObject)).toMatchSnapshot();
+test(`parses basic Markdoc properly with a layout`, async () => {
+  expect(await markdoc(layoutObject).markup(basicMarkdocObject)).toMatchSnapshot();
 });
 
-test(`parses basic Markdoc with frontmatter properly`, () => {
+test(`parses basic Markdoc with frontmatter properly`, async () => {
   expect(
-    markdoc().markup(basicMarkdocWithFrontmatterObject)
+    await markdoc().markup(basicMarkdocWithFrontmatterObject)
   ).toMatchSnapshot();
 });
 
-test(`parses basic Markdoc with frontmatter properly with a layout`, () => {
+test(`parses basic Markdoc with frontmatter properly with a layout`, async () => {
   expect(
-    markdoc(layoutObject).markup(basicMarkdocWithFrontmatterObject)
+    await markdoc(layoutObject).markup(basicMarkdocWithFrontmatterObject)
   ).toMatchSnapshot();
 });

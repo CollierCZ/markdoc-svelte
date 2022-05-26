@@ -1,4 +1,5 @@
 {
+  "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
     "target": "es2016",
     "module": "esnext",
@@ -7,6 +8,7 @@
     "importsNotUsedAsValues": "error",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "types": ["node","svelte","jest"]
   }
 }

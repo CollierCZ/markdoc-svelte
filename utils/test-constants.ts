@@ -32,3 +32,7 @@ keywords:
 
 Content. Such great content.
 `;
+
+export const markdocWithComponent = `${basicMarkdoc}
+{% button text="Hello world" /%}
+`

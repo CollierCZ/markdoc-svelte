@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import Markdoc from "@markdoc/markdoc";
 
 const DEFAULT_SCHEMA_PATH = "./markdoc";
 
@@ -9,16 +8,12 @@ const normalizeAbsolutePath = (absolutePath: string) => {
   return absolutePath.split(path.sep).join(path.posix.sep);
 };
 
-interface LoadOptions {
-  schemaPath?: string;
-}
-
-const loadSchema = async ({ schemaPath }: LoadOptions): Promise<string> => {
+const loadSchema = async ( schemaPath?: string): Promise<Record<string, unknown>> => {
   const schemaDirectory = path.posix.resolve(schemaPath || DEFAULT_SCHEMA_PATH);
 
   const schemaDirectoryExists = fs.existsSync(schemaDirectory);
 
-  let schemaCode = "const schema = {};";
+  let schemaCode = {};
 
   if (schemaDirectoryExists) {
     const readDirectory = async (directoryName: string) => {
@@ -26,23 +21,19 @@ const loadSchema = async ({ schemaPath }: LoadOptions): Promise<string> => {
         const module = normalizeAbsolutePath(
           path.posix.resolve(schemaDirectory, directoryName)
         );
-        return `import * as ${directoryName} from '${module}'`;
+        const { default: schemaSection } = await import(module)
+        return schemaSection;
       } catch (error) {
-        return `const ${directoryName} = {};`;
+        return {};
       }
     };
 
-    schemaCode = `
-    ${await readDirectory("config")}
-    ${await readDirectory("tags")}
-    ${await readDirectory("nodes")}
-    ${await readDirectory("functions")}
-    const schema = {
-      tags: tags ? (tags.default || tags) : {},
-      nodes: nodes ? (nodes.default || nodes) : {},
-      functions: functions ? (functions.default || functions) : {},
-      ...(config ? (config.default || config) : {}),
-    };`.trim();
+    schemaCode = {
+      config: await readDirectory("config"),
+      tags: await readDirectory("tags"),
+      nodes: await readDirectory("nodes"),
+      functions: await readDirectory("functions")
+    }
   } else if (
     // Throw an error only if the directory doesn't exist
     // AND a custom schema path is pased
