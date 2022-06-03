@@ -1,8 +1,8 @@
 <script lang="ts">
   let text: string;
   const logMessage = () => {
-    console.log(text)
-  }
+    console.log(text);
+  };
 </script>
 
 <button

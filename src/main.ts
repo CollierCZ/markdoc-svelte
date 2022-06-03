@@ -1,7 +1,7 @@
 import MarkdocSource from "@markdoc/markdoc";
 import yaml from "js-yaml";
 import render from "./render";
-import loadSchema from "./loader"
+import loadSchema from "./loader";
 
 interface Options {
   extensions?: string[];
@@ -31,14 +31,14 @@ interface Preprocessor {
  * - `schemaPath` - The path to your custom schema for Markdoc tags, nodes, and so on
  *
  */
-export const markdoc =(options: Options = {}): Preprocessor => {
+export const markdoc = (options: Options = {}): Preprocessor => {
   const layoutPath = options.layout;
   const schemaPath = options.schema;
   const extensions = options.extensions || [".md"];
 
   return {
     markup: async ({ content = "", filename = "" }) => {
-      if (!extensions.find(extension => filename.endsWith(extension))) return;
+      if (!extensions.find((extension) => filename.endsWith(extension))) return;
 
       const ast = MarkdocSource.parse(content);
 
@@ -47,8 +47,8 @@ export const markdoc =(options: Options = {}): Preprocessor => {
         ? (yaml.load(ast.attributes.frontmatter) as Record<string, unknown>)
         : {};
 
-      const schema = await loadSchema(schemaPath)
-      
+      const schema = await loadSchema(schemaPath);
+
       const transformedContent = MarkdocSource.transform(ast, {
         variables: { frontmatter },
         ...schema,

@@ -9,6 +9,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "types": ["node","svelte","jest"]
+    "types": ["node", "svelte", "jest"]
   }
 }
