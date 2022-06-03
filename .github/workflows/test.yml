@@ -1,0 +1,17 @@
+name: Test
+on:
+  push:
+    branches-ignore:
+      - main
+jobs:
+  test-svelte:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    - name: Install Dependencies
+      run: npm ci
+    - name: Test
+      run: npm run test
