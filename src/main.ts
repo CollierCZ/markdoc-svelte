@@ -1,7 +1,6 @@
 import MarkdocSource from "@markdoc/markdoc";
 import yaml from "js-yaml";
 import render from "./render";
-import tags from "../utils/schema/tags"
 import loadSchema from "./loader"
 
 interface Options {

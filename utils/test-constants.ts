@@ -7,11 +7,13 @@ Some text **in bold** and *in italic*.
 
 And a [link](https://example.com).
 
+## More fancy stuff
+
 And even a table with a nested list:
 
 {% table %}
-* Heading 1
-* Heading 2
+* Table header 1
+* Table header 2
 ---
 * * Row 1 Cell 1 Item 1
   * Row 1 Cell 1 Item 2
