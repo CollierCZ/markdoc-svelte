@@ -29,7 +29,7 @@ interface Preprocessor {
  *
  * - `extensions` - An array of file extensions to process
  * - `layout` - The path to a layout for your Markdoc files
- * - `schemaPath` - The path to your custom schema for Markdoc tags, nodes, and so on
+ * - `schema` - The path to your custom schema for Markdoc tags, nodes, and so on
  *
  */
 export const markdoc = (options: Options = {}): Preprocessor => {
