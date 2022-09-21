@@ -49,7 +49,7 @@ title: Using the Next.js plugin
 description: Integrate Markdoc into your Next.js app
 ---
 
-# {% $markdoc.frontmatter.title %}
+# {% $frontmatter.title %}
 ```
 
 ## Options
