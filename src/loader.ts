@@ -23,7 +23,8 @@ const loadSchema = async (
         const module = normalizeAbsolutePath(
           path.posix.resolve(schemaDirectory, directoryName)
         );
-        const { default: schemaSection } = await import(module);
+        const moduleFile = fs.existsSync(`${module}.js`) || fs.existsSync(`${module}.ts`) ? `${module}` : `${module}/index`;
+        const { default: schemaSection } = await import(moduleFile);
         return schemaSection;
       } catch (error) {
         return {};
