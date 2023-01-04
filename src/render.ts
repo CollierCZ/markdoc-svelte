@@ -42,9 +42,11 @@ const render = (node: RenderableTreeNodes): string => {
     const openingTag = `<${name}${attributesList}`;
 
     // Return only opening tag if the tag is void (can't have content)
-    if (voidElements.has(name)) return `${openingTag} />`;
+    if (voidElements.has(name.toString())) return `${openingTag} />`;
 
-    const outputContent = children.length ? render(children) : "";
+    if (typeof(children) === "number" || typeof(children) === "boolean") return `${openingTag}></${name}>`
+
+    const outputContent = children?.length ? render(children) : "";
 
     return `${openingTag}>${outputContent}</${name}>`;
   };
