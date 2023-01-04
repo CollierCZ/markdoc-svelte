@@ -1,4 +1,4 @@
-# markdown-svelte
+# markdoc-svelte
 
 Preprocess [Markdoc](https://markdoc.io/) files for use in Svelte Kit sites.
 
