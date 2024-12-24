@@ -5,10 +5,10 @@
     "module": "esnext",
     "moduleResolution": "node",
     "sourceMap": true,
-    "importsNotUsedAsValues": "error",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "types": ["node", "svelte", "jest"]
+    "types": ["node", "svelte", "jest"],
+    "verbatimModuleSyntax": false
   }
 }
