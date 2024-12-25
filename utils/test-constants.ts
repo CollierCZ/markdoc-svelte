@@ -9,6 +9,14 @@ And a [link](https://example.com).
 
 ## More fancy stuff
 
+Some \`<p>\` inline code.
+
+And a code block:
+
+\`\`\`javascript {% process=false %}
+{{% test %}}
+\`\`\`
+
 And even a table with a nested list:
 
 {% table %}

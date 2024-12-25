@@ -67,12 +67,12 @@ export const markdoc = (options: Options = {}): Preprocessor => {
 
       const layoutOpenString = layoutPath
         ? "<script>\n" +
-          `\timport Layout_MDSVEX_DEFAULT from '${layoutPath}';\n` +
+          `\timport Layout_DEFAULT from '${layoutPath}';\n` +
           "</script>\n" +
-          `<Layout_MDSVEX_DEFAULT${isFrontmatter ? ` {...metadata}` : ""}>\n`
+          `<Layout_DEFAULT${isFrontmatter ? ` {...metadata}` : ""}>\n`
         : "";
 
-      const layoutCloseString = layoutPath ? "</Layout_MDSVEX_DEFAULT>\n" : "";
+      const layoutCloseString = layoutPath ? "</Layout_DEFAULT>\n" : "";
 
       const code =
         frontmatterString +

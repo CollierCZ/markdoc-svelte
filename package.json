@@ -1,6 +1,6 @@
 {
   "name": "markdoc-svelte",
-  "version": "0.5.1",
+  "version": "0.5.9",
   "description": "A preprocessor to render Markdoc in Svelte",
   "exports": {
     "require": "./dist/main.cjs.js",
@@ -44,7 +44,7 @@
     "typescript-eslint": "^8.18.1"
   },
   "peerDependencies": {
-    "svelte": "5.x"
+    "svelte": "4.x || 5.x"
   },
   "keywords": [
     "svelte",
