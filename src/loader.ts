@@ -9,9 +9,7 @@ const normalizeAbsolutePath = (absolutePath: string) => {
   return absolutePath.split(path.sep).join(path.posix.sep);
 };
 
-const loadSchema = async (
-  schemaPath?: string,
-): Promise<Config> => {
+const loadSchema = async (schemaPath?: string): Promise<Config> => {
   const schemaDirectory = path.posix.resolve(schemaPath || DEFAULT_SCHEMA_PATH);
 
   const schemaDirectoryExists = fs.existsSync(schemaDirectory);
@@ -50,7 +48,7 @@ const loadSchema = async (
     schemaPath !== DEFAULT_SCHEMA_PATH
   ) {
     throw new Error(
-      `Can't find the schema at '${schemaDirectory}' from the passed option 'schema: ${schemaPath}`
+      `Can't find the schema at '${schemaDirectory}' from the passed option 'schema: ${schemaPath}`,
     );
   }
 

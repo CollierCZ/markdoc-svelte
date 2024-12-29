@@ -15,18 +15,18 @@ test(`parses basic Markdoc properly`, async () => {
 
 test(`parses basic Markdoc properly with a layout`, async () => {
   expect(
-    await markdoc(layoutObject).markup(basicMarkdocObject)
+    await markdoc(layoutObject).markup(basicMarkdocObject),
   ).toMatchSnapshot();
 });
 
 test(`parses basic Markdoc with frontmatter properly`, async () => {
   expect(
-    await markdoc().markup(basicMarkdocWithFrontmatterObject)
+    await markdoc().markup(basicMarkdocWithFrontmatterObject),
   ).toMatchSnapshot();
 });
 
 test(`parses basic Markdoc with frontmatter properly with a layout`, async () => {
   expect(
-    await markdoc(layoutObject).markup(basicMarkdocWithFrontmatterObject)
+    await markdoc(layoutObject).markup(basicMarkdocWithFrontmatterObject),
   ).toMatchSnapshot();
 });

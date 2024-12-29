@@ -6,6 +6,6 @@ test(`processes tags`, async () => {
     await markdoc({ schema: "./utils/schemaWithTags" }).markup({
       content: markdocWithComponent,
       filename: "test.md",
-    })
+    }),
   ).toMatchSnapshot();
 });

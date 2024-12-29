@@ -61,7 +61,7 @@ export const markdoc = (options: Options = {}): Preprocessor => {
         ? `<script context="module">\n` +
           `\texport const metadata = ${JSON.stringify(frontmatter)};\n` +
           `\tconst { ${Object.keys(frontmatter as Record<string, unknown>).join(
-            ", "
+            ", ",
           )} } = metadata;\n` +
           "</script>\n"
         : "";

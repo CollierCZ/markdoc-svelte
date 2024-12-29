@@ -3,13 +3,13 @@ import { basicMarkdoc } from "../utils/test-constants";
 
 test(`works with no extension passed`, async () => {
   expect(
-    await markdoc().markup({ content: basicMarkdoc, filename: "test.md" })
+    await markdoc().markup({ content: basicMarkdoc, filename: "test.md" }),
   ).toMatchSnapshot();
 });
 
 test(`ignores files that don't match the default extensions`, async () => {
   expect(
-    await markdoc().markup({ content: basicMarkdoc, filename: "test.markdoc" })
+    await markdoc().markup({ content: basicMarkdoc, filename: "test.markdoc" }),
   ).toMatchSnapshot();
 });
 
@@ -18,7 +18,7 @@ test(`works when passed the default extension`, async () => {
     await markdoc({ extensions: [".md"] }).markup({
       content: basicMarkdoc,
       filename: "test.md",
-    })
+    }),
   ).toMatchSnapshot();
 });
 
@@ -27,7 +27,7 @@ test(`works when passed a single extension other than the default`, async () => 
     await markdoc({ extensions: [".markdoc"] }).markup({
       content: basicMarkdoc,
       filename: "test.markdoc",
-    })
+    }),
   ).toMatchSnapshot();
 });
 
@@ -36,7 +36,7 @@ test(`ignores files that don't match a single passed extension`, async () => {
     await markdoc({ extensions: [".markdoc"] }).markup({
       content: basicMarkdoc,
       filename: "test.md",
-    })
+    }),
   ).toMatchSnapshot();
 });
 
@@ -45,7 +45,7 @@ test(`works when passed multiple extensions`, async () => {
     await markdoc({ extensions: [".markdoc", ".md"] }).markup({
       content: basicMarkdoc,
       filename: "test.md",
-    })
+    }),
   ).toMatchSnapshot();
 });
 
@@ -54,6 +54,6 @@ test(`ignores files that don't match multiple passed extension`, async () => {
     await markdoc({ extensions: [".markdoc", ".md"] }).markup({
       content: basicMarkdoc,
       filename: "test.ts",
-    })
+    }),
   ).toMatchSnapshot();
 });

@@ -1,26 +1,26 @@
 // @ts-check
-import eslintConfigPrettier from 'eslint-config-prettier'
-import eslintPluginSvelte from 'eslint-plugin-svelte'
-import eslintSvelteParser from 'svelte-eslint-parser'
-import globals from 'globals'
-import js from '@eslint/js'
-import tseslint from 'typescript-eslint'
+import eslintConfigPrettier from "eslint-config-prettier";
+import eslintPluginSvelte from "eslint-plugin-svelte";
+import eslintSvelteParser from "svelte-eslint-parser";
+import globals from "globals";
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
 
 export default [
   js.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   eslintConfigPrettier,
-  ...eslintPluginSvelte.configs['flat/recommended'],
-  ...eslintPluginSvelte.configs['flat/prettier'],
+  ...eslintPluginSvelte.configs["flat/recommended"],
+  ...eslintPluginSvelte.configs["flat/prettier"],
   {
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
         project: true,
         tsconfigRootDir: import.meta.dirname,
-        extraFileExtensions: ['.svelte'],
+        extraFileExtensions: [".svelte"],
       },
-      sourceType: 'module',
+      sourceType: "module",
       ecmaVersion: 2022,
       globals: {
         ...globals.browser,
@@ -29,7 +29,7 @@ export default [
     },
   },
   {
-    files: ['**/*.svelte'],
+    files: ["**/*.svelte"],
     languageOptions: {
       parser: eslintSvelteParser,
       parserOptions: {
@@ -38,14 +38,10 @@ export default [
     },
   },
   {
-    files: ['**/*.cjs'],
-    rules: { '@typescript-eslint/no-require-imports': 'off' },
+    files: ["**/*.cjs"],
+    rules: { "@typescript-eslint/no-require-imports": "off" },
   },
   {
-    ignores: [
-      'node_modules',
-      'dist',
-      'coverage',
-    ],
+    ignores: ["node_modules", "dist", "coverage"],
   },
-]
+];
