@@ -16,8 +16,6 @@ export const link = {
     const attributes = node.transformAttributes(config);
     const children = node.transformChildren(config);
 
-    console.log("hi");
-
     const relValue = attributes.href.startsWith("http") ? "noopener" : "";
     const classValue = attributes.class
       ? `${attributes.class} font-semibold`

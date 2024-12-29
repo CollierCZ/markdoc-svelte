@@ -1,4 +1,4 @@
-import MarkdocSource from "@markdoc/markdoc";
+import MarkdocSource, { Config, validate } from "@markdoc/markdoc";
 import yaml from "js-yaml";
 import render from "./render";
 import loadSchema from "./loader";
@@ -8,6 +8,11 @@ interface Options {
   extensions?: string[];
   layout?: string;
   schema?: string;
+  functions?: Config["functions"];
+  nodes?: Config["nodes"];
+  partials?: Config["partials"];
+  tags?: Config["tags"];
+  variables?: Config["variables"];
 }
 
 interface PreprocessorReturn {
@@ -25,18 +30,12 @@ interface Preprocessor {
 
 /**
  * A Svelte preprocessor for Markdoc files
- *
- * options – An object with the following optional properties:
- *
- * - `extensions` - An array of file extensions to process
- * - `layout` - The path to a layout for your Markdoc files
- * - `schema` - The path to your custom schema for Markdoc tags, nodes, and so on
- *
  */
 export const markdoc = (options: Options = {}): Preprocessor => {
   const layoutPath = options.layout;
   const schemaPath = options.schema;
-  const extensions = options.extensions || [".md"];
+  const extensions = options.extensions || [".markdown", ".md"];
+  const { functions, nodes, partials, tags, variables } = options;
 
   return {
     markup: async ({ content = "", filename = "" }) => {
@@ -49,10 +48,20 @@ export const markdoc = (options: Options = {}): Preprocessor => {
         ? (yaml.load(ast.attributes.frontmatter) as Record<string, unknown>)
         : {};
 
-      const schema = await loadSchema(schemaPath);
+      const schemaFromPath = await loadSchema(schemaPath);
+
+      // Include schema parts passed as options
+      // But ignore if undefined
+      const schema = {
+        ...schemaFromPath,
+        ...(functions && { functions }),
+        ...(nodes && { nodes }),
+        ...(partials && { partials }),
+        ...(tags && { tags }),
+      };
 
       const transformedContent = MarkdocSource.transform(ast, {
-        variables: { frontmatter },
+        variables: { frontmatter, ...variables },
         ...schema,
       });
 
