@@ -119,3 +119,9 @@ const config = {
 TODO: code blocks if you have `{% %}` in them
 * either {% process= false %}
 * or https://github.com/markdoc/markdoc/issues/503
+
+
+TODO: schema
+Always JS files
+imports as node, not with build tool
+So relative links to full JS files

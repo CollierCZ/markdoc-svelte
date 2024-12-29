@@ -2,6 +2,7 @@ import MarkdocSource from "@markdoc/markdoc";
 import yaml from "js-yaml";
 import render from "./render";
 import loadSchema from "./loader";
+import { getComponentImports } from "./getComponents";
 
 interface Options {
   extensions?: string[];
@@ -68,6 +69,7 @@ export const markdoc = (options: Options = {}): Preprocessor => {
       const layoutOpenString = layoutPath
         ? "<script>\n" +
           `\timport Layout_DEFAULT from '${layoutPath}';\n` +
+          getComponentImports(schema, "/src/lib/components") +
           "</script>\n" +
           `<Layout_DEFAULT${isFrontmatter ? ` {...metadata}` : ""}>\n`
         : "";

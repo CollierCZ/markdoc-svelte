@@ -1,3 +1,4 @@
+import { Config } from "@markdoc/markdoc";
 import fs from "fs";
 import path from "path";
 
@@ -9,8 +10,8 @@ const normalizeAbsolutePath = (absolutePath: string) => {
 };
 
 const loadSchema = async (
-  schemaPath?: string
-): Promise<Record<string, unknown>> => {
+  schemaPath?: string,
+): Promise<Config> => {
   const schemaDirectory = path.posix.resolve(schemaPath || DEFAULT_SCHEMA_PATH);
 
   const schemaDirectoryExists = fs.existsSync(schemaDirectory);
@@ -21,10 +22,15 @@ const loadSchema = async (
     const readDirectory = async (directoryName: string) => {
       try {
         const module = normalizeAbsolutePath(
-          path.posix.resolve(schemaDirectory, directoryName)
+          path.posix.resolve(schemaDirectory, directoryName),
         );
-        const moduleFile = fs.existsSync(`${module}.js`) || fs.existsSync(`${module}.ts`) ? `${module}` : `${module}/index`;
-        const { default: schemaSection } = await import(moduleFile);
+        const moduleFile =
+          fs.existsSync(`${module}.js`) || fs.existsSync(`${module}.ts`)
+            ? `${module}`
+            : `${module}/index`;
+        const { default: schemaSection } = fs.existsSync(`${moduleFile}.js`)
+          ? await import(`${moduleFile}.js`)
+          : await import(`${moduleFile}.ts`);
         return schemaSection;
       } catch (error) {
         return {};
