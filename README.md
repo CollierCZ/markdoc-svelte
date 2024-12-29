@@ -31,14 +31,18 @@ With great content
 
 You can then access it in your layouts:
 
-```javascript
+```svelte
 <script lang="ts">
-  export let title = ''
+  let {
+    children,
+    title = '',
+  } = $props()
 </script>
 
-<h1>{title}</h1>
+<h1>{ title }</h1>
 
-<slot />
+<!-- Article content -->
+{@render children?.()}
 ```
 
 And in your content:
@@ -93,8 +97,7 @@ const config = {
 };
 ```
 
-[Frontmatter](#frontmatter) in YAML format is automatically passed to your layout.
-The content is passed to a `<slot />` tag.
+[Frontmatter](#frontmatter) in YAML format is automatically passed to your layout as props.
 
 ### Schema path
 
