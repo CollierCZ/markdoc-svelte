@@ -37,9 +37,11 @@ const loadSchema = async (schemaPath?: string): Promise<Config> => {
 
     schemaCode = {
       config: await readDirectory("config"),
-      tags: await readDirectory("tags"),
-      nodes: await readDirectory("nodes"),
       functions: await readDirectory("functions"),
+      nodes: await readDirectory("nodes"),
+      partials: await readDirectory("partials"),
+      tags: await readDirectory("tags"),
+      variables: await readDirectory("variables"),
     };
   } else if (
     // Throw an error only if the directory doesn't exist
