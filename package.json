@@ -10,7 +10,8 @@
   "scripts": {
     "build": "rollup -c",
     "test": "jest",
-    "lint": "prettier --ignore-path .gitignore . --write && eslint ."
+    "lint": "prettier . --check && eslint .",
+    "format": "prettier . --write"
   },
   "files": [
     "dist/"
