@@ -58,7 +58,7 @@ You can choose to customize how the Markdoc file is processed.
 
 ### Extensions
 
-By default, files ending in `.md` are preprocessed.
+By default, files ending in `.markdoc` and `.md` are preprocessed.
 To use other extensions, add them to the `extensions` array in the options:
 
 ```javascript
@@ -69,7 +69,7 @@ const config = {
   extensions: [".svelte", ".markdoc", ".md"],
   preprocess: [
     markdoc({
-      extensions: [".markdoc", ".md"],
+      extensions: [".svelte", ".markdoc", ".md"],
     }),
   ],
 };
