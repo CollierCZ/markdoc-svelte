@@ -9,8 +9,10 @@ exports[`parses basic Markdoc properly 1`] = `
 
 exports[`parses basic Markdoc properly with a layout 1`] = `
 {
-  "code": "<script>
-	import Layout_DEFAULT from '/path/to/layout.svelte';
+  "code": "
+<script>
+  import Layout_DEFAULT from '/path/to/layout.svelte';
+  
 </script>
 <Layout_DEFAULT>
 <article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article></Layout_DEFAULT>
@@ -43,8 +45,10 @@ exports[`parses basic Markdoc with frontmatter properly with a layout 1`] = `
 	export const metadata = {"title":"A test","description":"A longer idea","keywords":["one","two"]};
 	const { title, description, keywords } = metadata;
 </script>
+
 <script>
-	import Layout_DEFAULT from '/path/to/layout.svelte';
+  import Layout_DEFAULT from '/path/to/layout.svelte';
+  
 </script>
 <Layout_DEFAULT {...metadata}>
 <article><p>Content. Such great content.</p></article></Layout_DEFAULT>
