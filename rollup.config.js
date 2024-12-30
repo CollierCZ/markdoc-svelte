@@ -15,10 +15,7 @@ export default [
   },
   {
     input: "src/main.ts",
-    output: [
-      { file: "dist/main.mjs.d.ts", format: "esm" },
-      { file: "dist/main.cjs.d.ts", format: "cjs" },
-    ],
+    output: [{ file: "dist/main.d.ts" }],
     plugins: [dts(), nodeResolve()],
   },
 ];

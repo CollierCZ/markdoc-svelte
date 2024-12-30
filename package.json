@@ -3,9 +3,14 @@
   "version": "0.6.0",
   "description": "A preprocessor to render Markdoc in Svelte",
   "exports": {
-    "require": "./dist/main.cjs.js",
-    "import": "./dist/main.mjs"
+    ".": {
+      "require": "./dist/main.cjs.js",
+      "import": "./dist/main.mjs",
+      "types": "./dist/main.d.ts"
+    },
+    "./package.json": "./package.json"
   },
+  "types": "./dist/main.d.ts",
   "repository": "https://github.com/CollierCZ/markdoc-svelte",
   "scripts": {
     "build": "rollup -c",
