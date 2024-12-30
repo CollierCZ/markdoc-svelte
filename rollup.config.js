@@ -11,7 +11,7 @@ export default [
       { file: "dist/main.mjs", format: "esm", sourcemap: true },
     ],
     external: ["fs", "js-yaml", "@markdoc/markdoc", "markdown-it", "path"],
-    plugins: [typescript(), nodeResolve()],
+    plugins: [typescript(), nodeResolve(), terser()],
   },
   {
     input: "src/main.ts",
