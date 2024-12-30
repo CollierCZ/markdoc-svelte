@@ -73,10 +73,10 @@ export const markdoc = (options: Options = {}): Preprocessor => {
         ...(nodes && { nodes }),
         ...(tags && { tags }),
       };
-
+      
       const markdocConfig = {
-        variables: { frontmatter, ...variables },
         ...schemaWithoutPartials,
+        variables: { frontmatter, ...variables },
         partials:
           partialsDirectory || schemaFromPath["partials"]
             ? getPartials(partialsDirectory || schemaFromPath["partials"])
