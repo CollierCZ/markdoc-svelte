@@ -16,7 +16,7 @@ const config = {
 };
 ```
 
-### Add custom schema
+## Add custom schema
 
 Markdoc allows you to configure various options for parsing:
 
@@ -36,7 +36,7 @@ You can do this in two ways:
 In each case, imports happen before bundling, so import files as relative paths to JavaScript files with the extension.
 Use JavaScript files or run Node.js with a tool such as [tsx](https://tsx.is/) to use TypeScript.
 
-#### Functions
+### Functions
 
 Use Markdoc [functions](https://markdoc.dev/docs/functions) to transform content.
 Include them as a file or directory in your [Markdoc schema directory](#schema-path)
@@ -63,7 +63,7 @@ const config = {
 };
 ```
 
-#### Nodes
+### Nodes
 
 Use Markdoc [nodes](https://markdoc.dev/docs/nodes) to customize how standard Markdown elements are rendered.
 Include them as a file or directory in your [Markdoc schema directory](#schema-path)
@@ -85,7 +85,7 @@ const config = {
 };
 ```
 
-#### Partials
+### Partials
 
 Use Markdoc [partials](https://markdoc.dev/docs/partials) to reuse blocks of content in various places.
 Include them in a directory in your [Markdoc schema directory](#schema-path)
@@ -104,7 +104,7 @@ const config = {
 };
 ```
 
-#### Tags
+### Tags
 
 Use Markdoc [tags](https://markdoc.dev/docs/tags) to extend Markdown elements to do more.
 Include them as a file or directory in your [Markdoc schema directory](#schema-path)
@@ -126,7 +126,7 @@ const config = {
 };
 ```
 
-#### Variables
+### Variables
 
 Use Markdoc [variables](https://markdoc.dev/docs/variables) to customize content during the build.
 Include them as a file in your [Markdoc schema directory](#schema-path)
@@ -144,6 +144,24 @@ const config = {
   ],
 }
 ```
+
+## Code blocks
+
+Markdoc tags are processed as the first thing.
+This allows you to do things like use Markdoc variables inside code blocks.
+But sometimes you want to include text like `{% %}` inside a code block.
+
+To mark a single code block to not be processed for tags,
+add a attribute to the block:
+
+````markdown
+```markdown {% process = false %}
+Use variables in your code: `{% product_name %}`
+```
+````
+
+To set this as the default option, create a custom `fence` node and set a different default
+([example](https://github.com/markdoc/markdoc/issues/503#issuecomment-2079771178)).
 
 ## Frontmatter
 
@@ -291,9 +309,3 @@ you can pass each option individually:
 - [Partials](#partials)
 - [Tags](#tags)
 - [Variables](#variables)
-
-
-TODO: code blocks if you have `{% %}` in them
-
-- either {% process= false %}
-- or create a custom `fence` node and setting a different default ([example](https://github.com/markdoc/markdoc/issues/503#issuecomment-2079771178))
