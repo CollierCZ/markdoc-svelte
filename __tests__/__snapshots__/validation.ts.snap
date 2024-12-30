@@ -13,7 +13,7 @@ exports[`errors if Markdoc has info-level errors and info as validation level 1`
 
 exports[`passes if Markdoc has info-level errors and default validation level 1`] = `
 {
-  "code": "<article><span date="946681200000"></span></article>",
+  "code": "<article><span date="1 January 2000"></span></article>",
   "data": {},
 }
 `;

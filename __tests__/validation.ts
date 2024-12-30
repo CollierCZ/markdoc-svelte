@@ -25,7 +25,11 @@ class FutureDate {
   }
 
   transform(value: string) {
-    return Date.parse(value);
+    return new Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(value));
   }
 }
 
