@@ -55,3 +55,7 @@ export const markdocWithComponent = `${basicMarkdoc}
 export const markdocWithVariable = `${basicMarkdown}
 {% $product.name %}
 `;
+
+export const markdocWithFunction = `${basicMarkdown}
+This text will be transformed: {% uppercase("uppercase") %}
+`;
