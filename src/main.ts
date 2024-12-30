@@ -8,6 +8,7 @@ import getPartials from "./getPartials";
 interface Options {
   extensions?: string[];
   layout?: string;
+  validationLevel?: "debug" | "info" | "warning" | "error" | "critical";
   schema?: string;
   functions?: Config["functions"];
   nodes?: Config["nodes"];
@@ -36,6 +37,7 @@ export const markdoc = (options: Options = {}): Preprocessor => {
   const layoutPath = options.layout;
   const schemaPath = options.schema;
   const extensions = options.extensions || [".markdown", ".md"];
+  const validationLevel = options.validationLevel || "error";
   const {
     functions,
     nodes,
@@ -81,8 +83,24 @@ export const markdoc = (options: Options = {}): Preprocessor => {
             : undefined,
       };
 
-      // TODO validate and do something with it
-      //const errors = MarkdocSource.validate(ast, markdocConfig);
+      // Check if Markdoc is valid
+      const errorLevelsMap = new Map<Options["validationLevel"], number>([
+        ["debug", 0],
+        ["info", 1],
+        ["warning", 2],
+        ["error", 3],
+        ["critical", 4],
+      ]);
+      const errors = MarkdocSource.validate(ast, markdocConfig);
+      const breakingLevel = errorLevelsMap.get(validationLevel)!;
+      const areErrorsAtBreakingLevel = errors.find(
+        (error) => errorLevelsMap.get(error.error.level)! >= breakingLevel,
+      );
+      if (areErrorsAtBreakingLevel) {
+        throw new Error(
+          `The file at ${filename} is invalid with ${errors.length} error${errors.length > 1 ? "s" : ""}:\n- ${errors.map((error) => error.error.message).join("\n- ")}`,
+        );
+      }
 
       const transformedContent = MarkdocSource.transform(ast, markdocConfig);
 

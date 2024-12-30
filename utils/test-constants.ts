@@ -67,3 +67,8 @@ export const markdocWithPartial = `${basicMarkdown}
 export const markdocWithPartialAndVariable = `${basicMarkdown}
 {% partial file="content.md" variables={ product: { name: "Abuela" } } /%}
 `;
+
+export const invalidMarkdoc = `
+{% callout %}
+Hi there
+`;

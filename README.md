@@ -207,6 +207,27 @@ description: Integrate Markdoc into your Next.js app
 
 You can choose to customize how Markdoc files are processed.
 
+### Validation level
+
+This preprocessor validates whether the Markdoc is valid.
+By default, it throws an error on files for errors at the `error` or `critical` level.
+To debug, you can set the level to a lower level and it stops the build for any errors at that level or above.
+Possible values in ascending order: `debug`, `info`, `warning`, `error`, `critical`
+
+```javascript
+import { markdoc } from "markdoc-svelte";
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".markdoc", ".md"],
+  preprocess: [
+    markdoc({
+      validationLevel: "info",
+    }),
+  ],
+};
+```
+
 ### Extensions
 
 By default, files ending in `.markdoc` and `.md` are preprocessed.
