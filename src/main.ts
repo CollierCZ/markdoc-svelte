@@ -73,7 +73,7 @@ export const markdoc = (options: Options = {}): Preprocessor => {
         ...(nodes && { nodes }),
         ...(tags && { tags }),
       };
-      
+
       const markdocConfig = {
         ...schemaWithoutPartials,
         variables: { frontmatter, ...variables },
@@ -114,13 +114,14 @@ export const markdoc = (options: Options = {}): Preprocessor => {
           "</script>\n"
         : "";
 
-      const layoutOpenString = layoutPath
-        ? "<script>\n" +
-          `\timport Layout_DEFAULT from '${layoutPath}';\n` +
-          getComponentImports(schemaWithoutPartials, "/src/lib/components") +
-          "</script>\n" +
-          `<Layout_DEFAULT${isFrontmatter ? ` {...metadata}` : ""}>\n`
-        : "";
+      const layoutOpenString = `
+<script>
+  ${layoutPath ? `import Layout_DEFAULT from '${layoutPath}';` : ""}
+  ${getComponentImports(schemaWithoutPartials, "/src/lib/components")}
+</script>
+${
+  layoutPath ? `<Layout_DEFAULT${isFrontmatter ? ` {...metadata}` : ""}>\n` : ""
+}`;
 
       const layoutCloseString = layoutPath ? "</Layout_DEFAULT>\n" : "";
 

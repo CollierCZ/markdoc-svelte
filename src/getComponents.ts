@@ -25,7 +25,7 @@ export const getComponentImports = (
           `${componentDirPath}/${renderName}.svelte`,
         );
         if (existsSync(componentPath)) {
-          importStatement += `\timport ${renderName} from '${componentPath}';\n`;
+          importStatement += `import ${renderName} from '${componentPath}';\n`;
         }
       }
     }
