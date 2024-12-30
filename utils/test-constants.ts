@@ -1,3 +1,8 @@
+const basicMarkdown = `
+This is some text
+
+`
+
 export const basicMarkdoc = `
 # This is some basic Markdoc
 
@@ -45,4 +50,8 @@ Content. Such great content.
 
 export const markdocWithComponent = `${basicMarkdoc}
 {% button text="Hello world" /%}
+`;
+
+export const markdocWithVariable = `${basicMarkdown}
+{% $product.name %}
 `;

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`processes variables passed directly 1`] = `
+{
+  "code": "<article><p>This is some text</p><p>Best App</p></article>",
+  "data": {},
+}
+`;
+
+exports[`processes variables passed with schema path 1`] = `
+{
+  "code": "<article><p>This is some text</p><p>Best App</p></article>",
+  "data": {},
+}
+`;

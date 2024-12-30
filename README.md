@@ -49,8 +49,8 @@ const uppercase = {
   transform(parameters) {
     const string = parameters[0];
 
-    return typeof string === 'string' ? string.toUpperCase() : string;
-  }
+    return typeof string === "string" ? string.toUpperCase() : string;
+  },
 };
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -142,7 +142,7 @@ const config = {
       variables: { flags: { best_feature_flag: true } },
     }),
   ],
-}
+};
 ```
 
 ## Code blocks
