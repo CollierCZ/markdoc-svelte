@@ -3,6 +3,7 @@ import yaml from "js-yaml";
 import render from "./render";
 import loadSchema from "./loader";
 import { getComponentImports } from "./getComponents";
+import getPartials from "./getPartials";
 
 interface Options {
   extensions?: string[];
@@ -10,7 +11,7 @@ interface Options {
   schema?: string;
   functions?: Config["functions"];
   nodes?: Config["nodes"];
-  partials?: Config["partials"];
+  partials?: string;
   tags?: Config["tags"];
   variables?: Config["variables"];
 }
@@ -35,7 +36,13 @@ export const markdoc = (options: Options = {}): Preprocessor => {
   const layoutPath = options.layout;
   const schemaPath = options.schema;
   const extensions = options.extensions || [".markdown", ".md"];
-  const { functions, nodes, partials, tags, variables } = options;
+  const {
+    functions,
+    nodes,
+    partials: partialsDirectory,
+    tags,
+    variables,
+  } = options;
 
   return {
     markup: async ({ content = "", filename = "" }) => {
@@ -50,19 +57,28 @@ export const markdoc = (options: Options = {}): Preprocessor => {
 
       const schemaFromPath = await loadSchema(schemaPath);
 
+      const {
+        partials: partialsDirectoryFromSchema,
+        ...schemaFromPathWithoutPartials
+      } = schemaFromPath;
+
       // Include schema parts passed as options
       // But ignore if undefined
-      const schema = {
-        ...schemaFromPath,
+      // Leave out partials until directory processed
+      const schemaWithoutPartials = {
+        ...schemaFromPathWithoutPartials,
         ...(functions && { functions }),
         ...(nodes && { nodes }),
-        ...(partials && { partials }),
         ...(tags && { tags }),
       };
 
       const markdocConfig = {
         variables: { frontmatter, ...variables },
-        ...schema,
+        ...schemaWithoutPartials,
+        partials:
+          partialsDirectory || schemaFromPath["partials"]
+            ? getPartials(partialsDirectory || schemaFromPath["partials"])
+            : undefined,
       };
 
       // TODO validate and do something with it
@@ -83,7 +99,7 @@ export const markdoc = (options: Options = {}): Preprocessor => {
       const layoutOpenString = layoutPath
         ? "<script>\n" +
           `\timport Layout_DEFAULT from '${layoutPath}';\n` +
-          getComponentImports(schema, "/src/lib/components") +
+          getComponentImports(schemaWithoutPartials, "/src/lib/components") +
           "</script>\n" +
           `<Layout_DEFAULT${isFrontmatter ? ` {...metadata}` : ""}>\n`
         : "";

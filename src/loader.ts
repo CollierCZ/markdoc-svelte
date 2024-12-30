@@ -1,32 +1,39 @@
 import { Config } from "@markdoc/markdoc";
-import fs from "fs";
-import path from "path";
+import { existsSync } from "fs";
+import { posix, sep } from "path";
 
 const DEFAULT_SCHEMA_PATH = "./markdoc";
 
 // https://stackoverflow.com/questions/53799385/how-can-i-convert-a-windows-path-to-posix-path-using-node-path
 const normalizeAbsolutePath = (absolutePath: string) => {
-  return absolutePath.split(path.sep).join(path.posix.sep);
+  return absolutePath.split(sep).join(posix.sep);
 };
 
-const loadSchema = async (schemaPath?: string): Promise<Config> => {
-  const schemaDirectory = path.posix.resolve(schemaPath || DEFAULT_SCHEMA_PATH);
+interface ConfigWithPartialsPath extends Omit<Config, "partials"> {
+  partials?: string;
+}
 
-  const schemaDirectoryExists = fs.existsSync(schemaDirectory);
+const loadSchema = async (
+  schemaPath?: string,
+): Promise<ConfigWithPartialsPath> => {
+  const schemaDirectory = posix.resolve(schemaPath || DEFAULT_SCHEMA_PATH);
+
+  const schemaDirectoryExists = existsSync(schemaDirectory);
 
   let schemaCode = {};
+
+  const getNormalizedPathInSchemaDirectory = (subDirectory: string) =>
+    normalizeAbsolutePath(posix.resolve(schemaDirectory, subDirectory));
 
   if (schemaDirectoryExists) {
     const readDirectory = async (directoryName: string) => {
       try {
-        const module = normalizeAbsolutePath(
-          path.posix.resolve(schemaDirectory, directoryName),
-        );
+        const module = getNormalizedPathInSchemaDirectory(directoryName);
         const moduleFile =
-          fs.existsSync(`${module}.js`) || fs.existsSync(`${module}.ts`)
+          existsSync(`${module}.js`) || existsSync(`${module}.ts`)
             ? `${module}`
             : `${module}/index`;
-        const { default: schemaSection } = fs.existsSync(`${moduleFile}.js`)
+        const { default: schemaSection } = existsSync(`${moduleFile}.js`)
           ? await import(`${moduleFile}.js`)
           : await import(`${moduleFile}.ts`);
         return schemaSection;
@@ -35,11 +42,23 @@ const loadSchema = async (schemaPath?: string): Promise<Config> => {
       }
     };
 
+    const getPartialsDirectory = () => {
+      try {
+        const dirPath = getNormalizedPathInSchemaDirectory("partials");
+        if (existsSync(dirPath)) {
+          return dirPath;
+        }
+        return "";
+      } catch (error) {
+        return "";
+      }
+    };
+
     schemaCode = {
       config: await readDirectory("config"),
       functions: await readDirectory("functions"),
       nodes: await readDirectory("nodes"),
-      partials: await readDirectory("partials"),
+      partials: getPartialsDirectory(),
       tags: await readDirectory("tags"),
       variables: await readDirectory("variables"),
     };

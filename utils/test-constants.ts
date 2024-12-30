@@ -59,3 +59,11 @@ export const markdocWithVariable = `${basicMarkdown}
 export const markdocWithFunction = `${basicMarkdown}
 This text will be transformed: {% uppercase("uppercase") %}
 `;
+
+export const markdocWithPartial = `${basicMarkdown}
+{% partial file="content.md" /%}
+`;
+
+export const markdocWithPartialAndVariable = `${basicMarkdown}
+{% partial file="content.md" variables={ product: { name: "Abuela" } } /%}
+`;
