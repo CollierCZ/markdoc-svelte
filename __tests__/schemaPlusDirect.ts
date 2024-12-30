@@ -5,7 +5,10 @@ import { button } from "../utils/schemas/schema/tags/Button";
 
 test(`processes correctly when nodes passed directly and tags with schema path`, async () => {
   expect(
-    await markdoc({ nodes: nodes, schema: "./utils/schemas/schemaWithTags" }).markup({
+    await markdoc({
+      nodes: nodes,
+      schema: "./utils/schemas/schemaWithTags",
+    }).markup({
       content: markdocWithComponent,
       filename: "test.md",
     }),

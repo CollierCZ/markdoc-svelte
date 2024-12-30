@@ -1,7 +1,7 @@
 const basicMarkdown = `
 This is some text
 
-`
+`;
 
 export const basicMarkdoc = `
 # This is some basic Markdoc

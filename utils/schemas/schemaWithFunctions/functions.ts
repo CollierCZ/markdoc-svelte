@@ -1,7 +1,7 @@
 import uppercase from "./uppercase";
 
 const functions = {
-  uppercase
-}
+  uppercase,
+};
 
-export default functions
+export default functions;

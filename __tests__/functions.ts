@@ -1,9 +1,9 @@
 import { markdoc } from "../src/main";
 import { markdocWithFunction } from "../utils/test-constants";
-import uppercase from "../utils/schemas/schemaWithFunctions/uppercase"
+import uppercase from "../utils/schemas/schemaWithFunctions/uppercase";
 
 test(`processes variables passed with schema path`, async () => {
-  console.log("path")
+  console.log("path");
   expect(
     await markdoc({ schema: "./utils/schemas/schemaWithFunctions" }).markup({
       content: markdocWithFunction,
@@ -13,7 +13,7 @@ test(`processes variables passed with schema path`, async () => {
 });
 
 test(`processes variables passed directly`, async () => {
-  console.log("direct")
+  console.log("direct");
   expect(
     await markdoc({
       functions: { uppercase },

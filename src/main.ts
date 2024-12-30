@@ -59,11 +59,11 @@ export const markdoc = (options: Options = {}): Preprocessor => {
         ...(partials && { partials }),
         ...(tags && { tags }),
       };
-      
+
       const markdocConfig = {
         variables: { frontmatter, ...variables },
         ...schema,
-      }
+      };
 
       // TODO validate and do something with it
       //const errors = MarkdocSource.validate(ast, markdocConfig);
