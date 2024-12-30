@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`processes partials passed directly 1`] = `
+{
+  "code": "<article><p>This is some text</p><p>Great content to be included.</p><p>Name: </p></article>",
+  "data": {},
+}
+`;
+
+exports[`processes partials passed with global variable 1`] = `
+{
+  "code": "<article><p>This is some text</p><p>Great content to be included.</p><p>Name: Best App</p></article>",
+  "data": {},
+}
+`;
+
+exports[`processes partials passed with local variable 1`] = `
+{
+  "code": "<article><p>This is some text</p><p>Great content to be included.</p><p>Name: Abuela</p></article>",
+  "data": {},
+}
+`;
+
+exports[`processes partials passed with schema path 1`] = `
+{
+  "code": "<article><p>This is some text</p><p>Great content to be included.</p><p>Name: </p></article>",
+  "data": {},
+}
+`;

@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`emits error with invalid markdoc 1`] = `
+"The file at test.md is invalid with 2 errors:
+- Node 'callout' is missing closing
+- Undefined tag: 'callout'"
+`;
+
+exports[`errors if Markdoc has info-level errors and info as validation level 1`] = `
+"The file at test.md is invalid with 1 error:
+- Should be a date in the future"
+`;
+
+exports[`passes if Markdoc has info-level errors and default validation level 1`] = `
+{
+  "code": "<article><span date="1 January 2000"></span></article>",
+  "data": {},
+}
+`;

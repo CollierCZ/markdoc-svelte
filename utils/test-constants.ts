@@ -1,3 +1,8 @@
+const basicMarkdown = `
+This is some text
+
+`;
+
 export const basicMarkdoc = `
 # This is some basic Markdoc
 
@@ -8,6 +13,14 @@ Some text **in bold** and *in italic*.
 And a [link](https://example.com).
 
 ## More fancy stuff
+
+Some \`<p>\` inline code.
+
+And a code block:
+
+\`\`\`javascript {% process=false %}
+{{% test %}}
+\`\`\`
 
 And even a table with a nested list:
 
@@ -37,4 +50,25 @@ Content. Such great content.
 
 export const markdocWithComponent = `${basicMarkdoc}
 {% button text="Hello world" /%}
+`;
+
+export const markdocWithVariable = `${basicMarkdown}
+{% $product.name %}
+`;
+
+export const markdocWithFunction = `${basicMarkdown}
+This text will be transformed: {% uppercase("uppercase") %}
+`;
+
+export const markdocWithPartial = `${basicMarkdown}
+{% partial file="content.md" /%}
+`;
+
+export const markdocWithPartialAndVariable = `${basicMarkdown}
+{% partial file="content.md" variables={ product: { name: "Abuela" } } /%}
+`;
+
+export const invalidMarkdoc = `
+{% callout %}
+Hi there
 `;

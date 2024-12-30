@@ -1,4 +1,8 @@
-import type { RenderableTreeNodes } from "@markdoc/markdoc";
+import type {
+  RenderableTreeNode,
+  RenderableTreeNodes,
+  Scalar,
+} from "@markdoc/markdoc";
 import MarkdownIt from "markdown-it";
 
 const { escapeHtml } = MarkdownIt().utils;
@@ -21,6 +25,27 @@ const voidElements = new Set([
   "wbr",
 ]);
 
+const BRACKET_ESCAPE_TEST_RE = /[{}]/;
+const BRACKET_ESCAPE_REPLACE_RE = /[{}]/g;
+const BRACKET_REPLACEMENTS = {
+  "{": "&lcub;",
+  "}": "&rcub;",
+};
+
+function replaceUnsafeChar(character: string) {
+  if (character === "{" || character === "}") {
+    return BRACKET_REPLACEMENTS[character];
+  }
+  return character;
+}
+
+function escapeCharacters(str: string) {
+  if (BRACKET_ESCAPE_TEST_RE.test(str)) {
+    return str.replace(BRACKET_ESCAPE_REPLACE_RE, replaceUnsafeChar);
+  }
+  return escapeHtml(str);
+}
+
 const render = (node: RenderableTreeNodes): string => {
   if (typeof node === "string") return node;
 
@@ -37,18 +62,48 @@ const render = (node: RenderableTreeNodes): string => {
     const attributesList = Object.entries(attributes ?? {}).reduce(
       (previous, [key, value]) =>
         `${previous} ${key}="${escapeHtml(String(value))}"`,
-      ""
+      "",
     );
     const openingTag = `<${name}${attributesList}`;
 
-    // Return only opening tag if the tag is void (can't have content)
+    // Return only the opening tag if the tag is void (can't have content)
     if (voidElements.has(name.toString())) return `${openingTag} />`;
 
-    if (typeof(children) === "number" || typeof(children) === "boolean") return `${openingTag}></${name}>`
+    if (typeof children === "number" || typeof children === "boolean")
+      return `${openingTag}></${name}>`;
 
-    const outputContent = children?.length ? render(children) : "";
+    // If the node has actual children, process them
+    if (children?.length) {
+      const escapeChildrenToString = (
+        arrayOfChildren:
+          | string
+          | {
+              [key: string]: Scalar;
+            }
+          | RenderableTreeNode[],
+      ): string => {
+        if (typeof arrayOfChildren === "string")
+          return escapeCharacters(arrayOfChildren);
+        if (Array.isArray(arrayOfChildren)) {
+          return arrayOfChildren
+            .map((child) =>
+              escapeCharacters(
+                child?.toString().replace("\n", "") || "", // Don't break the string in the middle // Make sure we end up with strings, not null or undefined
+              ),
+            )
+            .join("\n"); // Put the line breaks back in
+        }
+        return "";
+      };
+      if (name === "code") {
+        return `${openingTag}>${escapeChildrenToString(children)}</${name}>`;
+      }
+      if (name === "pre") {
+        return `${openingTag}><code>${escapeChildrenToString(children)}</code></${name}>`;
+      } else return `${openingTag}>${render(children)}</${name}>`;
+    }
 
-    return `${openingTag}>${outputContent}</${name}>`;
+    return `${openingTag}></${name}>`;
   };
 
   return getOutput();

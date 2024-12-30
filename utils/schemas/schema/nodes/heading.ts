@@ -3,7 +3,7 @@ import type { Config, Node, RenderableTreeNode } from "@markdoc/markdoc";
 
 const getId = (
   children: RenderableTreeNode[],
-  attributes: Record<string, any>
+  attributes: Record<string, any>,
 ) => {
   if (attributes.id && typeof attributes.id === "string") {
     return attributes.id;
@@ -30,7 +30,7 @@ export const heading = {
     return new Tag(
       `h${node.attributes["level"]}`,
       { ...attributes, id },
-      children
+      children,
     );
   },
 };
