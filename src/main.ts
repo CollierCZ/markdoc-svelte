@@ -103,7 +103,7 @@ export const markdoc = (options: Options = {}): Preprocessor => {
         );
       }
 
-      const transformedContent = MarkdocSource.transform(
+      const transformedContent = await MarkdocSource.transform(
         ast,
         markdocConfig
       );
