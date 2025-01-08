@@ -1,6 +1,5 @@
 import dts from "rollup-plugin-dts";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 
 export default [
@@ -11,7 +10,7 @@ export default [
       { file: "dist/main.mjs", format: "esm" },
     ],
     external: ["fs", "js-yaml", "@markdoc/markdoc", "markdown-it", "path"],
-    plugins: [typescript(), nodeResolve(), terser()],
+    plugins: [typescript(), nodeResolve()],
   },
   {
     input: "src/index.ts",
