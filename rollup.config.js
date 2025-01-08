@@ -14,7 +14,7 @@ export default [
     plugins: [typescript(), nodeResolve(), terser()],
   },
   {
-    input: "src/main.ts",
+    input: "src/index.ts",
     output: [{ file: "dist/main.d.ts" }],
     plugins: [dts(), nodeResolve()],
   },
