@@ -1,20 +1,20 @@
 import MarkdocSource, { Config } from "@markdoc/markdoc";
-import { existsSync, readFileSync, readdirSync } from "fs";
-import { join } from "path";
+import FS from "fs";
+import Path from "path";
 
 const getPartials = (
   partialsDirectory: string | undefined,
 ): Config["partials"] => {
   if (!partialsDirectory) return undefined;
 
-  if (existsSync(partialsDirectory)) {
-    const files = readdirSync(partialsDirectory);
+  if (FS.existsSync(partialsDirectory)) {
+    const files = FS.readdirSync(partialsDirectory);
 
     const partialsRecords = files.reduce(
       (recordObject, file) => {
         if (recordObject) {
           recordObject[file] = MarkdocSource.parse(
-            readFileSync(join(partialsDirectory, file), "utf8"),
+            FS.readFileSync(Path.join(partialsDirectory, file), "utf8"),
           );
         }
         return recordObject;
