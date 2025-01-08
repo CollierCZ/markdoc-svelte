@@ -77,7 +77,7 @@ export const markdoc = (options: Options = {}): Preprocessor => {
 
       const markdocConfig = {
         ...schemaWithoutPartials,
-        variables: { frontmatter, ...variables || variablesFromSchema },
+        variables: { frontmatter, ...(variables || variablesFromSchema) },
         partials:
           partialsDirectory || schemaFromPath["partials"]
             ? getPartials(partialsDirectory || schemaFromPath["partials"])
@@ -95,29 +95,32 @@ export const markdoc = (options: Options = {}): Preprocessor => {
       const errors = MarkdocSource.validate(ast, markdocConfig);
       const breakingLevel = errorLevelsMap.get(validationLevel)!;
       const areErrorsAtBreakingLevel = errors.find(
-        (error) => errorLevelsMap.get(error.error.level)! >= breakingLevel,
+        (error) => errorLevelsMap.get(error.error.level)! >= breakingLevel
       );
       if (areErrorsAtBreakingLevel) {
         throw new Error(
-          `The file at ${filename} is invalid with ${errors.length} error${errors.length > 1 ? "s" : ""}:\n- ${errors.map((error) => error.error.message).join("\n- ")}`,
+          `The file at ${filename} is invalid with ${errors.length} error${errors.length > 1 ? "s" : ""}:\n- ${errors.map((error) => error.error.message).join("\n- ")}`
         );
       }
 
-      const transformedContent = MarkdocSource.transform(ast, markdocConfig);
+      const transformedContent = await MarkdocSource.transform(
+        ast,
+        markdocConfig
+      );
 
       const svelteContent = render(transformedContent);
       const frontmatterString = isFrontmatter
         ? `<script context="module">\n` +
           `\texport const metadata = ${JSON.stringify(frontmatter)};\n` +
           `\tconst { ${Object.keys(frontmatter as Record<string, unknown>).join(
-            ", ",
+            ", "
           )} } = metadata;\n` +
           "</script>\n"
         : "";
 
       const componentsString = getComponentImports(
         schemaWithoutPartials,
-        "/src/lib/components",
+        "/src/lib/components"
       );
       const layoutOpenString =
         layoutPath || componentsString
