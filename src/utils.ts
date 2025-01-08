@@ -9,11 +9,11 @@ const BRACKET_REPLACEMENTS = {
   "}": "&rcub;",
 };
 
-const replaceUnsafeChar = (character: string): string => {
-  if (character === "{" || character === "}") {
-    return BRACKET_REPLACEMENTS[character];
+const replaceMarkdocBrackets = (characters: string): string => {
+  if (characters === "{" || characters === "}") {
+    return BRACKET_REPLACEMENTS[characters];
   }
-  return character;
+  return characters;
 };
 
 export const escapeMarkdocBrackets = (
@@ -21,7 +21,7 @@ export const escapeMarkdocBrackets = (
   includeOtherHtml = true
 ): string => {
   if (BRACKET_ESCAPE_TEST_RE.test(str)) {
-    return str.replace(BRACKET_ESCAPE_REPLACE_RE, replaceUnsafeChar);
+    return str.replace(BRACKET_ESCAPE_REPLACE_RE, replaceMarkdocBrackets);
   }
   return includeOtherHtml ? escapeHtml(str) : str;
 };
