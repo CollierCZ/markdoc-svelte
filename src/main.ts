@@ -1,4 +1,4 @@
-import MarkdocSource, { Config, validate } from "@markdoc/markdoc";
+import MarkdocSource, { Config } from "@markdoc/markdoc";
 import yaml from "js-yaml";
 import render from "./render";
 import loadSchema from "./loader";

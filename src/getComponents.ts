@@ -1,6 +1,6 @@
 import { Config } from "@markdoc/markdoc";
-import { existsSync } from "fs";
-import { join } from "path";
+import FS from "fs";
+import Path from "path";
 
 export const getComponentImports = (
   schema: Config,
@@ -20,11 +20,11 @@ export const getComponentImports = (
          Also ignores nodes with no render property */
       if (typeof renderName === "string" && /^\p{Lu}/u.test(renderName)) {
         // Check if the file exists and import if so
-        const componentPath = join(
+        const componentPath = Path.join(
           process.cwd(),
           `${componentDirPath}/${renderName}.svelte`,
         );
-        if (existsSync(componentPath)) {
+        if (FS.existsSync(componentPath)) {
           importStatement += `import ${renderName} from '${componentPath}';\n`;
         }
       }
