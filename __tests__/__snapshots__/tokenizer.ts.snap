@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`leaves typographic elements alone as a default 1`] = `
+{
+  "code": "<article><h2>Typographic replacements</h2><p>Enable typographer option to see result.</p><p>(c) (C) (r) (R) (tm) (TM) (p) (P) +-</p><p>test.. test... test..... test?..... test!....</p><p>!!!!!! ???? ,,  -- ---</p><p>"Smartypants, double quotes" and 'single quotes'</p></article>",
+  "data": {},
+}
+`;
+
+exports[`leaves typographic elements alone when passed false 1`] = `
+{
+  "code": "<article><h2>Typographic replacements</h2><p>Enable typographer option to see result.</p><p>(c) (C) (r) (R) (tm) (TM) (p) (P) +-</p><p>test.. test... test..... test?..... test!....</p><p>!!!!!! ???? ,,  -- ---</p><p>"Smartypants, double quotes" and 'single quotes'</p></article>",
+  "data": {},
+}
+`;
+
+exports[`properly replaces typographic elements when passed as an option 1`] = `
+{
+  "code": "<article><h2>Typographic replacements</h2><p>Enable typographer option to see result.</p><p>© © ® ® ™ ™ § § ±</p><p>test… test… test… test?.. test!..</p><p>!!! ??? ,  – —</p><p>“Smartypants, double quotes” and ‘single quotes’</p></article>",
+  "data": {},
+}
+`;
