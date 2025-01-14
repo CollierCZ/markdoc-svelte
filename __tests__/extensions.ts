@@ -49,11 +49,11 @@ test(`works when passed multiple extensions`, async () => {
   ).toMatchSnapshot();
 });
 
-test(`ignores files that don't match multiple passed extension`, async () => {
+test(`ignores files that don't match multiple passed extensions`, async () => {
   expect(
     await markdoc({ extensions: [".markdoc", ".md"] }).markup({
       content: basicMarkdoc,
-      filename: "test.ts",
+      filename: "test.mdoc",
     }),
   ).toMatchSnapshot();
 });

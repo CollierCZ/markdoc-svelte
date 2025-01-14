@@ -2,7 +2,7 @@
 
 exports[`ignores files that don't match a single passed extension 1`] = `undefined`;
 
-exports[`ignores files that don't match multiple passed extension 1`] = `undefined`;
+exports[`ignores files that don't match multiple passed extensions 1`] = `undefined`;
 
 exports[`ignores files that don't match the default extensions 1`] = `undefined`;
 

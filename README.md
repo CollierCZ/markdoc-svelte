@@ -207,6 +207,42 @@ description: Integrate Markdoc into your Next.js app
 
 You can choose to customize how Markdoc files are processed.
 
+| Option            | Type             | Default              | Description                           |
+| ----------------- | ---------------- | -------------------- | ------------------------------------- |
+| `comments`        | boolean          | `true`               | [Comments](#comments)                 |
+| `extensions`      | array of strings | `[".mdoc",".md"]` | [Extensions](#extensions)             |
+| `functions`       | functions object |                      | [Functions](#functions)               |
+| `layout`          | path             |                      | [Layout](#layout)                     |
+| `nodes`           | nodes object     |                      | [Nodes](#nodes)                       |
+| `partials`        | partials object  |                      | [Partials](#partials)                 |
+| `schema`          | path             |                      | [Schema path](#schema-path)           |
+| `tags`            | tags object      |                      | [Tags](#tags)                         |
+| `typographer`     | boolean          | `false`              | [Typographer](#typographer)           |
+| `validationLevel` | string           | `info`               | [Validation level](#validation-level) |
+| `variables`       | variables object |                      | [Variables](#variables)               |
+
+### Comments
+
+Whether to allow [Markdown comment syntax](https://spec.commonmark.org/0.30/#example-624)
+to hide comments from the rendered output.
+On by default as this will be the default in Markdoc.
+
+To turn this off, set the option to `false`:
+
+```javascript
+import { markdoc } from "markdoc-svelte";
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".mdoc", ".md"],
+  preprocess: [
+    markdoc({
+      comments: false,
+    }),
+  ],
+};
+```
+
 ### Validation level
 
 This preprocessor validates whether the Markdoc is valid.
@@ -219,7 +255,7 @@ import { markdoc } from "markdoc-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: [".markdoc", ".md"],
+  extensions: [".mdoc", ".md"],
   preprocess: [
     markdoc({
       validationLevel: "info",
@@ -228,9 +264,16 @@ const config = {
 };
 ```
 
+### Typographer
+
+Choose whether to turn on typographic replacements from [markdown-it](https://github.com/markdown-it/markdown-it).
+See the options in action at the [markdown-it demo](https://markdown-it.github.io/)
+(select or deselect `typographer`).
+Defaults to false.
+
 ### Extensions
 
-By default, files ending in `.markdoc` and `.md` are preprocessed.
+By default, files ending in `.mdoc` and `.md` are preprocessed.
 To use other extensions, add them to the `extensions` array in the options:
 
 ```javascript
@@ -238,10 +281,10 @@ import { markdoc } from "markdoc-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: [".svelte", ".markdoc", ".md"],
+  extensions: [".svelte", ".mdoc", ".md"],
   preprocess: [
     markdoc({
-      extensions: [".svelte", ".markdoc", ".md"],
+      extensions: [".svelte", ".mdoc", ".md"],
     }),
   ],
 };
@@ -298,8 +341,8 @@ markdoc
 │   ├── index.js
 │   └── callout.js
 ├── partials
-│   ├── content.markdoc
-│   └── more-content.markdoc
+│   ├── content.mdoc
+│   └── more-content.mdoc
 ├── tags.js
 └── variables.js
 ```
