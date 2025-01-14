@@ -209,7 +209,8 @@ You can choose to customize how Markdoc files are processed.
 
 | Option            | Type             | Default              | Description                           |
 | ----------------- | ---------------- | -------------------- | ------------------------------------- |
-| `extensions`      | array of strings | `[".markdoc",".md"]` | [Extenstions](#extensions)            |
+| `comments`        | boolean          | `true`               | [Comments](#comments)                 |
+| `extensions`      | array of strings | `[".markdoc",".md"]` | [Extensions](#extensions)             |
 | `functions`       | functions object |                      | [Functions](#functions)               |
 | `layout`          | path             |                      | [Layout](#layout)                     |
 | `nodes`           | nodes object     |                      | [Nodes](#nodes)                       |
@@ -219,6 +220,28 @@ You can choose to customize how Markdoc files are processed.
 | `typographer`     | boolean          | `false`              | [Typographer](#typographer)           |
 | `validationLevel` | string           | `info`               | [Validation level](#validation-level) |
 | `variables`       | variables object |                      | [Variables](#variables)               |
+
+### Comments
+
+Whether to allow [Markdown comment syntax](https://spec.commonmark.org/0.30/#example-624)
+to hide comments from the rendered output.
+On by default as this will be the default in Markdoc.
+
+To turn this off, set the option to `false`:
+
+```javascript
+import { markdoc } from "markdoc-svelte";
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".markdoc", ".md"],
+  preprocess: [
+    markdoc({
+      comments: false,
+    }),
+  ],
+};
+```
 
 ### Validation level
 

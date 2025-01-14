@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`doesn't hide comments when passed false 1`] = `
+{
+  "code": "<article><h2>A heading</h2><p><!-- A comment about the text --></p><p>Actual text here.</p></article>",
+  "data": {},
+}
+`;
+
+exports[`hides comments by default 1`] = `
+{
+  "code": "<article><h2>A heading</h2><p><!-- A comment about the text --></p><p>Actual text here.</p></article>",
+  "data": {},
+}
+`;
+
+exports[`hides comments when passed as an option 1`] = `
+{
+  "code": "<article><h2>A heading</h2><p>Actual text here.</p></article>",
+  "data": {},
+}
+`;
