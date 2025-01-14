@@ -7,6 +7,7 @@ import getPartials from "./getPartials";
 
 interface Options {
   extensions?: string[];
+  typographer?: boolean;
   layout?: string;
   validationLevel?: "debug" | "info" | "warning" | "error" | "critical";
   schema?: string;
@@ -36,6 +37,7 @@ interface Preprocessor {
 export const markdoc = (options: Options = {}): Preprocessor => {
   const layoutPath = options.layout;
   const schemaPath = options.schema;
+  const typographer = options.typographer || false;
   const extensions = options.extensions || [".markdown", ".md"];
   const validationLevel = options.validationLevel || "error";
   const {
@@ -50,7 +52,12 @@ export const markdoc = (options: Options = {}): Preprocessor => {
     markup: async ({ content = "", filename = "" }) => {
       if (!extensions.find((extension) => filename.endsWith(extension))) return;
 
-      const ast = MarkdocSource.parse(content);
+      const tokenizer = new MarkdocSource.Tokenizer({
+        typographer: typographer,
+        allowIndentation: true,
+      });
+
+      const ast = MarkdocSource.parse(tokenizer.tokenize(content));
 
       const isFrontmatter = Boolean(ast.attributes.frontmatter);
       const frontmatter = isFrontmatter
