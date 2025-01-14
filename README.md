@@ -210,7 +210,7 @@ You can choose to customize how Markdoc files are processed.
 | Option            | Type             | Default              | Description                           |
 | ----------------- | ---------------- | -------------------- | ------------------------------------- |
 | `comments`        | boolean          | `true`               | [Comments](#comments)                 |
-| `extensions`      | array of strings | `[".markdoc",".md"]` | [Extensions](#extensions)             |
+| `extensions`      | array of strings | `[".mdoc",".md"]` | [Extensions](#extensions)             |
 | `functions`       | functions object |                      | [Functions](#functions)               |
 | `layout`          | path             |                      | [Layout](#layout)                     |
 | `nodes`           | nodes object     |                      | [Nodes](#nodes)                       |
@@ -234,7 +234,7 @@ import { markdoc } from "markdoc-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: [".markdoc", ".md"],
+  extensions: [".mdoc", ".md"],
   preprocess: [
     markdoc({
       comments: false,
@@ -255,7 +255,7 @@ import { markdoc } from "markdoc-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: [".markdoc", ".md"],
+  extensions: [".mdoc", ".md"],
   preprocess: [
     markdoc({
       validationLevel: "info",
@@ -273,7 +273,7 @@ Defaults to false.
 
 ### Extensions
 
-By default, files ending in `.markdoc` and `.md` are preprocessed.
+By default, files ending in `.mdoc` and `.md` are preprocessed.
 To use other extensions, add them to the `extensions` array in the options:
 
 ```javascript
@@ -281,10 +281,10 @@ import { markdoc } from "markdoc-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: [".svelte", ".markdoc", ".md"],
+  extensions: [".svelte", ".mdoc", ".md"],
   preprocess: [
     markdoc({
-      extensions: [".svelte", ".markdoc", ".md"],
+      extensions: [".svelte", ".mdoc", ".md"],
     }),
   ],
 };
@@ -341,8 +341,8 @@ markdoc
 │   ├── index.js
 │   └── callout.js
 ├── partials
-│   ├── content.markdoc
-│   └── more-content.markdoc
+│   ├── content.mdoc
+│   └── more-content.mdoc
 ├── tags.js
 └── variables.js
 ```

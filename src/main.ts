@@ -40,7 +40,7 @@ export const markdoc = (options: Options = {}): Preprocessor => {
   const schemaPath = options.schema;
   const comments = options.comments || false;
   const typographer = options.typographer || false;
-  const extensions = options.extensions || [".markdown", ".md"];
+  const extensions = options.extensions || [".mdoc", ".md"];
   const validationLevel = options.validationLevel || "error";
   const {
     functions,
