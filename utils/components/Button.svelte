@@ -1,5 +1,6 @@
 <script lang="ts">
   let text: string;
+  text = "hello";
   const logMessage = () => {
     console.log(text);
   };

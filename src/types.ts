@@ -110,9 +110,13 @@ export interface MarkdocModule {
    * Optional frontmatter extracted from the Markdoc file.
    */
   frontmatter?: { [key: string]: string };
+<<<<<<< HEAD
   /**
    * Optional list of headings from the Markdoc file.
    */
   headings?: Heading[];
 }
 
+=======
+}
+>>>>>>> 7865e30 (✨ Improve defaults, error handling, and importing (#13))

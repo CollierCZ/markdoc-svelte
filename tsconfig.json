@@ -3,14 +3,16 @@
   "compilerOptions": {
     "module": "ES2022",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "allowJs": true,
-    "types": ["node", "svelte", "jest"],
-    "verbatimModuleSyntax": false
+    "declaration": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "types": ["node", "svelte", "jest"]
   },
-  "include": ["src", "utils"]
+  "include": ["src/**/*.ts", "utils/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

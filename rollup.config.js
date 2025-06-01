@@ -6,10 +6,10 @@ export default [
   {
     input: "src/index.ts",
     output: [
-      { file: "dist/main.cjs.js", format: "cjs" },
-      { file: "dist/main.mjs", format: "esm" },
+      { file: "dist/main.cjs.js", format: "cjs", sourcemap: true },
+      { file: "dist/main.mjs", format: "esm", sourcemap: true },
     ],
-    external: ["fs", "js-yaml", "@markdoc/markdoc", "markdown-it", "path"],
+    external: ["@markdoc/markdoc", "fs", "path", "svelte", "vite", "yaml"],
     plugins: [typescript(), nodeResolve()],
   },
   {

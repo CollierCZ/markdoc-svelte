@@ -25,12 +25,12 @@ test(`leaves typographic elements alone as a default`, async () => {
 
 test(`properly replaces typographic elements when passed as an option`, async () => {
   expect(
-    await markdoc({ typographer: true }).markup(replacableMarkdocObject)
+    await markdoc({ typographer: true }).markup(replacableMarkdocObject),
   ).toMatchSnapshot();
 });
 
 test(`leaves typographic elements alone when passed false`, async () => {
   expect(
-    await markdoc({ typographer: false }).markup(replacableMarkdocObject)
+    await markdoc({ typographer: false }).markup(replacableMarkdocObject),
   ).toMatchSnapshot();
 });
