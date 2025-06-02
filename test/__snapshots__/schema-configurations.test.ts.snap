@@ -1,176 +1,130 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Schema Configuration Combinations > Configuration Source Combinations > handles conflicting schema types (direct functions override schema functions) 1`] = `
-{
-  "code": "<article><h1 class="custom-heading">Test</h1>DIRECT_OVERRIDE</article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/nodes.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/tags.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/variables.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/functions.ts",
-  ],
-}
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1 class="custom-heading">Test</h1><p>Function: DIRECT_OVERRIDE</p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Configuration Source Combinations > loads configuration from schema directory only 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import TestTag from '$lib/components/TestTag.svelte';
 </script>
-<article><h1 class="custom-heading">Test</h1><p><TestTag>content</TestTag></p></article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/nodes.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/tags.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/variables.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/functions.ts",
-  ],
-}
+<article><h1 class="custom-heading">Test</h1><p><TestTag>content</TestTag> Function: TRANSFORMED: test value</p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Configuration Source Combinations > merges different schema types from multiple sources 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import TestTag from '$lib/components/TestTag.svelte';
 	import AdditionalTag from '$lib/components/AdditionalTag.svelte';
 </script>
-<article><h1 class="custom-heading">Test</h1><p><TestTag>content</TestTag> <AdditionalTag>content</AdditionalTag></p>TRANSFORMED: additional value</article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/nodes.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/tags.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/variables.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/functions.ts",
-  ],
-}
+<article><h1 class="custom-heading">Test</h1><p><TestTag>content</TestTag> <AdditionalTag>content</AdditionalTag> Function: TRANSFORMED: additional value</p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Configuration Source Combinations > merges schema directory and direct options (direct options override) 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import OverrideTag from '$lib/components/OverrideTag.svelte';
 </script>
-<article><h1 class="custom-heading">Test</h1><p><OverrideTag>content</OverrideTag></p></article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/nodes.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/tags.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/variables.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/functions.ts",
-  ],
-}
+<article><h1 class="custom-heading">Test</h1><p><OverrideTag>content</OverrideTag></p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Configuration Source Combinations > uses direct options only (no schema directory) 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import DirectTag from '$lib/components/DirectTag.svelte';
 </script>
-<article><h1>Test</h1><p><DirectTag>content</DirectTag></p></article>",
-  "dependencies": [],
-}
+<article><h1>Test</h1><p><DirectTag>content</DirectTag></p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Edge Cases > handles schema files with no default export 1`] = `
-{
-  "code": "<article><h1>Test</h1><p>Regular content</p></article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/no-default-export/tags.ts",
-  ],
-}
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>Test</h1><p>Regular content</p></article>"
 `;
 
 exports[`Schema Configuration Combinations > File Structure Variations > prefers .ts files over .js files 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import TypeScriptTag from '$lib/components/TypeScriptTag.svelte';
 </script>
-<article><h1>Test</h1><p><TypeScriptTag>content</TypeScriptTag></p></article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/file-preference/tags.ts",
-  ],
-}
+<article><h1>Test</h1><p><TypeScriptTag>content</TypeScriptTag></p></article>"
 `;
 
 exports[`Schema Configuration Combinations > File Structure Variations > prefers individual files over index directories 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import FileTag from '$lib/components/FileTag.svelte';
 </script>
-<article><h1>Test</h1><p><FileTag>content</FileTag></p></article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/file-vs-directory/tags.ts",
-  ],
-}
+<article><h1>Test</h1><p><FileTag>content</FileTag></p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Schema Directory Loading Patterns > handles missing schema directory gracefully 1`] = `
-{
-  "code": "<article><h1>Test Content</h1></article>",
-  "dependencies": [],
-}
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>Test Content</h1></article>"
 `;
 
 exports[`Schema Configuration Combinations > Schema Directory Loading Patterns > loads schemas from index files in directories (tags/index.ts, nodes/index.ts) 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import IndexTag from '$lib/components/IndexTag.svelte';
 </script>
-<article><h1>Test</h1><p><IndexTag>content</IndexTag> <a class="custom-link" href="http://example.com">link text</a></p></article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/index-directories/nodes/index.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/index-directories/tags/index.ts",
-  ],
-}
+<article><h1>Test</h1><p><IndexTag>content</IndexTag> <a class="custom-link" href="http://example.com">link text</a></p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Schema Directory Loading Patterns > loads schemas from individual files (tags.ts, nodes.ts, functions.ts, variables.ts) 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import TestTag from '$lib/components/TestTag.svelte';
 </script>
-<article><h1 class="custom-heading">Test</h1><p><TestTag></TestTag></p>TRANSFORMED: test value</article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/variables.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/functions.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/tags.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/nodes.ts",
-  ],
-}
+<article><h1 class="custom-heading">Test heading</h1><p><TestTag>Tag content</TestTag> Function value: TRANSFORMED: test value</p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Schema Directory Loading Patterns > loads schemas from mixed patterns (some individual files, some index directories) 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import MixedTag from '$lib/components/MixedTag.svelte';
 </script>
-<article><h1>Test</h1><p><MixedTag>content</MixedTag></p>MIXED_TRANSFORMED: mixed value</article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/mixed-patterns/variables.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/mixed-patterns/functions.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/mixed-patterns/tags/index.ts",
-  ],
-}
+<article><h1>Test</h1><p><MixedTag>content</MixedTag> Function: MIXED_TRANSFORMED: mixed value</p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Schema Types Coverage > handles empty schema parts gracefully 1`] = `
-{
-  "code": "<article><h1>Test</h1><p>Regular content</p></article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/empty-schemas/tags.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/empty-schemas/nodes.ts",
-  ],
-}
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>Test</h1><p>Regular content</p></article>"
 `;
 
 exports[`Schema Configuration Combinations > Schema Types Coverage > processes all schema types together (nodes, tags, functions, variables) 1`] = `
-{
-  "code": "<script>
+"<script module>
+	export const slug = "test";
+</script>
+<script>
 	import TestTag from '$lib/components/TestTag.svelte';
 </script>
-<article><h1 class="custom-heading">Custom Heading</h1><p><TestTag>content</TestTag></p>TRANSFORMED: test value</article>",
-  "dependencies": [
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/nodes.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/tags.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/variables.ts",
-    "/Users/christopher/Documents/markdoc-svelte/test/markdoc/individual-files/functions.ts",
-  ],
-}
+<article><h1 class="custom-heading">Custom Heading</h1><p><TestTag>content</TestTag> Function: TRANSFORMED: test value</p></article>"
 `;

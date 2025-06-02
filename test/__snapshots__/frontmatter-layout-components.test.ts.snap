@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Frontmatter and Component Generation > Multiple components with props 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<script>
+	import CustomComponent from 'test/components/CustomComponent.svelte';
+	import AnotherComponent from 'test/components/AnotherComponent.svelte';
+</script>
+<article><CustomComponent title="Welcome" description="This is a test component"><p>This is the content inside the custom component. It can contain <strong>markdown</strong> and other elements.</p></CustomComponent><AnotherComponent status="active" count="5"><p>This is content inside another component. It shows the status and count values.</p></AnotherComponent></article>"
+`;
+
+exports[`Frontmatter and Component Generation > No components 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>Regular Content</h1></article>"
+`;
+
+exports[`Frontmatter and Component Generation > No frontmatter 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>Regular Markdown Content</h1></article>"
+`;
+
+exports[`Frontmatter and Component Generation > With frontmatter 1`] = `
+"<script module>
+	export const slug = "test";
+	export const frontmatter = {"title":"Test Title","author":"Test Author","tags":["test","markdoc"]};
+	const { title, author, tags } = frontmatter;
+</script>
+<article><h1>Content with Frontmatter</h1><h1>Test Title</h1><p>Author: Test Author Tags: testmarkdoc Published: Not specified</p></article>"
+`;
+
+exports[`Frontmatter and Component Generation > With layout and frontmatter 1`] = `
+"<script module>
+	export const slug = "test";
+	export const frontmatter = {"title":"Layout Test","description":"Testing layout with frontmatter"};
+	const { title, description } = frontmatter;
+</script>
+<script>
+	import Layout_MARKDOC from '$lib/SimpleLayout.svelte';
+</script>
+<Layout_MARKDOC {...frontmatter}>
+<article><h1>Page with a Layout</h1><p>This content should be wrapped by a layout. Description: Testing layout with frontmatter</p></article>
+</Layout_MARKDOC>"
+`;

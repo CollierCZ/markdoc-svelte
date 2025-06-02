@@ -16,7 +16,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "jest",
+    "test": "vitest",
     "lint": "prettier . --check && eslint .",
     "format": "prettier . --write"
   },

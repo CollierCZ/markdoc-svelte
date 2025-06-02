@@ -1,17 +1,22 @@
-import { markdoc } from "../src/main.ts";
+import { markdocPreprocess } from "../src/main.ts";
 import { commonMark, markdocBuiltInTags } from "./constants.ts";
 import { describe, it, expect } from "vitest";
+import type {Options} from "../src/types.ts";
 
 describe("Markdown parsing", () => {
+  const testOptions: Options = {
+    validationLevel: "warning"
+  };
+  
   it("CommonMark Tags", async () => {
     expect(
-      await markdoc().markup!({ content: commonMark, filename: "test.md" }),
+      await markdocPreprocess(testOptions).markup!({ content: commonMark, filename: "test.md" }),
     ).toMatchSnapshot();
   });
 
   it("Markdoc Table", async () => {
     expect(
-      await markdoc().markup!({
+      await markdocPreprocess().markup!({
         content: markdocBuiltInTags,
         filename: "test.md",
       }),

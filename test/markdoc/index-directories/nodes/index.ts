@@ -1,3 +1,5 @@
+import Markdoc from "@markdoc/markdoc";
+
 export default {
   link: {
     render: "a",
@@ -5,6 +7,6 @@ export default {
       href: { type: String, required: true },
       class: { type: String, default: "custom-link" }
     },
-    children: ["inline"]
+    children: Markdoc.nodes.link.children
   }
 }; 

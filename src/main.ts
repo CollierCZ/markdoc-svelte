@@ -100,10 +100,13 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
 
       // Parse frontmatter
       const isFrontmatter = Boolean(ast.attributes.frontmatter);
+      log.debug(`Frontmatter detected: ${isFrontmatter}`);
+      log.debug(`Raw frontmatter content: ${ast.attributes.frontmatter}`);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const frontmatter: Record<string, unknown> = isFrontmatter
         ? YAML.parse(ast.attributes.frontmatter as string)
         : {};
+      log.debug(`Parsed frontmatter: ${JSON.stringify(frontmatter)}`);
 
       // Prepare to load schemas & partials
       const dependencies: string[] = [];

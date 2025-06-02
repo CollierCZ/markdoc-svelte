@@ -5,17 +5,17 @@ export const directTags = {
   directTag: {
     render: "DirectTag",
     attributes: {},
-    children: ["inline"]
+    children: ["text"]
   },
   overrideTag: {
     render: "OverrideTag",
     attributes: {},
-    children: ["inline"]
+    children: ["text"]
   },
   additionalTag: {
     render: "AdditionalTag",
     attributes: {},
-    children: ["inline"]
+    children: ["text"]
   }
 };
 

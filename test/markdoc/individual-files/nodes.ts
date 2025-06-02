@@ -6,6 +6,6 @@ export default {
       class: { type: String, default: "custom-heading" },
       ...Markdoc.nodes.heading.attributes
     },
-    children: ["inline"]
+    children: Markdoc.nodes.heading.children
   }
 }; 
