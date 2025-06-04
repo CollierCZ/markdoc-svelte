@@ -24,22 +24,22 @@ const loadPartials = (
   config: Config["partials"] | null;
   deps: string[];
 } => {
-  let config: Config["partials"] | null = null; // Return value
-  const deps: string[] = []; // Return value
-  let loaded = false; // Flag to track partials load status
+  let config: Config["partials"] | null = null;
+  const deps: string[] = [];
+  let partialsLoaded = false; // Flag to track partials load status
 
   // Resolve path to directory
   const dir = isExplicit ? directory : Path.resolve(directory, "partials");
-  const dirExists = FS.existsSync(dir);
 
-  // Is directory found?
+  // Check if directory exists
+  const dirExists = FS.existsSync(dir);
   if (!dirExists) {
+    // If passed a directory path, warn that it wasn't found
     if (isExplicit)
-      // Warn user if they explicitly provided a path that is not found
       log.warn(
         `Specified "partialsDirectory" option '${directory}' not found.`,
       );
-    return { config: null, deps: [] };
+    return { config: config, deps: deps };
   }
 
   // Directory exists, try loading and parsing files incrementally
@@ -51,6 +51,8 @@ const loadPartials = (
       // Check for valid file and extension
       try {
         const stats = FS.statSync(path);
+
+        // Ignore if not valid
         if (!stats.isFile() || !extensions.includes(ext)) {
           continue;
         }
@@ -64,9 +66,7 @@ const loadPartials = (
         if (!config) config = {};
         config[file] = Markdoc.parse(content);
         deps.push(path);
-        loaded = true;
-        // const name = Path.basename(file, ext);
-        // log.debug(`Loaded partial '${name}' from '${path}'`);
+        partialsLoaded = true;
       } catch (e) {
         log.error(`Error parsing partial file '${path}':`, e);
       }
@@ -76,19 +76,16 @@ const loadPartials = (
     return { config, deps: [...new Set(deps)] };
   }
 
-  // Provide user feedback if folder exists but no valid files were loaded
-  if (dirExists && !loaded) {
-    const message = `Partials directory '${dir}' found, but no valid partial files (${extensions.join(", ")}) were loaded. Check for errors.`;
-    // Warn user if they explicitly provided a path
+  // Provide feedback if folder exists but no valid files were loaded
+  if (dirExists && !partialsLoaded) {
+    const message = `Partials directory '${dir}' found, but no valid partial files (with the extensions ${extensions.join(", ")}) were loaded. Check for errors.`;
+    // Warn if explicitly provided a path
     if (isExplicit) {
       log.warn(message);
     } else {
       log.info(message + " This may be intentional.");
     }
   }
-
-  // log.debug(`Partials Dependencies: ${deps.toString()}`);
-  // log.debug(`Partials Config: ${JSON.stringify(config)}`);
 
   return { config, deps: [...new Set(deps)] };
 };
