@@ -150,7 +150,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       handleValidationErrors(errors, validationLevel, filename);
 
       // --- Tranform AST with loaded config ---
-      const transformedContent = Markdoc.transform(ast, fullConfig);
+      // Needs to be awaited to handle async functions in config (such as nodes)
+      // eslint-disable-next-line @typescript-eslint/await-thenable
+      const transformedContent = await Markdoc.transform(ast, fullConfig);
 
       // --- Render Markdoc AST to Svelte ---
       const svelteContent = render(transformedContent);
