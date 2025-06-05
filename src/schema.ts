@@ -20,8 +20,8 @@ interface LoadedConfig {
  * from Schema folders and files (e.g., 'tags.ts', 'functions/index.js')
  * from a specified directory.
  *
- * Supports importing from files like `nodes.ts`, `nodes.js`, `nodes/index.ts`
- * or `nodes/index.js` (and similarly for `tags`, `variables`, `functions`).
+ * Supports importing from files like `nodes.ts`, `nodes.js`, `nodes/index.ts`,
+ * and `nodes/index.js` (and similarly for `tags`, `variables`, `functions`).
  *
  * Supports both "/markdoc" and "./markdoc" formats (both treated as relative to project root).
  *
@@ -33,46 +33,44 @@ interface LoadedConfig {
  * - deps: An array of absolute file paths as dependencies for Svelte preprocessor.
  */
 const loadSchemas = async (
-  directory: string,
+  directory: string
 ): Promise<{
   config: LoadedConfig;
   deps: string[];
 }> => {
   const loadedConfigParts: Partial<LoadedConfig> = {};
   const deps: string[] = [];
-  // Handle paths that start with "/" by treating them as relative to the project root
-  const dir = directory;
 
   /**
    * Reads the default export from JS/TS files for a specific config part
-   * within the resolved schema directory (e.g., 'tags', 'functions').
+   * (such as "tags", "functions") within the resolved schema directory.
    * Handles finding .ts, .js, index.ts, index.js files.
    * Used internally by `loadSchemas`.
    *
    * @param configPartName The name of the config part (e.g., "tags").
    * @returns A Promise resolving to the default export object if found, otherwise null.
    */
-  // --- Define readDirectory Overloads (Public Signatures) ---
+  // Define readDirectory overloads (public signatures)
   async function readConfigPart(
-    configPartName: "nodes",
+    configPartName: "nodes"
   ): Promise<Config["nodes"] | null>;
   async function readConfigPart(
-    configPartName: "tags",
+    configPartName: "tags"
   ): Promise<Config["tags"] | null>;
   async function readConfigPart(
-    configPartName: "variables",
+    configPartName: "variables"
   ): Promise<Config["variables"] | null>;
   async function readConfigPart(
-    configPartName: "functions",
+    configPartName: "functions"
   ): Promise<Config["functions"] | null>;
 
-  // --- Implementation Signature ---
+  // Implementation Signature
   async function readConfigPart(
-    configPartName: string,
+    configPartName: string
     // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   ): Promise<unknown | null> {
     try {
-      const moduleBase = Path.posix.join(dir, configPartName);
+      const moduleBase = Path.posix.join(directory, configPartName);
       let moduleFile: string | null = null;
 
       const pathsToCheck = [
@@ -86,11 +84,6 @@ const loadSchemas = async (
         // Use FS.existsSync with the potential path directly
         if (FS.existsSync(potentialPath)) {
           moduleFile = potentialPath; // Already absolute and normalized
-          if (moduleFile.includes("/index.")) {
-            log.info(
-              `Remember to include .ts file extension when importing ${configPartName} into ${moduleFile}`,
-            );
-          }
           break;
         }
       }
@@ -104,9 +97,14 @@ const loadSchemas = async (
         const importedModule = (await import(importPath)) as {
           default?: unknown;
         };
-        deps.push(moduleFile); // Add the *actual file found* as a dependency
+
+        // Add the *actual file found* as a dependency
+        deps.push(moduleFile);
+
         return importedModule?.default || null;
       }
+
+      // If no matching files found
       return null;
     } catch (error) {
       log.error(`Error loading schema part '${configPartName}':`, error);
@@ -114,7 +112,7 @@ const loadSchemas = async (
     }
   }
 
-  // --- Load Specific Schema Parts ---
+  // Load specific schema parts
   const [nodes, tags, variables, functions] = await Promise.all([
     readConfigPart("nodes"),
     readConfigPart("tags"),
@@ -128,18 +126,13 @@ const loadSchemas = async (
   if (variables) loadedConfigParts.variables = variables;
   if (functions) loadedConfigParts.functions = functions;
 
-  // --- Final Assembly ---
+  // Final Assembly
   const finalConfig: LoadedConfig = {
     nodes: loadedConfigParts.nodes,
     tags: loadedConfigParts.tags,
     variables: loadedConfigParts.variables,
     functions: loadedConfigParts.functions,
   };
-
-  // log.debug(`Schema Dependencies: ${deps.toString()}`);
-  // log.debug(
-  //   `Loaded Schema Config: ${JSON.stringify(finalConfig)}`,
-  // );
 
   return {
     config: finalConfig,

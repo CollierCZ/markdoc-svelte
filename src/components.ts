@@ -15,11 +15,12 @@ export const extractUsedSvelteComponents = (
 ): Set<string> => {
   const usedComponents = new Set<string>();
 
-  function traverse(currentNode: RenderableTreeNode | null | undefined) {
-    if (!currentNode || typeof currentNode === 'string' || typeof currentNode === 'number' || typeof currentNode === 'boolean') {
+  const traverse = (currentNode: RenderableTreeNode | null | undefined) => {
+    // If current node can't be a component, skip it
+    if (!currentNode || typeof currentNode === 'string' || typeof currentNode === 'number' || typeof currentNode === 'boolean')
       return;
-    }
 
+    // Recursively work through children of arrays until get to objects
     if (Array.isArray(currentNode)) {
       for (const child of currentNode) {
         traverse(child);
@@ -29,12 +30,12 @@ export const extractUsedSvelteComponents = (
 
     // Check if this RenderableTreeNode object itself represents a Svelte component.
     // 'currentNode.name' here is the name of the component/tag to be rendered.
+    // Convention: if node.name starts with an uppercase letter, it's a Svelte component.
     if (currentNode.name && typeof currentNode.name === 'string' && /\p{Lu}/u.test(currentNode.name)) {
-      // Convention: if node.name starts with an uppercase letter, it's a Svelte component.
       usedComponents.add(currentNode.name);
     }
 
-    // Recursively process children
+    // Recursively process children.
     if (currentNode.children && Array.isArray(currentNode.children)) {
       for (const child of currentNode.children) {
         traverse(child as RenderableTreeNode | null | undefined);
