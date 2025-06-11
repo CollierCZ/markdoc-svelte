@@ -153,6 +153,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       // eslint-disable-next-line @typescript-eslint/await-thenable
       const transformedContent = await Markdoc.transform(ast, fullConfig);
 
+      // --- Collect headings from transformed content ---
+      const headings = collectHeadings(transformedContent);
+
       // Render Markdoc AST to Svelte
       const svelteContent = render(transformedContent);
 
