@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 import { directTags, directFunctions, directVariables, directNodes } from "./schema-options.ts";
 import type { Options } from "../src/types.ts";
 import type { Processed } from "svelte/compiler";
+import { basicMarkdoc, markdocWithComments } from "./constants.ts";
 
 describe("Schema Configuration Combinations", () => {
   const testSchemasDir = "./test/markdoc";
@@ -237,6 +238,201 @@ describe("Schema Configuration Combinations", () => {
       const result = await markdocPreprocess({ 
         schema: `${testSchemasDir}/no-default-export`,
         validationLevel: "warning"
+      } as Options).markup!({ 
+        content, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+  });
+
+  describe("Comments Handling", () => {
+    it("hides comments by default", async () => {
+      const result = await markdocPreprocess({ 
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: markdocWithComments, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("hides comments when passed as an option", async () => {
+      const result = await markdocPreprocess({ 
+        comments: true,
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: markdocWithComments, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("doesn't hide comments when passed false", async () => {
+      const result = await markdocPreprocess({ 
+        comments: false,
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: markdocWithComments, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+  });
+
+  describe("File Extensions", () => {
+    it("works with no extension passed", async () => {
+      const result = await markdocPreprocess({ 
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: basicMarkdoc, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("ignores files that don't match the default extensions", async () => {
+      const result = await markdocPreprocess({ 
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: basicMarkdoc, 
+        filename: "test.markdoc" 
+      });
+
+      expect(result).toBeUndefined();
+    });
+
+    it("works when passed the default extension", async () => {
+      const result = await markdocPreprocess({ 
+        extensions: [".md"],
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: basicMarkdoc, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("works when passed a single extension other than the default", async () => {
+      const result = await markdocPreprocess({ 
+        extensions: [".markdoc"],
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: basicMarkdoc, 
+        filename: "test.markdoc" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("ignores files that don't match a single passed extension", async () => {
+      const result = await markdocPreprocess({ 
+        extensions: [".markdoc"],
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: basicMarkdoc, 
+        filename: "test.md" 
+      });
+
+      expect(result).toBeUndefined();
+    });
+
+    it("works when passed multiple extensions", async () => {
+      const result = await markdocPreprocess({ 
+        extensions: [".markdoc", ".md"],
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: basicMarkdoc, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("ignores files that don't match multiple passed extensions", async () => {
+      const result = await markdocPreprocess({ 
+        extensions: [".markdoc", ".md"],
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: basicMarkdoc, 
+        filename: "test.mdoc" 
+      });
+
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe("Typographer", () => {
+    const replacableMarkdoc = `
+## Typographic replacements
+
+Enable typographer option to see result.
+
+(c) (C) (r) (R) (tm) (TM) (p) (P) +-
+
+test.. test... test..... test?..... test!....
+
+!!!!!! ???? ,,  -- ---
+
+"Smartypants, double quotes" and 'single quotes'
+`;
+
+    it("leaves typographic elements alone as a default", async () => {
+      const result = await markdocPreprocess({ 
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: replacableMarkdoc, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("properly replaces typographic elements when passed as an option", async () => {
+      const result = await markdocPreprocess({ 
+        typographer: true,
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: replacableMarkdoc, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("leaves typographic elements alone when passed false", async () => {
+      const result = await markdocPreprocess({ 
+        typographer: false,
+        validationLevel: "warning"
+      } as Options).markup!({ 
+        content: replacableMarkdoc, 
+        filename: "test.md" 
+      }) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+  });
+
+  describe("Combined Features", () => {
+    it("processes partials, variables, and functions together", async () => {
+      const content = `# Test Document
+        {% testTag %}
+          {% partial file="header.md" /%}
+          Variable value: {% $testVar %}
+          Function result: {% testFunction($testVar) %}
+        {% /testTag %}
+      `;
+      
+      const result = await markdocPreprocess({ 
+        schema: `${testSchemasDir}/individual-files`,
+        validationLevel: "warning",
+        partials: `${testSchemasDir}/individual-files/partials`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 

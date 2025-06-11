@@ -12,7 +12,7 @@ import log from "./logs.ts";
 import loadPartials from "./partials.ts";
 import render from "./render.ts";
 import loadSchemas from "./schema.ts";
-import type { Options } from "./types";
+import type { Options } from "./types.ts";
 
 const validOptionKeys: (keyof Options)[] = [
   "extensions",

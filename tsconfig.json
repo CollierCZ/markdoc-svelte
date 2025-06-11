@@ -1,18 +1,21 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
   "compilerOptions": {
-    "module": "ES2022",
-    "moduleResolution": "node",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "declaration": true,
-    "outDir": "dist",
+    "declarationDir": "dist",
     "sourceMap": true,
-    "types": ["node", "svelte", "jest"]
+    "types": ["node", "svelte", "vitest/globals"],
+    "target": "ESNext",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*.ts", "utils/**/*"],
+  "include": ["src/**/*.ts", "**/*.test.ts"],
   "exclude": ["node_modules", "dist"]
 }

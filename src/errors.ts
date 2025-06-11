@@ -1,7 +1,7 @@
 import type { ValidateError } from "@markdoc/markdoc";
 
 import log from "./logs.ts";
-import type { ValidationLevel } from "./types";
+import type { ValidationLevel } from "./types.ts";
 
 /**
  * Map Markdoc error levels to a numeric value for comparison, higher number means more severe

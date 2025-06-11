@@ -1,6 +1,6 @@
 export default {
   testTag: {
     render: "TestTag",
-    children: ["text"]
+    children: ["text", "paragraph", "tag"]
   }
 }; 

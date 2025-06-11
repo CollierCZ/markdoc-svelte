@@ -1,5 +1,36 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Schema Configuration Combinations > Combined Features > processes partials, variables, and functions together 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<script>
+	import TestTag from '$lib/components/TestTag.svelte';
+</script>
+<article><h1 class="custom-heading">Test Document</h1><TestTag><h1 class="custom-heading">Header Content</h1><p>This is a header partial</p><p>Variable value: test value Function result: TRANSFORMED: test value</p></TestTag></article>"
+`;
+
+exports[`Schema Configuration Combinations > Comments Handling > doesn't hide comments when passed false 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>Test Document</h1><p><!-- This is a comment about the heading --></p><p>Some content here.</p><p><!-- This is a multi-line comment with some additional information --></p><p>More content after the comment.</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Comments Handling > hides comments by default 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>Test Document</h1><p>Some content here.</p><p>More content after the comment.</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Comments Handling > hides comments when passed as an option 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>Test Document</h1><p>Some content here.</p><p>More content after the comment.</p></article>"
+`;
+
 exports[`Schema Configuration Combinations > Configuration Source Combinations > handles conflicting schema types (direct functions override schema functions) 1`] = `
 "<script module>
 	export const slug = "test";
@@ -53,6 +84,34 @@ exports[`Schema Configuration Combinations > Edge Cases > handles schema files w
 	export const slug = "test";
 </script>
 <article><h1>Test</h1><p>Regular content</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > File Extensions > works when passed a single extension other than the default 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
+`;
+
+exports[`Schema Configuration Combinations > File Extensions > works when passed multiple extensions 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
+`;
+
+exports[`Schema Configuration Combinations > File Extensions > works when passed the default extension 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
+`;
+
+exports[`Schema Configuration Combinations > File Extensions > works with no extension passed 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
 `;
 
 exports[`Schema Configuration Combinations > File Structure Variations > prefers .ts files over .js files 1`] = `
@@ -127,4 +186,25 @@ exports[`Schema Configuration Combinations > Schema Types Coverage > processes a
 	import TestTag from '$lib/components/TestTag.svelte';
 </script>
 <article><h1 class="custom-heading">Custom Heading</h1><p><TestTag>content</TestTag> Function: TRANSFORMED: test value</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Typographer > leaves typographic elements alone as a default 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h2>Typographic replacements</h2><p>Enable typographer option to see result.</p><p>(c) (C) (r) (R) (tm) (TM) (p) (P) +-</p><p>test.. test... test..... test?..... test!....</p><p>!!!!!! ???? ,,  -- ---</p><p>"Smartypants, double quotes" and 'single quotes'</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Typographer > leaves typographic elements alone when passed false 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h2>Typographic replacements</h2><p>Enable typographer option to see result.</p><p>(c) (C) (r) (R) (tm) (TM) (p) (P) +-</p><p>test.. test... test..... test?..... test!....</p><p>!!!!!! ???? ,,  -- ---</p><p>"Smartypants, double quotes" and 'single quotes'</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Typographer > properly replaces typographic elements when passed as an option 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h2>Typographic replacements</h2><p>Enable typographer option to see result.</p><p>© © ® ® ™ ™ § § ±</p><p>test… test… test… test?.. test!..</p><p>!!! ??? ,  – —</p><p>“Smartypants, double quotes” and ‘single quotes’</p></article>"
 `;
