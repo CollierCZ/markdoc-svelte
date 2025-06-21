@@ -127,8 +127,6 @@ export const commonMark = `# Heading Level 1
   > This is a blockquote with \`inline code\` and \`{ bracketed: code }\` inside it.
 `;
 
-export const noComponents = `# Regular Content`;
-
 export const multipleComponents = `{% custom-component title="Welcome" description="This is a test component" %}
 This is the content inside the custom component.
 It can contain **markdown** and other elements.
@@ -202,26 +200,6 @@ test.. test... test..... test?..... test!....
 !!!!!! ???? ,,  -- ---
 
 "Smartypants, double quotes" and 'single quotes'
-`;
-
-export const markdocWithComponent = `${basicMarkdoc}
-{% button text="Hello world" /%}
-`;
-
-export const markdocWithVariable = `${basicMarkdown}
-{% $product.name %}
-`;
-
-export const markdocWithFunction = `${basicMarkdown}
-This text will be transformed: {% uppercase("uppercase") %}
-`;
-
-export const markdocWithPartial = `${basicMarkdown}
-{% partial file="content.md" /%}
-`;
-
-export const markdocWithPartialAndVariable = `${basicMarkdown}
-{% partial file="content.md" variables={ product: { name: "Abuela" } } /%}
 `;
 
 export const invalidMarkdoc = `

@@ -37,6 +37,7 @@
   "license": "MIT",
   "dependencies": {
     "@markdoc/markdoc": "^0.5.2",
+    "slugify": "^1.6.6",
     "yaml": "^2.7.1"
   },
   "devDependencies": {
