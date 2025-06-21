@@ -1,7 +1,6 @@
 import { markdocPreprocess } from "../src/main.ts";
 import { describe, it, expect } from "vitest";
 import type { Options } from "../src/types.ts";
-import type { Processed } from "svelte/compiler";
 import { invalidMarkdoc } from "./constants.ts";
 
 describe("Validation", () => {
@@ -28,8 +27,8 @@ describe("Validation", () => {
         expect.fail("Expected an error to be thrown");
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
-        expect(error.message).toContain("Markdoc validation failed");
-        expect(error.message).toContain("ERROR (text): Undefined variable");
+        expect((error as Error).message).toContain("Markdoc validation failed");
+        expect((error as Error).message).toContain("ERROR (text): Undefined variable");
       }
     });
 
@@ -44,8 +43,8 @@ describe("Validation", () => {
         expect.fail("Expected an error to be thrown");
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
-        expect(error.message).toContain("Markdoc validation failed");
-        expect(error.message).toContain("ERROR (text): Undefined variable");
+        expect((error as Error).message).toContain("Markdoc validation failed");
+        expect((error as Error).message).toContain("ERROR (text): Undefined variable");
       }
     });
   });
