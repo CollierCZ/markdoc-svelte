@@ -5,7 +5,10 @@ import type { Config, ParserArgs } from "@markdoc/markdoc";
 import type { PreprocessorGroup } from "svelte/compiler";
 import YAML from "yaml";
 
-import { getComponentImports, extractUsedSvelteComponents } from "./components.ts";
+import {
+  getComponentImports,
+  extractUsedSvelteComponents,
+} from "./components.ts";
 import { handleValidationErrors } from "./errors.ts";
 import { findFirstDirectory, makePathProjectRelative } from "./files.ts";
 import { collectHeadings } from "./headings.ts";
@@ -41,7 +44,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   for (const key in options) {
     if (!validOptionKeys.includes(key as keyof Options)) {
       log.warn(
-        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`,
+        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`
       );
     }
   }
@@ -71,7 +74,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   return {
     name: "markdoc-svelte",
     markup: async ({ content, filename }) => {
-      const debugLogs: string[] = []
+      const debugLogs: string[] = [];
       // Check if file is a Markdoc file
       if (
         !filename ||
@@ -102,13 +105,13 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
 
       // Parse frontmatter
       const isFrontmatter = Boolean(ast.attributes.frontmatter);
-      debugLogs.push(`Frontmatter detected: ${isFrontmatter}`)
-      debugLogs.push(`Raw frontmatter content: ${isFrontmatter}`)
+      debugLogs.push(`Frontmatter detected: ${isFrontmatter}`);
+      debugLogs.push(`Raw frontmatter content: ${isFrontmatter}`);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const frontmatter: Record<string, unknown> = isFrontmatter
         ? YAML.parse(ast.attributes.frontmatter as string)
         : {};
-      debugLogs.push(`Parsed frontmatter: ${JSON.stringify(frontmatter)}`)
+      debugLogs.push(`Parsed frontmatter: ${JSON.stringify(frontmatter)}`);
 
       // Prepare to load schemas & partials
       const dependencies: string[] = [];
@@ -153,7 +156,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       const errors = Markdoc.validate(ast, fullConfig);
       handleValidationErrors(errors, validationLevel, filename);
       if (validationLevel && validationLevel === "debug") {
-        debugLogs.forEach(debugLog => log.debug(debugLog))
+        debugLogs.forEach((debugLog) => log.debug(debugLog));
       }
 
       // Tranform AST with loaded config
@@ -169,20 +172,29 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
 
       // Define frontmatter string for Svelte
       // Extract filename without path and extension
-      const baseFilename = filename ? basename(filename, extname(filename)) : '';
+      const baseFilename = filename
+        ? basename(filename, extname(filename))
+        : "";
       // Declare module context, including filename and optionally frontmatter
-      const scriptModuleTag = 
+      const scriptModuleTag =
         `<script module>\n` +
         `\texport const slug = "${baseFilename}";\n` +
-        (isFrontmatter 
+        (isFrontmatter
           ? `\texport const frontmatter = ${JSON.stringify(frontmatter)};\n` +
             `\tconst { ${Object.keys(frontmatter).join(", ")} } = frontmatter;\n`
-          : '') +
+          : "") +
+        (headings.length > 0
+          ? `\texport const headings = ${JSON.stringify(headings)};\n`
+          : "") +
         `</script>\n`;
 
       // Generate component import statements
-      const usedSvelteComponentNames = extractUsedSvelteComponents(transformedContent);
-      const componentImportStatements = getComponentImports(usedSvelteComponentNames, componentsPath);
+      const usedSvelteComponentNames =
+        extractUsedSvelteComponents(transformedContent);
+      const componentImportStatements = getComponentImports(
+        usedSvelteComponentNames,
+        componentsPath
+      );
 
       // Construct script tag content
       let allScriptImports = componentImportStatements;
@@ -196,12 +208,14 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         allScriptImports += `\timport Layout_MARKDOC from '${layoutPath}';\n`;
       }
       // Place it all within a script tag
-      const scriptTag = allScriptImports ? `<script>\n${allScriptImports}</script>\n` : "";
+      const scriptTag = allScriptImports
+        ? `<script>\n${allScriptImports}</script>\n`
+        : "";
 
       // If layout is passed explicitly, add it as a wrapping component
       // If frontmatter or headings exists, pass them to the layout component
       const layoutWrapperOpen = layoutPath
-      ? `<Layout_MARKDOC${isFrontmatter ? ` {...frontmatter}` : ""}${headings.length > 0 ? ` headings={headings}` : ""}>\n`
+        ? `<Layout_MARKDOC${isFrontmatter ? ` {...frontmatter}` : ""}${headings.length > 0 ? ` headings={headings}` : ""}>\n`
         : "";
       const layoutWrapperClose = layoutPath ? `\n</Layout_MARKDOC>` : "";
 
@@ -212,7 +226,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         layoutWrapperOpen +
         svelteContent +
         layoutWrapperClose;
-      
+
       return {
         code: code,
         dependencies,
