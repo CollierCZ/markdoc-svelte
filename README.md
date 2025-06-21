@@ -24,9 +24,9 @@ Use Markdoc defaults out of the box or configure Markdoc schema to your needs.
   - [Variables](#variables)
 - [Advanced](#advanced)
   - [Markdoc limitations](#markdoc-limitations)
-  - [Index page example](#index-page-example)
   - [@sveltejs/enhanced-img](#sveltejsenhanced-img)
-  - [Page headings and ids](#page-headings-and-ids)
+  - [Page table of contents](#page-table-of-contents)
+  - [Index page example](#index-page-example)
 
 ## Install
 
@@ -523,71 +523,14 @@ This is published on the {% $site.name %} site.
 
 Markdoc has a few Markdown syntax limitations, see [Markdoc FAQ](https://markdoc.dev/docs/faq).
 
-### Index page example
-
-Slug is exported from each Markdoc module and is a convenient way to generate an index page without reaching into the document.
-
-Glob import Markdown Modules into a page's load function. For example in `src/routes/blog/+page.ts`:
-
-```typescript
-import type { MarkdocModule } from 'markdoc-svelte';
-
-import type { PageLoad } from './$types';
-
-const markdownModules = import.meta.glob('$lib/markdown/*.md');
-
-export const load: PageLoad = async () => {
-  const content = await Promise.all(
-    Object.values(markdownModules).map(async (importModule) => {
-      // Dynamically import each module
-      const module = (await importModule()) as MarkdocModule;
-      // Pass only slug and frontmatter to the page data
-      return {
-        slug: module.slug,
-        frontmatter: module.frontmatter
-      };
-    })
-  );
-  return { content };
-};
-```
-
-Then render a table of contents in `src/routes/blog/+page.svelte` with the slug and frontmatter:
-
-```svelte
-<script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
-  const { content } = data;
-</script>
-
-<h1>Table of Contents</h1>
-<ul>
-  {#each content as item, i (item.slug)}
-    <li class={'item-' + i}>
-      <a href="/{item.slug}">
-        <h2>{item.frontmatter?.title || item.slug}</h2>
-        {#if item.frontmatter?.description}
-          <span>{item.frontmatter.description}</span>
-        {/if}
-        {#if item.frontmatter?.published}
-          <span>{item.frontmatter.published}</span>
-        {/if}
-      </a>
-    </li>
-  {/each}
-</ul>
-```
-
 ### @sveltejs/enhanced-img
 
 To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images, you can customize the default images Node with a custom Svelte component.
 See the example [custom node](#nodes).
 
-### Table of Contents
+### Page table of contents
 
-Imported pages automatically export a `headings` property with all headings on the page and IDs.
+Each proccessed page automatically exports a `headings` property with all headings on the page and IDs for each.
 Add IDs with [annotations](https://markdoc.dev/docs/syntax#annotations) or they are generated automatically.
 Use this list to generate a table of contents for the page, as in the following example:
 
@@ -617,4 +560,64 @@ Use this list to generate a table of contents for the page, as in the following 
 {/if}
 
 <data.page.default />
+```
+
+### Index page example
+
+Each processed page exports a slug based on the file name.
+This is a convenient way to generate an index page without reaching into the document.
+
+Glob import these slugs as data for your index page.
+For example, if all of your pages end with the extension `.md`,
+Add the following to `src/routes/blog/+page.ts`:
+
+```typescript
+import type { MarkdocModule } from "markdoc-svelte";
+
+import type { PageLoad } from "./$types";
+
+const markdownModules = import.meta.glob("$lib/markdown/*.md");
+
+export const load: PageLoad = async () => {
+  const content = await Promise.all(
+    Object.values(markdownModules).map(async (importModule) => {
+      // Dynamically import each module
+      const module = (await importModule()) as MarkdocModule;
+      // Pass only slug and frontmatter to the page data
+      return {
+        slug: module.slug,
+        frontmatter: module.frontmatter,
+      };
+    })
+  );
+  return { content };
+};
+```
+
+Then use this data to build an index page at `src/routes/blog/+page.svelte`:
+
+```svelte
+<script lang="ts">
+  import type { PageProps } from './$types';
+
+  let { data }: PageProps = $props();
+  const { content } = data;
+</script>
+
+<h1>Table of Contents</h1>
+<ul>
+  {#each content as item, i (item.slug)}
+    <li class={'item-' + i}>
+      <a href="/{item.slug}">
+        <h2>{item.frontmatter?.title || item.slug}</h2>
+        {#if item.frontmatter?.description}
+          <span>{item.frontmatter.description}</span>
+        {/if}
+        {#if item.frontmatter?.published}
+          <span>{item.frontmatter.published}</span>
+        {/if}
+      </a>
+    </li>
+  {/each}
+</ul>
 ```
