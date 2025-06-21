@@ -318,17 +318,7 @@ export const invalidMarkdoc = `
 
 {% $undefinedVariable %}
 
-Some content here that should trigger validation errors
-
-{% table %}
-* Header 1
-* Header 2
----
-* Cell 1
-* Cell 2
-{% /table %}
-
-Using an undefined variable should be a warning, not critical
+An undefined variable is at an error level of: error.
 `;
 
 export const markdocWithComments = `
