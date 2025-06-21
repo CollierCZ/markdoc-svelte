@@ -1,4 +1,4 @@
-import type { RenderableTreeNode, Tag } from '@markdoc/markdoc';
+import type { RenderableTreeNode, Tag } from "@markdoc/markdoc";
 
 export interface Heading {
   /**
@@ -20,9 +20,11 @@ export interface Heading {
  * @param node - The Markdoc AST node to process
  * @returns Array of heading objects with title, level, and other attributes
  */
-export function collectHeadings(node: RenderableTreeNode | RenderableTreeNode[]): Heading[] {
-  const sections: Heading[] = [];
-  
+export function collectHeadings(
+  node: RenderableTreeNode | RenderableTreeNode[],
+  sections: Heading[] = []
+): Heading[] {
+
   // Handle array of nodes
   if (Array.isArray(node)) {
     for (const child of node) {
@@ -32,27 +34,26 @@ export function collectHeadings(node: RenderableTreeNode | RenderableTreeNode[])
   }
 
   // Handle single node
-  if (typeof node === 'object' && node !== null && 'name' in node) {
+  if (typeof node === "object" && node !== null && "name" in node) {
     const tag = node as Tag;
     if (tag.name.match(/^h\d$/)) {
       const title = tag.children[0];
-      if (typeof title === 'string') {
+      if (typeof title === "string") {
         sections.push({
           level: parseInt(tag.name[1]),
           title,
-          id: tag.attributes.id as string,
-        })
+          ...tag.attributes,
+        });
       }
     }
 
     // Handle node children
     if (tag.children) {
       for (const child of tag.children) {
-        collectHeadings(child);
+        collectHeadings(child, sections);
       }
     }
-    
   }
-  
+
   return sections;
-} 
+}
