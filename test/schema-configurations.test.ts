@@ -8,7 +8,7 @@ import { basicMarkdoc, markdocWithComments } from "./constants.ts";
 describe("Schema Configuration Combinations", () => {
   const testSchemasDir = "./test/markdoc";
 
-  describe("Schema Directory Loading Patterns", () => {
+  describe("Loading from a directory", () => {
     it("loads schemas from individual files (tags.ts, nodes.ts, functions.ts, variables.ts)", async () => {
       const content = `# Test heading
         {% testTag %}Tag content{% /testTag %}
@@ -16,8 +16,7 @@ describe("Schema Configuration Combinations", () => {
       `;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/individual-files`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/individual-files`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -33,8 +32,7 @@ describe("Schema Configuration Combinations", () => {
       `;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/index-directories`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/index-directories`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -50,8 +48,7 @@ describe("Schema Configuration Combinations", () => {
       `;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/mixed-patterns`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/mixed-patterns`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -64,8 +61,7 @@ describe("Schema Configuration Combinations", () => {
       const content = `# Test Content`;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/non-existent`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/non-existent`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -83,8 +79,7 @@ describe("Schema Configuration Combinations", () => {
       `;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/individual-files`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/individual-files`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -97,8 +92,7 @@ describe("Schema Configuration Combinations", () => {
       const content = `# Test\n{% directTag %}content{% /directTag %}`;
       
       const result = await markdocPreprocess({ 
-        tags: { directTag: directTags.directTag },
-        validationLevel: "warning"
+        tags: { directTag: directTags.directTag }
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -114,8 +108,7 @@ describe("Schema Configuration Combinations", () => {
       
       const result = await markdocPreprocess({ 
         schema: `${testSchemasDir}/individual-files`,
-        tags: { testTag: directTags.overrideTag },
-        validationLevel: "warning"
+        tags: { testTag: directTags.overrideTag }
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -131,8 +124,7 @@ describe("Schema Configuration Combinations", () => {
 
       const result = await markdocPreprocess({ 
         schema: `${testSchemasDir}/individual-files`,
-        functions: { testFunction: directFunctions.overrideFunction },
-        validationLevel: "warning"
+        functions: { testFunction: directFunctions.overrideFunction }
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -151,8 +143,7 @@ describe("Schema Configuration Combinations", () => {
       const result = await markdocPreprocess({ 
         schema: `${testSchemasDir}/individual-files`,
         tags: { additionalTag: directTags.additionalTag },
-        variables: directVariables,
-        validationLevel: "warning"
+        variables: directVariables
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -170,8 +161,7 @@ describe("Schema Configuration Combinations", () => {
       `;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/individual-files`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/individual-files`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -184,8 +174,7 @@ describe("Schema Configuration Combinations", () => {
       const content = `# Test\nRegular content`;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/empty-schemas`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/empty-schemas`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -202,8 +191,7 @@ describe("Schema Configuration Combinations", () => {
       `;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/file-preference`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/file-preference`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -218,8 +206,7 @@ describe("Schema Configuration Combinations", () => {
       `;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/file-vs-directory`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/file-vs-directory`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -236,8 +223,7 @@ describe("Schema Configuration Combinations", () => {
       `;
       
       const result = await markdocPreprocess({ 
-        schema: `${testSchemasDir}/no-default-export`,
-        validationLevel: "warning"
+        schema: `${testSchemasDir}/no-default-export`
       } as Options).markup!({ 
         content, 
         filename: "test.md" 
@@ -249,9 +235,7 @@ describe("Schema Configuration Combinations", () => {
 
   describe("Comments Handling", () => {
     it("hides comments by default", async () => {
-      const result = await markdocPreprocess({ 
-        validationLevel: "warning"
-      } as Options).markup!({ 
+      const result = await markdocPreprocess().markup!({ 
         content: markdocWithComments, 
         filename: "test.md" 
       }) as Processed;
@@ -261,8 +245,7 @@ describe("Schema Configuration Combinations", () => {
 
     it("hides comments when passed as an option", async () => {
       const result = await markdocPreprocess({ 
-        comments: true,
-        validationLevel: "warning"
+        comments: true
       } as Options).markup!({ 
         content: markdocWithComments, 
         filename: "test.md" 
@@ -273,8 +256,7 @@ describe("Schema Configuration Combinations", () => {
 
     it("doesn't hide comments when passed false", async () => {
       const result = await markdocPreprocess({ 
-        comments: false,
-        validationLevel: "warning"
+        comments: false
       } as Options).markup!({ 
         content: markdocWithComments, 
         filename: "test.md" 
@@ -286,9 +268,7 @@ describe("Schema Configuration Combinations", () => {
 
   describe("File Extensions", () => {
     it("works with no extension passed", async () => {
-      const result = await markdocPreprocess({ 
-        validationLevel: "warning"
-      } as Options).markup!({ 
+      const result = await markdocPreprocess().markup!({ 
         content: basicMarkdoc, 
         filename: "test.md" 
       }) as Processed;
@@ -297,9 +277,7 @@ describe("Schema Configuration Combinations", () => {
     });
 
     it("ignores files that don't match the default extensions", async () => {
-      const result = await markdocPreprocess({ 
-        validationLevel: "warning"
-      } as Options).markup!({ 
+      const result = await markdocPreprocess().markup!({ 
         content: basicMarkdoc, 
         filename: "test.markdoc" 
       });
@@ -309,8 +287,7 @@ describe("Schema Configuration Combinations", () => {
 
     it("works when passed the default extension", async () => {
       const result = await markdocPreprocess({ 
-        extensions: [".md"],
-        validationLevel: "warning"
+        extensions: [".md"]
       } as Options).markup!({ 
         content: basicMarkdoc, 
         filename: "test.md" 
@@ -321,8 +298,7 @@ describe("Schema Configuration Combinations", () => {
 
     it("works when passed a single extension other than the default", async () => {
       const result = await markdocPreprocess({ 
-        extensions: [".markdoc"],
-        validationLevel: "warning"
+        extensions: [".markdoc"]
       } as Options).markup!({ 
         content: basicMarkdoc, 
         filename: "test.markdoc" 
@@ -333,8 +309,7 @@ describe("Schema Configuration Combinations", () => {
 
     it("ignores files that don't match a single passed extension", async () => {
       const result = await markdocPreprocess({ 
-        extensions: [".markdoc"],
-        validationLevel: "warning"
+        extensions: [".markdoc"]
       } as Options).markup!({ 
         content: basicMarkdoc, 
         filename: "test.md" 
@@ -345,8 +320,7 @@ describe("Schema Configuration Combinations", () => {
 
     it("works when passed multiple extensions", async () => {
       const result = await markdocPreprocess({ 
-        extensions: [".markdoc", ".md"],
-        validationLevel: "warning"
+        extensions: [".markdoc", ".md"]
       } as Options).markup!({ 
         content: basicMarkdoc, 
         filename: "test.md" 
@@ -357,8 +331,7 @@ describe("Schema Configuration Combinations", () => {
 
     it("ignores files that don't match multiple passed extensions", async () => {
       const result = await markdocPreprocess({ 
-        extensions: [".markdoc", ".md"],
-        validationLevel: "warning"
+        extensions: [".markdoc", ".md"]
       } as Options).markup!({ 
         content: basicMarkdoc, 
         filename: "test.mdoc" 
@@ -384,9 +357,7 @@ test.. test... test..... test?..... test!....
 `;
 
     it("leaves typographic elements alone as a default", async () => {
-      const result = await markdocPreprocess({ 
-        validationLevel: "warning"
-      } as Options).markup!({ 
+      const result = await markdocPreprocess().markup!({ 
         content: replacableMarkdoc, 
         filename: "test.md" 
       }) as Processed;
@@ -396,8 +367,7 @@ test.. test... test..... test?..... test!....
 
     it("properly replaces typographic elements when passed as an option", async () => {
       const result = await markdocPreprocess({ 
-        typographer: true,
-        validationLevel: "warning"
+        typographer: true
       } as Options).markup!({ 
         content: replacableMarkdoc, 
         filename: "test.md" 
@@ -408,8 +378,7 @@ test.. test... test..... test?..... test!....
 
     it("leaves typographic elements alone when passed false", async () => {
       const result = await markdocPreprocess({ 
-        typographer: false,
-        validationLevel: "warning"
+        typographer: false
       } as Options).markup!({ 
         content: replacableMarkdoc, 
         filename: "test.md" 
@@ -431,7 +400,6 @@ test.. test... test..... test?..... test!....
       
       const result = await markdocPreprocess({ 
         schema: `${testSchemasDir}/individual-files`,
-        validationLevel: "warning",
         partials: `${testSchemasDir}/individual-files/partials`
       } as Options).markup!({ 
         content, 

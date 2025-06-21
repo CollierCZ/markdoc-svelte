@@ -134,14 +134,14 @@ exports[`Schema Configuration Combinations > File Structure Variations > prefers
 <article><h1>Test</h1><p><FileTag>content</FileTag></p></article>"
 `;
 
-exports[`Schema Configuration Combinations > Schema Directory Loading Patterns > handles missing schema directory gracefully 1`] = `
+exports[`Schema Configuration Combinations > Loading from a directory > handles missing schema directory gracefully 1`] = `
 "<script module>
 	export const slug = "test";
 </script>
 <article><h1>Test Content</h1></article>"
 `;
 
-exports[`Schema Configuration Combinations > Schema Directory Loading Patterns > loads schemas from index files in directories (tags/index.ts, nodes/index.ts) 1`] = `
+exports[`Schema Configuration Combinations > Loading from a directory > loads schemas from index files in directories (tags/index.ts, nodes/index.ts) 1`] = `
 "<script module>
 	export const slug = "test";
 </script>
@@ -151,7 +151,7 @@ exports[`Schema Configuration Combinations > Schema Directory Loading Patterns >
 <article><h1>Test</h1><p><IndexTag>content</IndexTag> <a class="custom-link" href="http://example.com">link text</a></p></article>"
 `;
 
-exports[`Schema Configuration Combinations > Schema Directory Loading Patterns > loads schemas from individual files (tags.ts, nodes.ts, functions.ts, variables.ts) 1`] = `
+exports[`Schema Configuration Combinations > Loading from a directory > loads schemas from individual files (tags.ts, nodes.ts, functions.ts, variables.ts) 1`] = `
 "<script module>
 	export const slug = "test";
 </script>
@@ -161,7 +161,7 @@ exports[`Schema Configuration Combinations > Schema Directory Loading Patterns >
 <article><h1 class="custom-heading">Test heading</h1><p><TestTag>Tag content</TestTag> Function value: TRANSFORMED: test value</p></article>"
 `;
 
-exports[`Schema Configuration Combinations > Schema Directory Loading Patterns > loads schemas from mixed patterns (some individual files, some index directories) 1`] = `
+exports[`Schema Configuration Combinations > Loading from a directory > loads schemas from mixed patterns (some individual files, some index directories) 1`] = `
 "<script module>
 	export const slug = "test";
 </script>
