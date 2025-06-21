@@ -585,9 +585,11 @@ Then render a table of contents in `src/routes/blog/+page.svelte` with the slug 
 To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images, you can customize the default images Node with a custom Svelte component.
 See the example [custom node](#nodes).
 
-### Page headings and ids
+### Table of Contents
 
-Imported markdoc pages automatically export a `headings` property that contains a list of all the headings in the page and their ids. This can be used to generate a table of contents for the page.
+Imported pages automatically export a `headings` property with all headings on the page and IDs.
+Add IDs with [annotations](https://markdoc.dev/docs/syntax#annotations) or they are generated automatically.
+Use this list to generate a table of contents for the page, as in the following example:
 
 ```svelte
 <script lang="ts">
