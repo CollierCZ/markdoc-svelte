@@ -127,21 +127,6 @@ export const commonMark = `# Heading Level 1
   > This is a blockquote with \`inline code\` and \`{ bracketed: code }\` inside it.
 `;
 
-export const noFrontmatter = `# Regular Markdown Content`;
-
-export const withFrontmatter = `---
-title: Test Title
-author: Test Author
-tags: [test, markdoc]
----
-
-# Content with Frontmatter
-# {% $frontmatter.title %}
-Author: {% $frontmatter.author %}
-Tags: {% $frontmatter.tags %}
-Published: {% default($frontmatter.published, "Not specified") %}
-`;
-
 export const noComponents = `# Regular Content`;
 
 export const multipleComponents = `{% custom-component title="Welcome" description="This is a test component" %}
@@ -153,15 +138,6 @@ It can contain **markdown** and other elements.
 This is content inside another component.
 It shows the status and count values.
 {% /another-component %}
-`;
-
-export const withLayoutAndFrontmatter = `---
-title: Layout Test
-description: Testing layout with frontmatter
----
-# Page with a Layout
-This content should be wrapped by a layout.
-Description: {% $frontmatter.description %}
 `;
 
 const basicMarkdown = `

@@ -1,5 +1,5 @@
-import { customComponent } from "./custom-component";
-import { anotherComponent } from "./another-component";
+import { customComponent } from "./custom-component.ts";
+import { anotherComponent } from "./another-component.ts";
 
 const tags = {
   "custom-component": customComponent,

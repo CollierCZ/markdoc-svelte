@@ -119,6 +119,19 @@ describe("File extensions", () => {
   });
 });
 
+describe("Layout", () => {
+  it("properly puts the parsed file in a layout when passed as an option", async () => {
+    const layoutOptions = {
+      layout: "$lib/SimpleLayout.svelte",
+    };
+    const result = (await markdocPreprocess(layoutOptions).markup!({
+      content: basicMarkdoc,
+      filename: "test.md",
+    })) as Processed;
+    expect(result.code).toMatchSnapshot();
+  });
+});
+
 describe("Typographer", () => {
   it("leaves typographic elements alone as a default", async () => {
     const result = (await markdocPreprocess().markup!({
