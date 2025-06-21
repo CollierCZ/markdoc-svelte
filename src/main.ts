@@ -8,12 +8,12 @@ import YAML from "yaml";
 import { getComponentImports, extractUsedSvelteComponents } from "./components.ts";
 import { handleValidationErrors } from "./errors.ts";
 import { findFirstDirectory, makePathProjectRelative } from "./files.ts";
+import { collectHeadings } from "./headings.ts";
 import log from "./logs.ts";
 import loadPartials from "./partials.ts";
 import render from "./render.ts";
 import loadSchemas from "./schema.ts";
 import type { Options } from "./types.ts";
-import { collectHeadings } from "./headings.ts";
 
 const validOptionKeys: (keyof Options)[] = [
   "extensions",
@@ -71,7 +71,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   return {
     name: "markdoc-svelte",
     markup: async ({ content, filename }) => {
-      const debugLogs = []
+      const debugLogs: string[] = []
       // Check if file is a Markdoc file
       if (
         !filename ||
