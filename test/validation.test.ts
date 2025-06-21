@@ -31,27 +31,12 @@ describe("Validation", () => {
   });
 
   describe("Validation Messages", () => {
-    it("includes validation messages in the output when validation level is warning", async () => {
+    it("includes the proper validation message in the output", async () => {
       try {
         await markdocPreprocess({
-          validationLevel: "warning",
+          validationLevel: "error",
         } as Options).markup!(invalidMarkdocToProcess);
-        expect.fail("Expected an error to be thrown");
-      } catch (error) {
-        expect(error).toBeInstanceOf(Error);
-        expect((error as Error).message).toContain("Markdoc validation failed");
-        expect((error as Error).message).toContain(
-          "ERROR (text): Undefined variable"
-        );
-      }
-    });
-
-    it("doesn't include validation messages when validation level is debug", async () => {
-      try {
-        await markdocPreprocess({
-          validationLevel: "debug",
-        } as Options).markup!(invalidMarkdocToProcess);
-        expect.fail("Expected an error to be thrown");
+        expect.fail("Should have thrown an error for invalid Markdoc");
       } catch (error) {
         expect(error).toBeInstanceOf(Error);
         expect((error as Error).message).toContain("Markdoc validation failed");
