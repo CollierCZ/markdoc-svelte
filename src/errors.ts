@@ -1,7 +1,7 @@
 import type { ValidateError } from "@markdoc/markdoc";
 
 import log from "./logs.ts";
-import type { ValidationLevel } from "./types";
+import type { ValidationLevel } from "./types.ts";
 
 /**
  * Map Markdoc error levels to a numeric value for comparison, higher number means more severe
@@ -28,16 +28,16 @@ const errorLevelsMap = new Map<ValidateError["error"]["level"], number>([
 export function handleValidationErrors(
   errors: ValidateError[],
   validationLevel: ValidationLevel,
-  filename: string,
+  filename: string
 ): void {
   if (!errors || errors.length === 0) {
     return; // No errors to handle
   }
 
-  const breakingLevel = errorLevelsMap.get(validationLevel)!; // Use '!' as we control the input type
+  // Input is controlled, so it can't be null
+  const breakingLevel = errorLevelsMap.get(validationLevel)!;
 
   const breakingErrors: ValidateError[] = [];
-  const nonBreakingErrors: ValidateError[] = [];
 
   for (const error of errors) {
     const errorLevel = error.error.level;
@@ -45,37 +45,6 @@ export function handleValidationErrors(
 
     if (errorLevelValue !== undefined && errorLevelValue >= breakingLevel) {
       breakingErrors.push(error);
-    } else {
-      nonBreakingErrors.push(error);
-    }
-  }
-
-  // Log non-breaking errors
-  for (const error of nonBreakingErrors) {
-    const { type, lines, error: errorDetails } = error;
-    // Ensure lines has at least one element for the start line
-    const startLine = lines[0];
-    const endLine = lines[1];
-    const locString = `${filename}:${startLine}${startLine !== endLine ? `-${endLine}` : ""}`;
-
-    const message = `(${type}) ${errorDetails.message} at ${locString}`;
-
-    switch (errorDetails.level) {
-      case "debug":
-        log.debug(message);
-        break;
-      case "info":
-        log.info(message);
-        break;
-      case "warning":
-        log.warn(message);
-        break;
-      // 'error' and 'critical' levels when they are below the breakingLevel
-      case "error":
-      case "critical":
-      default:
-        log.error(message); // Log higher levels as errors
-        break;
     }
   }
 

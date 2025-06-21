@@ -524,3 +524,4 @@ Markdoc has a few Markdown syntax limitations, see [Markdoc FAQ](https://markdoc
 ### @sveltejs/enhanced-img
 
 To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images, you can customize the default images Node with a custom Svelte component.
+See the example [custom node](#nodes).

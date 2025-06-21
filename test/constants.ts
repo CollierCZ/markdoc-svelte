@@ -1,5 +1,4 @@
-export const commonMark = `
-  # Heading Level 1
+export const commonMark = `# Heading Level 1
   ## Heading Level 2
   ### Heading Level 3
   #### Heading Level 4
@@ -128,101 +127,9 @@ export const commonMark = `
   > This is a blockquote with \`inline code\` and \`{ bracketed: code }\` inside it.
 `;
 
-export const markdocBuiltInTags = `
-  ### Basic table
-  {% table %}
-  * Heading 1
-  * Heading 2
-  ---
-  * Row 1 Cell 1
-  * Row 1 Cell 2
-  ---
-  * Row 2 Cell 1
-  * Row 2 cell 2
-  {% /table %}
-
-  ### Table with rich content
-  {% table %}
-  * Foo
-  * Bar
-  * Baz
-  ---
-  *
-    \`\`\`
-    puts "Some code here."
-    \`\`\`
-  *
-    {% if %}
-    * Bulleted list in table
-    * Second item in bulleted list
-    {% /if %}
-  * Text in a table
-  ---
-  *
-    A "loose" list with
-
-    multiple line items
-  * Test 2
-  * Test 3
-  ---
-  * Test 1
-  * A cell that spans two columns {% colspan=2 %}
-  {% /table %}
-
-  ### Table without headings
-  {% table %}
-  ---
-  * foo
-  * bar
-  ---
-  * foo
-  * bar
-  {% /table %}
-
-  ### Table with col and row span
-  {% table %}
-  ---
-  * foo
-  * bar
-  ---
-  * foo {% colspan=2 %}
-  {% /table %}
-
-  ### Table with text alignment
-  {% table %}
-  * Column 1 {% align="center" %}
-  * Column 2
-  * Column 3 {% align="right" %}
-  ---
-  * foo
-  * bar
-  * baz
-  ---
-  * foo
-  * bar {% align="right" %}
-  * baz
-  ---
-  * foo {% align="center" %}
-  * bar
-  * baz
-  {% /table %}
-`;
-
-export const noFrontmatter = `# Regular Markdown Content`;
-
-export const withFrontmatter = `
----
-title: Test Title
-author: Test Author
-tags: [test, markdoc]
----
-# Content with Frontmatter
-`;
-
 export const noComponents = `# Regular Content`;
 
-export const multipleComponents = `
-{% custom-component title="Welcome" description="This is a test component" %}
+export const multipleComponents = `{% custom-component title="Welcome" description="This is a test component" %}
 This is the content inside the custom component.
 It can contain **markdown** and other elements.
 {% /custom-component %}
@@ -233,11 +140,117 @@ It shows the status and count values.
 {% /another-component %}
 `;
 
-export const withLayoutAndFrontmatter = `
+const basicMarkdown = `
+This is some text
+
+`;
+
+export const basicMarkdoc = `
+# This is some basic Markdoc
+
+With a paragraph.
+
+Some text **in bold** and *in italic*.
+
+And a [link](https://example.com).
+
+## More fancy stuff
+
+Some \`<p>\` inline code.
+
+And a code block:
+
+\`\`\`javascript {% process=false %}
+{{% test %}}
+\`\`\`
+
+And even a table with a nested list:
+
+{% table %}
+* Table header 1
+* Table header 2
 ---
-title: Layout Test
-description: Testing layout with frontmatter
+* * Row 1 Cell 1 Item 1
+  * Row 1 Cell 1 Item 2
+* Row 1 Cell 2
 ---
-# Page with a Layout
-This content should be wrapped by a layout.
+* Row 2 Cell 1
+* Row 2 cell 2
+{% /table %}
+`;
+
+export const markdocWithFrontmatter = `---
+title: A test
+description: A longer idea
+keywords:
+  - one
+  - two
+---
+
+Content. Such great content.
+`;
+
+export const markdocWithTypography = `${basicMarkdoc}
+## Typographic replacements
+
+Enable typographer option to see result.
+
+(c) (C) (r) (R) (tm) (TM) (p) (P) +-
+
+test.. test... test..... test?..... test!....
+
+!!!!!! ???? ,,  -- ---
+
+"Smartypants, double quotes" and 'single quotes'
+`;
+
+export const markdocWithComponent = `${basicMarkdoc}
+{% button text="Hello world" /%}
+`;
+
+export const markdocWithVariable = `${basicMarkdown}
+{% $product.name %}
+`;
+
+export const markdocWithFunction = `${basicMarkdown}
+This text will be transformed: {% uppercase("uppercase") %}
+`;
+
+export const markdocWithPartial = `${basicMarkdown}
+{% partial file="content.md" /%}
+`;
+
+export const markdocWithPartialAndVariable = `${basicMarkdown}
+{% partial file="content.md" variables={ product: { name: "Abuela" } } /%}
+`;
+
+export const invalidMarkdoc = `
+# Invalid Markdoc Example
+
+{% $undefinedVariable %}
+
+An undefined variable is at an error level of: error.
+`;
+
+export const markdocWithComments = `
+# Test Document
+
+<!-- This is a comment about the heading -->
+
+Some content here.
+
+<!-- 
+  This is a multi-line comment
+  with some additional information
+-->
+
+More content after the comment.
+`;
+
+export const markdocWithSchemaTest = `
+# Test heading
+
+{% testTag %}Tag content{% /testTag %}
+
+Function value: {% testFunction($testVariable) %}
 `;

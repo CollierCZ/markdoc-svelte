@@ -12,7 +12,7 @@ import log from "./logs.ts";
 import loadPartials from "./partials.ts";
 import render from "./render.ts";
 import loadSchemas from "./schema.ts";
-import type { Options } from "./types";
+import type { Options } from "./types.ts";
 
 const validOptionKeys: (keyof Options)[] = [
   "extensions",
@@ -70,6 +70,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   return {
     name: "markdoc-svelte",
     markup: async ({ content, filename }) => {
+      const debugLogs = []
       // Check if file is a Markdoc file
       if (
         !filename ||
@@ -100,10 +101,13 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
 
       // Parse frontmatter
       const isFrontmatter = Boolean(ast.attributes.frontmatter);
+      debugLogs.push(`Frontmatter detected: ${isFrontmatter}`)
+      debugLogs.push(`Raw frontmatter content: ${isFrontmatter}`)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const frontmatter: Record<string, unknown> = isFrontmatter
         ? YAML.parse(ast.attributes.frontmatter as string)
         : {};
+      debugLogs.push(`Parsed frontmatter: ${JSON.stringify(frontmatter)}`)
 
       // Prepare to load schemas & partials
       const dependencies: string[] = [];
@@ -147,6 +151,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       // Validate Markdoc AST
       const errors = Markdoc.validate(ast, fullConfig);
       handleValidationErrors(errors, validationLevel, filename);
+      if (validationLevel && validationLevel === "debug") {
+        debugLogs.forEach(debugLog => log.debug(debugLog))
+      }
 
       // Tranform AST with loaded config
       // Needs to be awaited to handle async functions in schema (such as nodes)

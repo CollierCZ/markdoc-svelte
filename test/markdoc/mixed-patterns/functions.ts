@@ -1,7 +1,5 @@
+import functions from "../shared-schema/functions.ts";
+
 export default {
-  mixedFunction: {
-    transform(parameters: any[]) {
-      return "MIXED_TRANSFORMED: " + parameters[0];
-    }
-  }
-}; 
+  testFunction: functions.testFunction,
+};

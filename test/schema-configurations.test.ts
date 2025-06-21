@@ -1,204 +1,169 @@
-import { markdoc } from "../src/main.ts";
+import { markdocPreprocess } from "../src/main.ts";
 import { describe, it, expect } from "vitest";
-import { directTags, directFunctions, directVariables, directNodes } from "./schema-options.ts";
+
+import type { Options } from "../src/types.ts";
+import type { Processed } from "svelte/compiler";
+
+import { basicMarkdoc, markdocWithSchemaTest } from "./constants.ts";
+import functions from "./markdoc/shared-schema/functions.ts";
+import nodes from "./markdoc/shared-schema/nodes.ts";
+import tags from "./markdoc/shared-schema/tags/index.ts";
+import variables from "./markdoc/shared-schema/variables.ts";
 
 describe("Schema Configuration Combinations", () => {
   const testSchemasDir = "./test/markdoc";
 
-  describe("Schema Directory Loading Patterns", () => {
+  describe("Loading from a directory", () => {
     it("loads schemas from individual files (tags.ts, nodes.ts, functions.ts, variables.ts)", async () => {
-      const content = `# Test\n{% testTag %}{% /testTag %}\n{% testFunction($testVar) %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/individual-files` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/individual-files`,
+      } as Options).markup!({
+        content: markdocWithSchemaTest,
+        filename: "test.md",
+      })) as Processed;
 
-      expect(result).toMatchSnapshot();
+      expect(result.code).toMatchSnapshot();
     });
 
     it("loads schemas from index files in directories (tags/index.ts, nodes/index.ts)", async () => {
-      const content = `# Test\n{% indexTag %}content{% /indexTag %}\n[link text](http://example.com)`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/index-directories` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/index-directories`,
+      } as Options).markup!({
+        content: markdocWithSchemaTest,
+        filename: "test.md",
+      })) as Processed;
 
-      expect(result).toMatchSnapshot();
+      expect(result.code).toMatchSnapshot();
     });
 
     it("loads schemas from mixed patterns (some individual files, some index directories)", async () => {
-      const content = `# Test\n{% mixedTag %}content{% /mixedTag %}\n{% mixedFunction($mixedVar) %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/mixed-patterns` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/mixed-patterns`,
+      } as Options).markup!({
+        content: markdocWithSchemaTest,
+        filename: "test.md",
+      })) as Processed;
 
-      expect(result).toMatchSnapshot();
-    });
-
-    it("handles missing schema directory gracefully", async () => {
-      const content = `# Test Content`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/non-existent` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
-
-      expect(result).toMatchSnapshot();
+      expect(result.code).toMatchSnapshot();
     });
   });
 
-  describe("Configuration Source Combinations", () => {
-    it("loads configuration from schema directory only", async () => {
-      const content = `# Test\n{% testTag %}content{% /testTag %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/individual-files` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+  describe("Loading from options", () => {
+    it("loads schema correctly when passed as an option (no schema directory)", async () => {
+      const result = (await markdocPreprocess({
+        functions: { testFunction: functions.testFunction },
+        nodes: { heading: nodes.heading },
+        tags: { testTag: tags.testTag },
+        variables: { testVariable: variables.testVariable },
+      } as Options).markup!({
+        content: markdocWithSchemaTest,
+        filename: "test.md",
+      })) as Processed;
 
-      expect(result).toMatchSnapshot();
+      expect(result.code).toMatchSnapshot();
     });
 
-    it("uses direct options only (no schema directory)", async () => {
-      const content = `# Test\n{% directTag %}content{% /directTag %}`;
+    it("processes partials when passed as option", async () => {
+      const content = `# Test Document
       
-      const result = await markdoc({ 
-        tags: { directTag: directTags.directTag }
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+      {% partial file="content.md" /%}
+      `;
 
-      expect(result).toMatchSnapshot();
-    });
+      const result = (await markdocPreprocess({
+        partials: `${testSchemasDir}/shared-schema/partials`,
+      } as Options).markup!({
+        content,
+        filename: "test.md",
+      })) as Processed;
 
-    it("merges schema directory and direct options (direct options override)", async () => {
-      const content = `# Test\n{% testTag %}content{% /testTag %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/individual-files`,
-        tags: { testTag: directTags.overrideTag }
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
-
-      expect(result).toMatchSnapshot();
-    });
-
-    it("handles conflicting schema types (direct functions override schema functions)", async () => {
-      const content = `# Test\n{% testFunction($testVar) %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/individual-files`,
-        functions: { testFunction: directFunctions.overrideFunction }
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
-
-      expect(result).toMatchSnapshot();
-    });
-
-    it("merges different schema types from multiple sources", async () => {
-      const content = `# Test\n{% testTag %}content{% /testTag %}\n{% additionalTag %}content{% /additionalTag %}\n{% testFunction($additionalVar) %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/individual-files`,
-        tags: { additionalTag: directTags.additionalTag },
-        variables: directVariables
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
-
-      expect(result).toMatchSnapshot();
+      expect(result.code).toMatchSnapshot();
     });
   });
 
-  describe("Schema Types Coverage", () => {
-    it("processes all schema types together (nodes, tags, functions, variables)", async () => {
-      const content = `# Custom Heading\n{% testTag %}content{% /testTag %}\n{% testFunction($testVar) %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/individual-files` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+  describe("Combining sources", () => {
+    it("accepts directory and options with options overriding the directory", async () => {
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/individual-files`,
+        tags: {
+          testTag: {
+            render: "OverrideTag",
+            attributes: {},
+            children: ["text"],
+          },
+        },
+      } as Options).markup!({
+        content: markdocWithSchemaTest,
+        filename: "test.md",
+      })) as Processed;
 
-      expect(result).toMatchSnapshot();
-    });
-
-    it("handles empty schema parts gracefully", async () => {
-      const content = `# Test\nRegular content`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/empty-schemas` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
-
-      expect(result).toMatchSnapshot();
+      expect(result.code).toMatchSnapshot();
     });
   });
 
-  describe("File Structure Variations", () => {
+  describe("File variations", () => {
     it("prefers .ts files over .js files", async () => {
-      const content = `# Test\n{% preferenceTag %}content{% /preferenceTag %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/file-preference` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+      const content = `# Test
+        {% preferenceTag %}content{% /preferenceTag %}
+      `;
 
-      expect(result).toMatchSnapshot();
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/file-preference`,
+      } as Options).markup!({
+        content,
+        filename: "test.md",
+      })) as Processed;
+
+      expect(result.code).toMatchSnapshot();
     });
 
     it("prefers individual files over index directories", async () => {
-      const content = `# Test\n{% priorityTag %}content{% /priorityTag %}`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/file-vs-directory` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+      const content = `# Test
+        {% priorityTag %}content{% /priorityTag %}
+      `;
 
-      expect(result).toMatchSnapshot();
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/file-vs-directory`,
+      } as Options).markup!({
+        content,
+        filename: "test.md",
+      })) as Processed;
+
+      expect(result.code).toMatchSnapshot();
     });
   });
 
-  describe("Edge Cases", () => {
+  describe("Edge cases", () => {
     it("handles schema files with no default export", async () => {
-      const content = `# Test\nRegular content`;
-      
-      const result = await markdoc({ 
-        schema: `${testSchemasDir}/no-default-export` 
-      }).markup!({ 
-        content, 
-        filename: "test.md" 
-      });
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/no-default-export`,
+      } as Options).markup!({
+        content: basicMarkdoc,
+        filename: "test.md",
+      })) as Processed;
 
-      expect(result).toMatchSnapshot();
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("handles missing schema directory gracefully", async () => {
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/non-existent`,
+      } as Options).markup!({
+        content: basicMarkdoc,
+        filename: "test.md",
+      })) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
+
+    it("handles empty schema parts gracefully", async () => {
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/empty-schemas`,
+      } as Options).markup!({
+        content: basicMarkdoc,
+        filename: "test.md",
+      })) as Processed;
+
+      expect(result.code).toMatchSnapshot();
     });
   });
-
-}); 
+});
