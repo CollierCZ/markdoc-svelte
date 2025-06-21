@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Markdown parsing > CommonMark Tags 1`] = `
+exports[`Markdown parsing > properly parses CommonMark 1`] = `
 {
   "code": "<script module>
 	export const slug = "test";
@@ -10,12 +10,12 @@ exports[`Markdown parsing > CommonMark Tags 1`] = `
 }
 `;
 
-exports[`Markdown parsing > Markdoc Table 1`] = `
+exports[`Markdown parsing > properly parses basic Markdoc 1`] = `
 {
   "code": "<script module>
 	export const slug = "test";
 </script>
-<article><h3>Basic table</h3><table><thead><tr><th>Heading 1</th><th>Heading 2</th></tr></thead><tbody><tr><td>Row 1 Cell 1</td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table><h3>Table with rich content</h3><table><thead><tr><th>Foo</th><th>Bar</th><th>Baz</th></tr></thead><tbody><tr><td><pre><code>puts &quot;Some code here.&quot;</code></pre></td><td></td><td>Text in a table</td></tr><tr><td><p>A "loose" list with</p><p>multiple line items</p></td><td><p>Test 2</p></td><td><p>Test 3</p></td></tr><tr><td>Test 1</td><td colSpan="2">A cell that spans two columns </td></tr></tbody></table><h3>Table without headings</h3><table><thead></thead><tbody><tr><td>foo</td><td>bar</td></tr><tr><td>foo</td><td>bar</td></tr></tbody></table><h3>Table with col and row span</h3><table><thead></thead><tbody><tr><td>foo</td><td>bar</td></tr><tr><td colSpan="2">foo </td></tr></tbody></table><h3>Table with text alignment</h3><table><thead><tr><th align="center">Column 1 </th><th>Column 2</th><th align="right">Column 3 </th></tr></thead><tbody><tr><td>foo</td><td>bar</td><td>baz</td></tr><tr><td>foo</td><td align="right">bar </td><td>baz</td></tr><tr><td align="center">foo </td><td>bar</td><td>baz</td></tr></tbody></table></article>",
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>",
   "dependencies": [],
 }
 `;
