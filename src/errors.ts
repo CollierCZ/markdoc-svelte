@@ -28,7 +28,7 @@ const errorLevelsMap = new Map<ValidateError["error"]["level"], number>([
 export function handleValidationErrors(
   errors: ValidateError[],
   validationLevel: ValidationLevel,
-  filename: string
+  filename: string,
 ): void {
   if (!errors || errors.length === 0) {
     return; // No errors to handle

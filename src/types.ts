@@ -1,6 +1,8 @@
 import type { Config } from "@markdoc/markdoc";
 import type { Component } from "svelte";
 
+import type { Heading } from "./headings";
+
 /**
  * The validation levels for the preprocessor.
  */
@@ -108,4 +110,8 @@ export interface MarkdocModule {
    * Optional frontmatter extracted from the Markdoc file.
    */
   frontmatter?: { [key: string]: string };
+  /**
+   * Optional list of headings from the Markdoc file.
+   */
+  headings?: Heading[];
 }

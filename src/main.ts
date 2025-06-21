@@ -13,6 +13,7 @@ import loadPartials from "./partials.ts";
 import render from "./render.ts";
 import loadSchemas from "./schema.ts";
 import type { Options } from "./types.ts";
+import { collectHeadings } from "./headings.ts";
 
 const validOptionKeys: (keyof Options)[] = [
   "extensions",
@@ -160,6 +161,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       // eslint-disable-next-line @typescript-eslint/await-thenable
       const transformedContent = await Markdoc.transform(ast, fullConfig);
 
+      // --- Collect headings from transformed content ---
+      const headings = collectHeadings(transformedContent);
+
       // Render Markdoc AST to Svelte
       const svelteContent = render(transformedContent);
 
@@ -195,9 +199,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       const scriptTag = allScriptImports ? `<script>\n${allScriptImports}</script>\n` : "";
 
       // If layout is passed explicitly, add it as a wrapping component
-      // If frontmatter exists, pass it to the layout component
+      // If frontmatter or headings exists, pass them to the layout component
       const layoutWrapperOpen = layoutPath
-        ? `<Layout_MARKDOC${isFrontmatter ? ` {...frontmatter}` : ""}>\n`
+      ? `<Layout_MARKDOC${isFrontmatter ? ` {...frontmatter}` : ""}${headings.length > 0 ? ` headings={headings}` : ""}>\n`
         : "";
       const layoutWrapperClose = layoutPath ? `\n</Layout_MARKDOC>` : "";
 
