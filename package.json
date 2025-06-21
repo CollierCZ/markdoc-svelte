@@ -21,7 +21,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "prettier . --check && eslint .",
     "format": "prettier . --write"
   },
