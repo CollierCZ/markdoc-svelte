@@ -3,7 +3,12 @@ import { anotherComponent } from "./another-component";
 
 const tags = {
   "custom-component": customComponent,
-  "another-component": anotherComponent
+  "another-component": anotherComponent,
+  testTag: {
+    render: "TestTag",
+    attributes: {},
+    children: ["text"],
+  },
 };
 
-export default tags; 
+export default tags;

@@ -1,3 +1,5 @@
+import variables from "../shared-schema/variables.ts";
+
 export default {
-  mixedVar: "mixed value"
-}; 
+  testVariable: variables.testVariable,
+};

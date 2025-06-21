@@ -1,16 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Frontmatter and Component Generation > Multiple components with props 1`] = `
-"<script module>
-	export const slug = "test";
-</script>
-<script>
-	import CustomComponent from 'test/components/CustomComponent.svelte';
-	import AnotherComponent from 'test/components/AnotherComponent.svelte';
-</script>
-<article><CustomComponent title="Welcome" description="This is a test component"><p>This is the content inside the custom component. It can contain <strong>markdown</strong> and other elements.</p></CustomComponent><AnotherComponent status="active" count="5"><p>This is content inside another component. It shows the status and count values.</p></AnotherComponent></article>"
-`;
-
 exports[`Frontmatter and Component Generation > No components 1`] = `
 "<script module>
 	export const slug = "test";

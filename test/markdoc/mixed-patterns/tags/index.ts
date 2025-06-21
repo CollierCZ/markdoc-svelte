@@ -1,7 +1,5 @@
+import tags from "../../shared-schema/tags/index.ts";
+
 export default {
-  mixedTag: {
-    render: "MixedTag",
-    attributes: {},
-    children: ["text"]
-  }
-}; 
+  testTag: tags.testTag,
+};

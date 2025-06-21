@@ -1,11 +1,5 @@
-import Markdoc from '@markdoc/markdoc';
+import nodes from "../shared-schema/nodes.ts";
+
 export default {
-  heading: {
-    render: "h1",
-    attributes: {
-      class: { type: String, default: "custom-heading" },
-      ...Markdoc.nodes.heading.attributes
-    },
-    children: Markdoc.nodes.heading.children
-  }
-}; 
+  heading: nodes.heading,
+};

@@ -335,3 +335,11 @@ Some content here.
 
 More content after the comment.
 `;
+
+export const markdocWithSchemaTest = `
+# Test heading
+
+{% testTag %}Tag content{% /testTag %}
+
+Function value: {% testFunction($testVariable) %}
+`;

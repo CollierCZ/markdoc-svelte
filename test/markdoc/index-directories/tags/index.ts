@@ -1,7 +1,5 @@
+import tags from "../../shared-schema/tags/index.ts";
+
 export default {
-  indexTag: {
-    render: "IndexTag",
-    attributes: {},
-    children: ["text"]
-  }
-}; 
+  testTag: tags.testTag,
+};
