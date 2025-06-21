@@ -1,4 +1,5 @@
 import type { RenderableTreeNode, Tag } from "@markdoc/markdoc";
+import slugify from "slugify";
 
 export interface Heading {
   /**
@@ -24,7 +25,6 @@ export function collectHeadings(
   node: RenderableTreeNode | RenderableTreeNode[],
   sections: Heading[] = []
 ): Heading[] {
-
   // Handle array of nodes
   if (Array.isArray(node)) {
     for (const child of node) {
@@ -42,7 +42,9 @@ export function collectHeadings(
         sections.push({
           level: parseInt(tag.name[1]),
           title,
-          ...tag.attributes,
+          id:
+            (tag.attributes.id as string) ||
+            (slugify(title, { lower: true, strict: true }) as string),
         });
       }
     }
