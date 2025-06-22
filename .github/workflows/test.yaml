@@ -11,3 +11,5 @@ jobs:
       - uses: './.github/shared/setup-node'
       - name: Test
         run: npm run test
+      - name: Test build
+        run: npm run build
