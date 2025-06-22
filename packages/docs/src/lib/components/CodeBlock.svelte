@@ -19,7 +19,7 @@
   };
 </script>
 
-<div class="code-block-wrapper rounded-md bg-codeBlockNord">
+<div class="code-block-wrapper rounded-md bg-codeblock-500">
   <div
     class="flex {lang
       ? 'justify-between'
