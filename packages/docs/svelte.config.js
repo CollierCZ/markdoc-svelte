@@ -1,23 +1,23 @@
-import adapter from '@sveltejs/adapter-static'
-import { sveltePreprocess } from 'svelte-preprocess'
-import { markdocPreprocess } from 'markdoc-svelte'
+import adapter from "@sveltejs/adapter-static";
+import { sveltePreprocess } from "svelte-preprocess";
+import { markdocPreprocess } from "markdoc-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: ['.svelte', '.mdoc'],
+  extensions: [".svelte", ".mdoc"],
   preprocess: [
     markdocPreprocess({
       extensions: [".mdoc"],
-      schema: './markdoc',
+      schema: "./markdoc",
       typographer: true,
     }),
     sveltePreprocess(),
   ],
   kit: {
     adapter: adapter({
-      fallback: '404.html',
+      fallback: "404.html",
     }),
   },
-}
+};
 
-export default config
+export default config;

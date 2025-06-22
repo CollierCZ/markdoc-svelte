@@ -1,7 +1,7 @@
-import Markdoc from '@markdoc/markdoc'
+import Markdoc from "@markdoc/markdoc";
 
 const fence = {
-  render: 'CodeBlock',
+  render: "CodeBlock",
   attributes: {
     content: {
       type: String,
@@ -11,24 +11,21 @@ const fence = {
     },
     process: {
       ...Markdoc.nodes.fence.attributes.process,
-      default: false
+      default: false,
     },
   },
   async transform(node, config) {
-    const attributes = node.transformAttributes(config)
-    const children = node.transformChildren(config)
-    const code =
-      children.length > 0
-        ? children.join()
-        : attributes.content
+    const attributes = node.transformAttributes(config);
+    const children = node.transformChildren(config);
+    const code = children.length > 0 ? children.join() : attributes.content;
 
-    const codeWithoutEmptyLastLine = code.replace(/\n$/, '')
+    const codeWithoutEmptyLastLine = code.replace(/\n$/, "");
 
     return new Markdoc.Tag(this.render, {
       lang: attributes.language,
       code: codeWithoutEmptyLastLine,
-    })
+    });
   },
-}
+};
 
-export default fence
+export default fence;

@@ -1,7 +1,7 @@
-import fence from './fence.js'
+import fence from "./fence.js";
 
 const nodes = {
   fence,
-}
+};
 
-export default nodes
+export default nodes;
