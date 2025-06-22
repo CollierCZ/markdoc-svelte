@@ -9,13 +9,12 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "declaration": true,
-    "declarationDir": "dist",
     "sourceMap": true,
     "types": ["node", "svelte", "vitest/globals"],
     "target": "ESNext",
     "isolatedModules": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["src/**/*.ts", "**/*.test.ts"],
+  "include": ["**/src/**/*.ts", "**/*.test.ts"],
   "exclude": ["node_modules", "dist"]
 }

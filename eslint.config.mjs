@@ -53,10 +53,10 @@ export default tseslint.config(
     ignores: [
       "**/*.js",
       "**/*.mjs",
-      "test",
-      "coverage",
-      "dist",
-      "node_modules",
+      "**/test",
+      "**/coverage",
+      "**/dist",
+      "**/node_modules",
     ],
   },
 );
