@@ -31,7 +31,7 @@ export const getNavigationItems = async (): Promise<NavItems> => {
 
           // See if that directory is already inn the list
           const matchingNavDir = Object.entries(existingNavItems).find(
-            (item) => item[0] === dirName
+            (item) => item[0] === dirName,
           );
 
           // If it is, add another child
@@ -53,7 +53,7 @@ export const getNavigationItems = async (): Promise<NavItems> => {
           } else {
             // If directory isn't yet in list, get the JSON data from which the title comes
             const matchingDir = Object.entries(allDirs).find(([dirPath, _]) =>
-              dirPath.match(dirName)
+              dirPath.match(dirName),
             );
 
             const [_, dirData] = matchingDir;
@@ -82,12 +82,12 @@ export const getNavigationItems = async (): Promise<NavItems> => {
         return newNavItems;
       } catch (err) {
         console.error(
-          `Error getting navigation information for the file ${filePath}: ${err}`
+          `Error getting navigation information for the file ${filePath}: ${err}`,
         );
       }
     },
-    Promise.resolve({} as unknown as NavItems)
+    Promise.resolve({} as unknown as NavItems),
   );
-  
+
   return navItems;
 };
