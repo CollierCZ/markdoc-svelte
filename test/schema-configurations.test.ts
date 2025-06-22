@@ -46,6 +46,22 @@ describe("Schema Configuration Combinations", () => {
 
       expect(result.code).toMatchSnapshot();
     });
+
+    it("processes partials in the schema directory", async () => {
+      const content = `# Test Document
+      
+      {% partial file="content.md" /%}
+      `;
+
+      const result = (await markdocPreprocess({
+        schema: `${testSchemasDir}/shared-schema`,
+      } as Options).markup!({
+        content,
+        filename: "test.md",
+      })) as Processed;
+
+      expect(result.code).toMatchSnapshot();
+    });
   });
 
   describe("Loading from options", () => {

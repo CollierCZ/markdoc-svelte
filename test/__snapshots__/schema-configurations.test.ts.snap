@@ -90,6 +90,14 @@ exports[`Schema Configuration Combinations > Loading from a directory > loads sc
 <article><h1 class="custom-heading">Test heading</h1><p><TestTag>Tag content</TestTag></p><p>Function value: TRANSFORMED: a tested variable</p></article>"
 `;
 
+exports[`Schema Configuration Combinations > Loading from a directory > processes partials in the schema directory 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test Document","id":"test-document"},{"level":1,"title":"Header","id":"header"}];
+</script>
+<article><h1 class="custom-heading">Test Document</h1><h1 class="custom-heading">Header</h1><p>This is content inside a partial.</p></article>"
+`;
+
 exports[`Schema Configuration Combinations > Loading from options > loads schema correctly when passed as an option (no schema directory) 1`] = `
 "<script module>
 	export const slug = "test";
