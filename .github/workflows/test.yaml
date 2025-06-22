@@ -1,0 +1,13 @@
+name: Test
+on:
+  push:
+    branches-ignore:
+      - main
+jobs:
+  test-svelte:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: './.github/shared/setup-node'
+      - name: Test
+        run: npm run test
