@@ -44,7 +44,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   for (const key in options) {
     if (!validOptionKeys.includes(key as keyof Options)) {
       log.warn(
-        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`
+        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`,
       );
     }
   }
@@ -193,7 +193,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         extractUsedSvelteComponents(transformedContent);
       const componentImportStatements = getComponentImports(
         usedSvelteComponentNames,
-        componentsPath
+        componentsPath,
       );
 
       // Construct script tag content

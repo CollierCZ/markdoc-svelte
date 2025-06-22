@@ -177,7 +177,7 @@ describe("Validation", () => {
       await expect(
         markdocPreprocess({
           validationLevel: "error",
-        } as Options).markup!(invalidMarkdocToProcess)
+        } as Options).markup!(invalidMarkdocToProcess),
       ).rejects.toThrow(`Markdoc validation failed in ${fileName}`);
     });
 
@@ -186,7 +186,7 @@ describe("Validation", () => {
         async () =>
           await markdocPreprocess({
             validationLevel: "critical",
-          } as Options).markup!(invalidMarkdocToProcess)
+          } as Options).markup!(invalidMarkdocToProcess),
       ).not.toThrowError();
     });
   });
@@ -202,7 +202,7 @@ describe("Validation", () => {
         expect(error).toBeInstanceOf(Error);
         expect((error as Error).message).toContain("Markdoc validation failed");
         expect((error as Error).message).toContain(
-          "ERROR (text): Undefined variable"
+          "ERROR (text): Undefined variable",
         );
       }
     });

@@ -17,7 +17,12 @@ export const extractUsedSvelteComponents = (
 
   const traverse = (currentNode: RenderableTreeNode | null | undefined) => {
     // If current node can't be a component, skip it
-    if (!currentNode || typeof currentNode === 'string' || typeof currentNode === 'number' || typeof currentNode === 'boolean')
+    if (
+      !currentNode ||
+      typeof currentNode === "string" ||
+      typeof currentNode === "number" ||
+      typeof currentNode === "boolean"
+    )
       return;
 
     // Recursively work through children of arrays until get to objects
@@ -31,7 +36,11 @@ export const extractUsedSvelteComponents = (
     // Check if this RenderableTreeNode object itself represents a Svelte component.
     // 'currentNode.name' here is the name of the component/tag to be rendered.
     // Convention: if node.name starts with an uppercase letter, it's a Svelte component.
-    if (currentNode.name && typeof currentNode.name === 'string' && /\p{Lu}/u.test(currentNode.name)) {
+    if (
+      currentNode.name &&
+      typeof currentNode.name === "string" &&
+      /\p{Lu}/u.test(currentNode.name)
+    ) {
       usedComponents.add(currentNode.name);
     }
 
@@ -41,7 +50,7 @@ export const extractUsedSvelteComponents = (
         traverse(child as RenderableTreeNode | null | undefined);
       }
     }
-  }
+  };
 
   traverse(node);
   return usedComponents;
@@ -63,7 +72,7 @@ export const getComponentImports = (
   for (const componentName of usedSvelteComponentNames) {
     // Use Vite's normalizePath for proper cross-platform path handling
     const componentPath = normalizePath(
-      `${componentDirPath}/${componentName}.svelte`
+      `${componentDirPath}/${componentName}.svelte`,
     );
 
     // Generate the import statement

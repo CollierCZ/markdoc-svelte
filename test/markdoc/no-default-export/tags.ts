@@ -1,4 +1,4 @@
 export const tags = {
-  someTag: { render: "SomeTag" }
+  someTag: { render: "SomeTag" },
 };
-// No default export 
+// No default export

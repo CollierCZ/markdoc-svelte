@@ -1,3 +1,3 @@
 export default {
-  testVariable: "a tested variable"
-}; 
+  testVariable: "a tested variable",
+};

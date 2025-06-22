@@ -15,7 +15,7 @@ export type ValidationLevel =
 
 /**
  * Configuration options for the Markdoc preprocessor
-*/
+ */
 export interface Options {
   /**
    * File extensions to preprocess.

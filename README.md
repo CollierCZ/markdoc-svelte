@@ -588,7 +588,7 @@ export const load: PageLoad = async () => {
         slug: module.slug,
         frontmatter: module.frontmatter,
       };
-    })
+    }),
   );
   return { content };
 };

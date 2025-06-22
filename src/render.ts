@@ -32,7 +32,7 @@ const voidElements = new Set([
  * For other types, returns an empty string.
  */
 const escapeChildrenToString = (
-  content: string | RenderableTreeNode[] | { [key: string]: Scalar }
+  content: string | RenderableTreeNode[] | { [key: string]: Scalar },
 ): string => {
   if (typeof content === "string") {
     return escapeHtml(content);
@@ -76,7 +76,7 @@ const render = (node: RenderableTreeNodes): string => {
   const attributesList = Object.entries(attributes ?? {}).reduce(
     (accumulator, [key, value]) =>
       accumulator + ` ${key}="${escapeHtml(String(value))}"`,
-    ""
+    "",
   );
   const openingTag = `<${tagName}${attributesList}`;
 

@@ -7,27 +7,27 @@ export default [
   {
     input: "src/index.ts",
     output: [
-      { 
-        file: "dist/main.cjs.js", 
-        format: "cjs", 
+      {
+        file: "dist/main.cjs.js",
+        format: "cjs",
         sourcemap: true,
-        exports: "named"
+        exports: "named",
       },
-      { 
-        file: "dist/main.mjs", 
-        format: "esm", 
+      {
+        file: "dist/main.mjs",
+        format: "esm",
         sourcemap: true,
-        exports: "named"
+        exports: "named",
       },
     ],
     external: ["@markdoc/markdoc", "fs", "path", "svelte", "vite", "yaml"],
     plugins: [
       typescript({
         sourceMap: true,
-        inlineSources: true
-      }), 
+        inlineSources: true,
+      }),
       nodeResolve(),
-      terser()
+      terser(),
     ],
   },
   {

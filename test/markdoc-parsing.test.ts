@@ -8,7 +8,7 @@ describe("Markdown parsing", () => {
       await markdocPreprocess().markup!({
         content: commonMark,
         filename: "test.md",
-      })
+      }),
     ).toMatchSnapshot();
   });
 
@@ -17,7 +17,7 @@ describe("Markdown parsing", () => {
       await markdocPreprocess().markup!({
         content: basicMarkdoc,
         filename: "test.md",
-      })
+      }),
     ).toMatchSnapshot();
   });
 });

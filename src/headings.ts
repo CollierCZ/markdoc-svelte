@@ -23,7 +23,7 @@ export interface Heading {
  */
 export function collectHeadings(
   node: RenderableTreeNode | RenderableTreeNode[],
-  sections: Heading[] = []
+  sections: Heading[] = [],
 ): Heading[] {
   // Handle array of nodes
   if (Array.isArray(node)) {

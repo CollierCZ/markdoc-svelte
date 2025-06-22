@@ -33,7 +33,7 @@ interface LoadedConfig {
  * - deps: An array of absolute file paths as dependencies for Svelte preprocessor.
  */
 const loadSchemas = async (
-  directory: string
+  directory: string,
 ): Promise<{
   config: LoadedConfig;
   deps: string[];
@@ -52,21 +52,21 @@ const loadSchemas = async (
    */
   // Define readDirectory overloads (public signatures)
   async function readConfigPart(
-    configPartName: "nodes"
+    configPartName: "nodes",
   ): Promise<Config["nodes"] | null>;
   async function readConfigPart(
-    configPartName: "tags"
+    configPartName: "tags",
   ): Promise<Config["tags"] | null>;
   async function readConfigPart(
-    configPartName: "variables"
+    configPartName: "variables",
   ): Promise<Config["variables"] | null>;
   async function readConfigPart(
-    configPartName: "functions"
+    configPartName: "functions",
   ): Promise<Config["functions"] | null>;
 
   // Implementation Signature
   async function readConfigPart(
-    configPartName: string
+    configPartName: string,
     // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   ): Promise<unknown | null> {
     try {
