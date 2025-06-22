@@ -1,3 +1,4 @@
+import commonjs from "@rollup/plugin-commonjs";
 import dts from "rollup-plugin-dts";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
@@ -22,6 +23,7 @@ export default [
     ],
     external: ["@markdoc/markdoc", "fs", "path", "svelte", "vite", "yaml"],
     plugins: [
+      commonjs(),
       typescript({
         sourceMap: true,
         inlineSources: true,
@@ -33,6 +35,6 @@ export default [
   {
     input: "src/index.ts",
     output: [{ file: "dist/main.d.ts" }],
-    plugins: [dts(), nodeResolve()],
+    plugins: [commonjs(), dts(), nodeResolve()],
   },
 ];
