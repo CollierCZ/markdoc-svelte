@@ -1,0 +1,41 @@
+{
+  "name": "markdoc-svelte-docs",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "vite dev",
+    "dev:open": "vite dev --open",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "lint": "prettier . --check && eslint .",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "@fontsource/fira-mono": "^5.1.0",
+    "@markdoc/markdoc": "^0.5.2",
+    "@sveltejs/adapter-static": "^3.0.6",
+    "@sveltejs/kit": "2.6.0",
+    "@sveltejs/vite-plugin-svelte": "^5.1.0",
+    "@tailwindcss/typography": "^0.5.15",
+    "@types/eslint": "^9.6.1",
+    "@types/eslint-config-prettier": "^6.11.3",
+    "@types/eslint__js": "^8.42.3",
+    "@types/node": "^22.15.32",
+    "@vitest/coverage-v8": "^2.1.8",
+    "autoprefixer": "^10.4.20",
+    "globals": "^15.14.0",
+    "markdoc-svelte": "file:../markdoc-svelte",
+    "shiki": "^1.24.3",
+    "svelte": "^5.15.0",
+    "svelte-check": "^4.1.1",
+    "svelte-preprocess": "^6.0.3",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
+    "vite": "^6.3.5",
+    "vitest": "^2.1.8"
+  },
+  "type": "module"
+}

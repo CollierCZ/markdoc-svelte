@@ -1,0 +1,61 @@
+---
+title: Nodes
+---
+
+[Nodes](https://markdoc.dev/docs/nodes) are elements built into Markdown from the CommonMark specification.
+Customizing nodes enables you to change how existing elements from Markdown are rendered using Svelte components.
+The components are automatically loaded from the components directory defined in your configuration.
+
+For example, you might want to customize how images are displayed using the `@sveltejs/enhanced-img` plugin.
+First, define a custom node in `markdoc/nodes.ts`:
+
+```typescript
+import type { Config } from "markdoc-svelte";
+import { markdocPreprocess } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image: {
+    render: "EnhancedImage",
+    attributes: {
+      // Include the default image attributes
+      ...Markdoc.nodes.image.attributes,
+    },
+  },
+};
+```
+
+Then add an EnhancedImage component in `src/lib/components/EnhancedImage.svelte`:
+
+```svelte
+<script lang="ts">
+  // Glob import all Markdown images
+  const imageModules = import.meta.glob(
+  '$lib/images/*.{avif,gif,heif,jpeg,jpg,png,tiff,webp,svg}',
+    {
+      eager: true,
+      query: {
+          enhanced: true,
+      },
+    }
+  ) as Record<string, { default: string }>;
+
+  const { src, alt, ...restProps } = $props();
+
+  // Find the image module that matches the src
+  const matchingPath = Object.keys(imageModules).find((path) => path.endsWith(src));
+  const image = matchingPath ? imageModules[matchingPath].default : undefined;
+</script>
+
+{#if image}
+  <!-- Render the image with the enhanced-img plugin -->
+  <enhanced:img src={image} {alt} {...restProps} />
+{:else}
+  <img src={src} {alt} {...restProps} />
+{/if}
+```
+
+Now your EnhancedImage component handles images added through standard Markdown syntax:
+
+```markdown
+![A cat sleeping on a balcony](awesome-cat.png)
+```

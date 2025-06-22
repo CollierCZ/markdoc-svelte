@@ -1,5 +1,11 @@
+# Built files
 dist
+.svelte-kit
+build
+
+# Dependencies
 node_modules
 .npmrc
 
+# Test files
 coverage

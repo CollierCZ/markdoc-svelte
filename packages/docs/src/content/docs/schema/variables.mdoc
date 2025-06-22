@@ -1,0 +1,31 @@
+---
+title: Variables
+---
+
+[Variables](https://markdoc.dev/docs/variables) are ways to customize your documents at runtime.
+This way the Markdoc content stays the same, but the generated HTML can vary,
+such as if you're publishing the same content to various sites.
+
+For example, you might define a `$site.name` variable in `markdoc/variables.ts`:
+
+```javascript
+import type { Config } from "markdoc-svelte";
+
+const variables: Config["variables"] = {
+  site: {
+    name: "Markdoc Svelte",
+  },
+}
+
+export default variables
+```
+
+Then you can use the variable in a Markdoc file:
+
+```markdown
+---
+title: Hello World
+---
+
+This is published on the {% $site.name %} site.
+```
