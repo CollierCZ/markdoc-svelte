@@ -1,24 +1,22 @@
 <script lang="ts">
-  import { getSingletonHighlighter, type BundledLanguage } from 'shiki'
-  import CopyButton from './CopyButton.svelte'
-  import './CodeBlock.css'
-  let { code, lang }: { code: string; lang: BundledLanguage } = $props()
+  import { getSingletonHighlighter, type BundledLanguage } from "shiki";
+  import CopyButton from "./CopyButton.svelte";
+  import "./CodeBlock.css";
+  let { code, lang }: { code: string; lang?: BundledLanguage } = $props();
 
-  const highlighter = async (code: string, lang: BundledLanguage) => {
+  const highlighter = async (highCode: string, highLang?: BundledLanguage) => {
+    const langToLoad = highLang || "text";
     const highlighterTool = await getSingletonHighlighter({
-      themes: ['nord'],
-      langs: [lang || ''],
-    })
-    await highlighterTool.loadTheme('nord')
-    if (lang) {
-      await highlighterTool.loadLanguage(lang)
-    }
-    const html = highlighterTool.codeToHtml(code, {
-      lang: lang || '',
-      theme: 'nord',
-    })
-    return html
-  }
+      themes: ["nord"],
+      langs: [langToLoad],
+    });
+    await highlighterTool.loadTheme("nord");
+    const html = highlighterTool.codeToHtml(highCode, {
+      lang: langToLoad,
+      theme: "nord",
+    });
+    return html;
+  };
 </script>
 
 <div class="code-block-wrapper rounded-md bg-codeBlockNord">

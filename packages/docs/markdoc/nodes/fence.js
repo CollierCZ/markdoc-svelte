@@ -21,10 +21,15 @@ const fence = {
 
     const codeWithoutEmptyLastLine = code.replace(/\n$/, "");
 
-    return new Markdoc.Tag(this.render, {
-      lang: attributes.language,
+    const opts = {
       code: codeWithoutEmptyLastLine,
-    });
+    };
+
+    if (attributes.language) {
+      opts.lang = attributes.language;
+    }
+
+    return new Markdoc.Tag(this.render, opts);
   },
 };
 
