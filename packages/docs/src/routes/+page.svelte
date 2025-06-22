@@ -9,10 +9,16 @@
   <title>{title}</title>
 </svelte:head>
 
-<div class="prose">
-  <h1>{title}</h1>
 
-  <data.page.default />
-
-  <a href="/docs/get-started">Get started</a>
+<div class="grid h-screen place-items-center">
+  <div>
+    <h1 class="font-extrabold text-4xl">{title}</h1>
+    <div class="prose">
+      <data.page.default />
+    </div>
+    <a
+      class="rounded-lg bg-green-100 p-4 text-green-900"
+      href="/docs/01-get-started">Get started</a
+    >
+  </div>
 </div>

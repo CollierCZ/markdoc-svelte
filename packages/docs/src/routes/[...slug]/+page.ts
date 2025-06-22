@@ -3,7 +3,7 @@ import type { PageLoad } from "./$types";
 import type { MarkdocModule } from "markdoc-svelte";
 
 interface Pages {
-  ["pagePath"]: MarkdocModule;
+  [pagePath: string]: MarkdocModule;
 }
 
 export const load: PageLoad = async ({ params }) => {
