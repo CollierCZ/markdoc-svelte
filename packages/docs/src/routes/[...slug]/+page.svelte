@@ -2,7 +2,7 @@
   import type { PageProps } from "./$types";
 
   let { data }: PageProps = $props();
-  const title = data.page.frontmatter?.title ?? "A great page"
+  const title = $derived(data.page.frontmatter?.title ?? "A great page");
 </script>
 
 <svelte:head>
