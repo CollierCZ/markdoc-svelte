@@ -14,7 +14,6 @@
     "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@fontsource/fira-mono": "^5.1.0",
     "@markdoc/markdoc": "^0.5.2",
     "@sveltejs/adapter-static": "^3.0.6",
     "@sveltejs/kit": "2.6.0",

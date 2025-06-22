@@ -47,9 +47,6 @@ importers:
 
   packages/docs:
     devDependencies:
-      '@fontsource/fira-mono':
-        specifier: ^5.1.0
-        version: 5.2.6
       '@markdoc/markdoc':
         specifier: ^0.5.2
         version: 0.5.2
@@ -545,9 +542,6 @@ packages:
   '@eslint/plugin-kit@0.3.2':
     resolution: {integrity: sha512-4SaFZCNfJqvk/kenHpI8xvN42DMaoycy4PzKc5otHxRswww1kAt82OlBuwRVLofCACCTZEcla2Ydxv8scMXaTg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
-
-  '@fontsource/fira-mono@5.2.6':
-    resolution: {integrity: sha512-6pyiGeFH+5DP5sICSwx5wu+9BlTEMTKki7bTppsEqXJysi1MiK82n6oSUaYkQWRLH51+DK7zv2JJsi82cOIS3g==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -3225,8 +3219,6 @@ snapshots:
     dependencies:
       '@eslint/core': 0.15.0
       levn: 0.4.1
-
-  '@fontsource/fira-mono@5.2.6': {}
 
   '@humanfs/core@0.19.1': {}
 
