@@ -10,7 +10,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - uses: "./.github/shared/setup-node"
-      - name: Test
-        run: pnpm test
+        # Build before test to get the SvelteKit files
       - name: Test build
         run: pnpm build
+      - name: Test
+        run: pnpm test
