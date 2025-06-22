@@ -7,6 +7,8 @@ jobs:
   test-svelte:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - uses: "./.github/shared/setup-node"
       - name: Test
         run: pnpm test
