@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: './.github/shared/setup-node'
+      - uses: "./.github/shared/setup-node"
       - name: Lint
         run: npm run lint
