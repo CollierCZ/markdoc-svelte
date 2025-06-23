@@ -1,36 +1,37 @@
 <script lang="ts">
-  import { browser } from '$app/environment'
-  let { textToCopy }: { textToCopy: string } = $props()
-  let copyText = $state('Copy')
+  import { browser } from "$app/environment";
+
+  let { textToCopy }: { textToCopy: string } = $props();
+  let copyText = $state("Copy");
 
   const copy = async (text: string): Promise<string | null> => {
     if (browser) {
       return await navigator.clipboard
         ?.writeText(text)
         .then(() => {
-          return 'Copied text'
+          return "Copied text";
         })
         .catch(() => {
-          return null
-        })
+          return null;
+        });
     }
-    return null
-  }
+    return null;
+  };
 
   const handleClick = async (text: string): Promise<void> => {
-    const result = await copy(text)
+    const result = await copy(text);
     if (result) {
-      copyText = 'Copied'
+      copyText = "Copied";
       setTimeout(() => {
-        copyText = 'Copy'
-      }, 1500)
+        copyText = "Copy";
+      }, 1500);
     } else {
-      copyText = 'Error copying'
+      copyText = "Error copying";
       setTimeout(() => {
-        copyText = 'Copy'
-      }, 1500)
+        copyText = "Copy";
+      }, 1500);
     }
-  }
+  };
 </script>
 
 <button

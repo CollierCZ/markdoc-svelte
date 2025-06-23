@@ -1,10 +1,10 @@
-import { error } from "@sveltejs/kit";
+import { error, type HttpError } from "@sveltejs/kit";
 import type { MarkdocModule } from "markdoc-svelte";
 
 import type { PageLoad } from "./$types";
 
 interface Pages {
-  [pagePath: string]: MarkdocModule;
+  [pagePath: string]: () => Promise<MarkdocModule>;
 }
 
 export const load: PageLoad = async ({ params }) => {
@@ -14,7 +14,7 @@ export const load: PageLoad = async ({ params }) => {
     const allPages = import.meta.glob("/src/content/**/*.mdoc") as Pages;
 
     // Find the one that matches the slug in the URL
-    const matchingPage = Object.keys(allPages).find((pagePath: string) => {
+    const matchingPage = Object.keys(allPages).find((pagePath) => {
       const slugFromPath = pagePath
         .replace("/src/content/", "")
         .replace(".mdoc", "");
@@ -29,6 +29,9 @@ export const load: PageLoad = async ({ params }) => {
 
     return { page };
   } catch {
-    throw error(404, `Could not find content at this address: ${slug}`);
+    throw error(
+      404,
+      `Could not find content at this address: ${slug}`,
+    ) as HttpError;
   }
 };

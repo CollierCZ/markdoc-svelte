@@ -4,7 +4,9 @@
 
 <nav class="max-w-sm">
   {#await getNavigationItems() then navItems}
-    <ul class="[&_a]:underline [&_a]:hover:no-underline [&_a]:focus:no-underline">
+    <ul
+      class="[&_a]:underline [&_a]:hover:no-underline [&_a]:focus:no-underline"
+    >
       {#each Object.entries(navItems) as [itemPath, itemData] (itemPath)}
         {#if itemData.children}
           <li class="pt-2">

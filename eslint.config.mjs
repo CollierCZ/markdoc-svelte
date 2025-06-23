@@ -30,7 +30,8 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { // Use `_` to mark start of intentionally unused variables
+        {
+          // Use `_` to mark start of intentionally unused variables
           args: "all",
           argsIgnorePattern: "^_",
           caughtErrors: "all",
@@ -38,6 +39,12 @@ export default tseslint.config(
           destructuredArrayIgnorePattern: "^_",
           varsIgnorePattern: "^_",
           ignoreRestSiblings: true,
+        },
+      ],
+      "@typescript-eslint/only-throw-error": [
+        "error",
+        {
+          allow: ["HttpError"],
         },
       ],
     },

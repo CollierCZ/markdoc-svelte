@@ -32,8 +32,8 @@
     {/if}
     <CopyButton textToCopy={code} />
   </div>
-  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   {#await highlighter(code, lang) then highlightedCode}
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html highlightedCode}
   {/await}
 </div>
