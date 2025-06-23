@@ -1,6 +1,6 @@
 {
   "name": "markdoc-svelte",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "type": "module",
   "description": "A preprocessor to render Markdoc in Svelte",
   "sideEffects": false,
