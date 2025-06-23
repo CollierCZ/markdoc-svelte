@@ -81,8 +81,8 @@ importers:
         specifier: ^16.2.0
         version: 16.2.0
       markdoc-svelte:
-        specifier: file:../markdoc-svelte
-        version: file:packages/markdoc-svelte(svelte@5.34.7)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))
+        specifier: ^3.0.0
+        version: 3.0.0(svelte@5.34.7)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0))
       shiki:
         specifier: ^3.7.0
         version: 3.7.0
@@ -1929,8 +1929,8 @@ packages:
     resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
     engines: {node: '>=10'}
 
-  markdoc-svelte@file:packages/markdoc-svelte:
-    resolution: {directory: packages/markdoc-svelte, type: directory}
+  markdoc-svelte@3.0.0:
+    resolution: {integrity: sha512-N8W4XKA1O7DRQWGsMHWS4F2xlCd+gb8qeEcJgdMo06yc19oFxbz3ZdZZGvV/FedN4uFiPLwBF6Nn06MWMG+AFA==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       svelte: 4.x || 5.x
@@ -4565,7 +4565,7 @@ snapshots:
     dependencies:
       semver: 7.7.2
 
-  markdoc-svelte@file:packages/markdoc-svelte(svelte@5.34.7)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0)):
+  markdoc-svelte@3.0.0(svelte@5.34.7)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(yaml@2.8.0)):
     dependencies:
       '@markdoc/markdoc': 0.5.2
       slugify: 1.6.6
