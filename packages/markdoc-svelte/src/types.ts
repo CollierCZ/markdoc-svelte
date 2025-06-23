@@ -1,7 +1,7 @@
 import type { Config } from "@markdoc/markdoc";
 import type { Component } from "svelte";
 
-import type { Heading } from "./headings";
+import type { Heading } from "./headings.ts";
 
 /**
  * The validation levels for the preprocessor.
