@@ -27,6 +27,22 @@ export default tseslint.config(
     },
   },
   {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { // Use `_` to mark start of intentionally unused variables
+          args: "all",
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
+  },
+  {
     plugins: {
       importPlugin: importPlugin,
     },
@@ -69,6 +85,8 @@ export default tseslint.config(
       "**/coverage",
       "**/dist",
       "**/node_modules",
+      "**/build",
+      "**/.svelte-kit",
     ],
   }
 );

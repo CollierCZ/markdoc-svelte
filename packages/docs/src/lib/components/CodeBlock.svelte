@@ -1,7 +1,9 @@
 <script lang="ts">
   import { getSingletonHighlighter, type BundledLanguage } from "shiki";
+
   import CopyButton from "./CopyButton.svelte";
   import "./CodeBlock.css";
+
   let { code, lang }: { code: string; lang?: BundledLanguage } = $props();
 
   const highlighter = async (highCode: string, highLang?: BundledLanguage) => {

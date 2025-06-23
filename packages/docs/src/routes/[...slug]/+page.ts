@@ -1,6 +1,7 @@
 import { error } from "@sveltejs/kit";
-import type { PageLoad } from "./$types";
 import type { MarkdocModule } from "markdoc-svelte";
+
+import type { PageLoad } from "./$types";
 
 interface Pages {
   [pagePath: string]: MarkdocModule;
@@ -10,7 +11,7 @@ export const load: PageLoad = async ({ params }) => {
   const slug = params.slug;
   try {
     // Get all of the pages in the content directory
-    const allPages = import.meta.glob("/src/content/**/*.mdoc");
+    const allPages = import.meta.glob("/src/content/**/*.mdoc") as Pages;
 
     // Find the one that matches the slug in the URL
     const matchingPage = Object.keys(allPages).find((pagePath: string) => {

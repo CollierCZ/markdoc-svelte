@@ -1,4 +1,5 @@
 import type { MarkdocModule } from "markdoc-svelte";
+
 import type { NavItems } from "$lib/types";
 
 export const getNavigationItems = async (): Promise<NavItems> => {
