@@ -1,267 +1,476 @@
 # markdoc-svelte
 
-Preprocess [Markdoc](https://markdoc.io/) files for use in Svelte Kit sites.
+<span class="badge-npmversion"><a href="https://npmjs.org/package/markdoc-svelte" title="View this project on NPM"><img src="https://img.shields.io/npm/v/markdoc-svelte.svg" alt="NPM version" /></a></span>
 
-## Use
+Process Markdown and Markdoc files into Svelte components using [Markdoc](https://markdoc.dev/).
+Use Markdoc defaults out of the box or configure Markdoc schema to your needs.
 
-Add the `.md` extension and the `markdoc` preprocessor to your Svelte Kit configuration:
+## Table of Contents
+
+- [Install](#install)
+- [Basic example](#basic-example)
+- [Frontmatter](#frontmatter)
+- [Customize Markdoc](#customize-markdoc)
+  - [Direct definitions](#direct-definitions)
+  - [Configuration folder](#configuration-folder)
+  - [Relative imports](#relative-imports)
+- [Preprocessor Options](#preprocessor-options)
+  - [Functions](#functions)
+  - [Nodes](#nodes)
+  - [Partials](#partials)
+  - [Tags](#tags)
+  - [Typographer](#typographer)
+  - [Validation level](#validation-level)
+  - [Variables](#variables)
+- [Advanced](#advanced)
+  - [Markdoc limitations](#markdoc-limitations)
+  - [@sveltejs/enhanced-img](#sveltejsenhanced-img)
+  - [Page table of contents](#page-table-of-contents)
+  - [Index page example](#index-page-example)
+
+## Install
+
+Install `markdoc-svelte` in your SvelteKit project.
+
+```bash
+npm install markdoc-svelte
+```
+
+Amend your SvelteKit config in `svelte.config.js` to:
+
+- Process files with the extensions you choose (such as `.mdoc` and `.md`).
+- Include the preprocessor.
 
 ```javascript
-import { markdoc } from "markdoc-svelte";
+import { markdocPreprocess } from "markdoc-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: [".svelte", ".md"],
-  preprocess: [markdoc()],
+  extensions: [".svelte", ".mdoc", ".md"],
+  preprocess: [markdocPreprocess()],
 };
 ```
 
-## Add custom schema
+## Basic example
 
-Markdoc allows you to configure various options for parsing:
+Create a directory to hold your markdoc files: `src/lib/markdoc`
 
-- [Functions](https://markdoc.dev/docs/functions)
-- [Nodes](https://markdoc.dev/docs/nodes)
-- [Partials](https://markdoc.dev/docs/partials)
-- [Tags](https://markdoc.dev/docs/tags)
-- [Variables](https://markdoc.dev/docs/variables)
-
-To include these options in your preprocessing, pass them in the configuration.
-You can do this in two ways:
-
-- Pass each individually as an option.
-- Create a schema directory to include files that define each option for you.
-  Include that directory in the [markdown-svelte configuration](#schema-path).
-
-In each case, imports happen before bundling, so import files as relative paths to JavaScript files with the extension.
-Use JavaScript files or run Node.js with a tool such as [tsx](https://tsx.is/) to use TypeScript.
-
-### Functions
-
-Use Markdoc [functions](https://markdoc.dev/docs/functions) to transform content.
-Include them as a file or directory in your [Markdoc schema directory](#schema-path)
-or in the markdoc-svelte configuration.
-
-```javascript
-import { markdoc } from "markdoc-svelte";
-
-const uppercase = {
-  transform(parameters) {
-    const string = parameters[0];
-
-    return typeof string === "string" ? string.toUpperCase() : string;
-  },
-};
-
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  preprocess: [
-    markdoc({
-      functions: { uppercase },
-    }),
-  ],
-};
-```
-
-### Nodes
-
-Use Markdoc [nodes](https://markdoc.dev/docs/nodes) to customize how standard Markdown elements are rendered.
-Include them as a file or directory in your [Markdoc schema directory](#schema-path)
-or in the markdoc-svelte configuration.
-
-Imports happen before bundling, so import files as relative paths to JavaScript files with the extension.
-
-```javascript
-import { markdoc } from "markdoc-svelte";
-import { link } from "./markdown/link.js";
-
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  preprocess: [
-    markdoc({
-      nodes: { link },
-    }),
-  ],
-};
-```
-
-### Partials
-
-Use Markdoc [partials](https://markdoc.dev/docs/partials) to reuse blocks of content in various places.
-Include them in a directory in your [Markdoc schema directory](#schema-path)
-or define a partials directory as a relative path in the markdoc-svelte configuration.
-
-```javascript
-import { markdoc } from "markdoc-svelte";
-
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  preprocess: [
-    markdoc({
-      partials: "./markdoc/partials",
-    }),
-  ],
-};
-```
-
-### Tags
-
-Use Markdoc [tags](https://markdoc.dev/docs/tags) to extend Markdown elements to do more.
-Include them as a file or directory in your [Markdoc schema directory](#schema-path)
-or in the markdoc-svelte configuration.
-
-Imports happen before bundling, so import files as relative paths to JavaScript files with the extension.
-
-```javascript
-import { markdoc } from "markdoc-svelte";
-import { button } from "./markdown/button.js";
-
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  preprocess: [
-    markdoc({
-      nodes: { button },
-    }),
-  ],
-};
-```
-
-### Variables
-
-Use Markdoc [variables](https://markdoc.dev/docs/variables) to customize content during the build.
-Include them as a file in your [Markdoc schema directory](#schema-path)
-or in the markdoc-svelte configuration.
-
-```javascript
-import { markdoc } from "markdoc-svelte";
-
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  preprocess: [
-    markdoc({
-      variables: { flags: { best_feature_flag: true } },
-    }),
-  ],
-};
-```
-
-## Code blocks
-
-Markdoc tags are processed as the first thing.
-This allows you to do things like use Markdoc variables inside code blocks.
-But sometimes you want to include text like `{% %}` inside a code block.
-
-To mark a single code block to not be processed for tags,
-add a attribute to the block:
-
-````markdown
-```markdown {% process = false %}
-Use variables in your code: `{% product_name %}`
-```
-````
-
-To set this as the default option, create a custom `fence` node and set a different default
-([example](https://github.com/markdoc/markdoc/issues/503#issuecomment-2079771178)).
-
-## Frontmatter
-
-Frontmatter added as YAML is automatically parsed.
-So you could add frontmatter like the following:
+In that directory (at `src/lib/markdown/content.md`), add an example with basic Markdown syntax:
 
 ```markdown
 ---
-title: A great page
+title: Hello World
 ---
 
-With great content
+# Hello World
+
+This is a file that is processed by `markdoc-svelte`.
+
+![Alt text](/path/to/image.jpg)
 ```
 
-You can then access it in your layouts:
+Dynamically import all files in the directory using a catchall route at `src/routes/[...catchall]/+page.ts`:
+
+```typescript
+import { error } from "@sveltejs/kit";
+import type { PageLoad } from "./$types";
+import type { MarkdocModule } from "markdoc-svelte";
+
+export const load: PageLoad = async ({ params }) => {
+  const slug = params.catchall;
+  try {
+    const page = (await import(`$lib/markdown/${slug}.md`)) as MarkdocModule;
+    return { page };
+  } catch {
+    throw error(404, `No corresponding file found for the slug "${slug}"`);
+  }
+};
+```
+
+Render the imported file as a Svelte component in a file at `src/routes/[...catchall]/+page.svelte`:
 
 ```svelte
 <script lang="ts">
-  let {
-    children,
-    title = '',
-  } = $props()
+  import type { PageProps } from './$types';
+
+  let { data }: PageProps = $props();
 </script>
 
-<h1>{ title }</h1>
+<svelte:head>
+  <title>{data.page.frontmatter?.title ?? 'Undefined title'}</title>
+</svelte:head>
 
-<!-- Article content -->
-{@render children?.()}
+<data.page.default />
 ```
 
-And in your content:
+Run your dev server and visit `/content` to see the rendered file.
+
+## Frontmatter
+
+Optionally define YAML frontmatter in your file.
+Then use it in your content with the `$frontmatter` variable.
 
 ```markdown
 ---
-title: Using the Next.js plugin
-description: Integrate Markdoc into your Next.js app
+title: Why I switched to Markdoc
+description: What the benefits of Markdoc are and how to take advantage of them.
 ---
 
 # {% $frontmatter.title %}
 ```
 
-## Options
+You can also access the frontmatter in your Svelte page components.
+Get it from the data you defined in `+page.ts`:
 
-You can choose to customize how Markdoc files are processed.
+```svelte
+<script lang="ts">
+  import type { PageProps } from './$types';
 
-| Option            | Type             | Default              | Description                           |
-| ----------------- | ---------------- | -------------------- | ------------------------------------- |
-| `comments`        | boolean          | `true`               | [Comments](#comments)                 |
-| `extensions`      | array of strings | `[".mdoc",".md"]` | [Extensions](#extensions)             |
-| `functions`       | functions object |                      | [Functions](#functions)               |
-| `layout`          | path             |                      | [Layout](#layout)                     |
-| `nodes`           | nodes object     |                      | [Nodes](#nodes)                       |
-| `partials`        | partials object  |                      | [Partials](#partials)                 |
-| `schema`          | path             |                      | [Schema path](#schema-path)           |
-| `tags`            | tags object      |                      | [Tags](#tags)                         |
-| `typographer`     | boolean          | `false`              | [Typographer](#typographer)           |
-| `validationLevel` | string           | `info`               | [Validation level](#validation-level) |
-| `variables`       | variables object |                      | [Variables](#variables)               |
+  let { data }: PageProps = $props();
+</script>
 
-### Comments
+<svelte:head>
+  <title>{data.page.frontmatter?.title ?? 'Default title'}</title>
+  <meta name="description" content={data.page.frontmatter?.description ?? 'Default description'} />
+</svelte:head>
 
-Whether to allow [Markdown comment syntax](https://spec.commonmark.org/0.30/#example-624)
-to hide comments from the rendered output.
-On by default as this will be the default in Markdoc.
+<data.page.default />
+```
 
-To turn this off, set the option to `false`:
+## Customize Markdoc
+
+To add additional features to the syntax of your files, customize your Markdoc schema.
+You can add the following extensions:
+
+- [Nodes](#nodes)
+- [Tags](#tags)
+- [Variables](#variables)
+- [Functions](#functions)
+- [Partials](#partials)
+
+You can customize schema in two ways:
+
+- **For a single extension** or simple extensions, pass directly to the preprocessor options.
+- **For multiple extensions at once** or more complex configurations,
+  create a configuration folder with schema definitions.
+
+For each extension (such as `nodes`),
+schema definitions passed directly overwrite configuration from a folder.
+
+### Direct definitions
+
+To define any of the extension points directly,
+pass it to the preprocessor options as the name of the extension.
+For example, to define a `$site.name` variable, pass the following:
 
 ```javascript
-import { markdoc } from "markdoc-svelte";
+import { markdocPreprocess } from "markdoc-svelte";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: [".mdoc", ".md"],
+  extensions: [".svelte", ".mdoc"],
   preprocess: [
-    markdoc({
-      comments: false,
+    markdocPreprocess({
+      variables: {
+        site: {
+          name: "Markdoc Svelte",
+        },
+      },
     }),
   ],
 };
 ```
 
-### Validation level
+### Configuration folder
 
-This preprocessor validates whether the Markdoc is valid.
-By default, it throws an error on files for errors at the `error` or `critical` level.
-To debug, you can set the level to a lower level and it stops the build for any errors at that level or above.
-Possible values in ascending order: `debug`, `info`, `warning`, `error`, `critical`
+For multiple extensions or more complex configurations, create a folder with your entire Markdoc schema.
+
+By default, the preprocessor looks for a schema in the `./markdoc` and `./src/markdoc` directories.
+
+Define each extension point as a single file
+or as a directory with an `index.ts` or `index.js` file that exports it.
+Partials must be a directory holding Markdoc files.
+
+All extension points are optional.
+
+Example structure:
+
+```
+markdoc
+├── functions.ts
+├── nodes
+│   ├── heading.ts
+│   ├── index.ts
+│   └── callout.ts
+├── partials
+│   ├── content.mdoc
+│   └── more-content.mdoc
+├── tags.ts
+└── variables.ts
+```
+
+For example, create custom nodes in `markdoc/nodes.ts`:
+
+```typescript
+import type { Config } from "markdoc-svelte";
+import { Markdoc } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image: {
+    render: "EnhancedImage",
+    attributes: {
+      ...Markdoc.nodes.image.attributes, // Include the default image attributes
+    },
+  },
+};
+
+export default nodes;
+```
+
+Or create an index file to export all custom nodes from `markdoc/nodes/index.ts`
+(remember to use [relative imports](#relative-imports)):
+
+```typescript
+import image from "./image.ts";
+import link from "./link.ts";
+import paragraph from "./paragraph.ts";
+import type { Config } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image,
+  link,
+  paragraph,
+};
+
+export default nodes;
+```
+
+### Relative imports
+
+You can use relative imports to import definitions from either `.js` or `.ts` files.
+Just remember to include the file extension.
+
+For example, if you define custom functions in `src/lib/functions.js`,
+add them to your schema as follows:
 
 ```javascript
-import { markdoc } from "markdoc-svelte";
+import { markdocPreprocess } from "markdoc-svelte";
+import functions from "./src/lib/functions.js";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  extensions: [".mdoc", ".md"],
   preprocess: [
-    markdoc({
-      validationLevel: "info",
+    markdocPreprocess({
+      functions: functions,
     }),
   ],
 };
+```
+
+## Preprocessor Options
+
+| Option            | Type                | Default                          | Description                                                               |
+| ----------------- | ------------------- | -------------------------------- | ------------------------------------------------------------------------- |
+| `comments`        | boolean             | `true`                           | Enable [Markdown comments](https://spec.commonmark.org/0.30/#example-624) |
+| `components`      | string              | `"$lib/components"`              | Svelte components directory for custom nodes and tags                     |
+| `extensions`      | string[]            | `[".mdoc", ".md"]`               | Files to process with Markdoc                                             |
+| `functions`       | Config['functions'] | -                                | [Functions config](#functions)                                            |
+| `layout`          | string              | -                                | Default layout for all processed Markdown files                           |
+| `linkify`         | boolean             | `false`                          | Auto-convert bare URLs to links                                           |
+| `nodes`           | Config['nodes']     | -                                | [Nodes config](#nodes)                                                    |
+| `partials`        | string              | -                                | [Partials](#partials) directory path                                      |
+| `schema`          | string              | `["./markdoc", "./src/markdoc"]` | Schema directory path                                                     |
+| `tags`            | Config['tags']      | -                                | [Tags config](#tags)                                                      |
+| `typographer`     | boolean             | `false`                          | Enable [typography replacements](#typographer)                            |
+| `validationLevel` | ValidationLevel     | `"error"`                        | [Validation strictness level](#validation-level)                          |
+| `variables`       | Config['variables'] | -                                | [Variables config](#variables)                                            |
+
+### Functions
+
+[Functions](https://markdoc.dev/docs/functions) enable you to add custom utilities to Markdown
+so you can transform content and variables.
+
+For example, you could add a function for transforming strings to uppercase to `markdoc/functions.ts`:
+
+```javascript
+import type { Config } from "markdoc-svelte";
+
+const functions: Config["functions"] = {
+  uppercase: {
+    transform(parameters) {
+      const string = parameters[0];
+
+      return typeof string === "string" ? string.toUpperCase() : string;
+    },
+  },
+};
+
+export default functions;
+```
+
+Then you can use the custom function in a Markdown file:
+
+```markdown
+---
+title: Hello World
+---
+
+This is a {% uppercase(markdown) %} file that is processed by `markdoc-svelte`.
+```
+
+### Nodes
+
+[Nodes](https://markdoc.dev/docs/nodes) are elements built into Markdown from the CommonMark specification.
+Customizing nodes enables you to change how existing elements from Markdown are rendered using Svelte components.
+The components are automatically loaded from the components directory defined in your configuration.
+
+For example, you might want to customize how images are displayed using the `@sveltejs/enhanced-img` plugin.
+First, define a custom node in `markdoc/nodes.ts`:
+
+```typescript
+import type { Config } from "markdoc-svelte";
+import { markdocPreprocess } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image: {
+    render: "EnhancedImage",
+    attributes: {
+      // Include the default image attributes
+      ...Markdoc.nodes.image.attributes,
+    },
+  },
+};
+```
+
+Then add an EnhancedImage component in `src/lib/components/EnhancedImage.svelte`:
+
+```svelte
+<script lang="ts">
+  // Glob import all Markdown images
+  const imageModules = import.meta.glob(
+  '$lib/images/*.{avif,gif,heif,jpeg,jpg,png,tiff,webp,svg}',
+    {
+      eager: true,
+      query: {
+          enhanced: true,
+      },
+    }
+  ) as Record<string, { default: string }>;
+
+  const { src, alt, ...restProps } = $props();
+
+  // Find the image module that matches the src
+  const matchingPath = Object.keys(imageModules).find((path) => path.endsWith(src));
+  const image = matchingPath ? imageModules[matchingPath].default : undefined;
+</script>
+
+{#if image}
+  <!-- Render the image with the enhanced-img plugin -->
+  <enhanced:img src={image} {alt} {...restProps} />
+{:else}
+  <img src={src} {alt} {...restProps} />
+{/if}
+```
+
+Now your EnhancedImage component handles images added through standard Markdown syntax:
+
+```markdown
+![A cat sleeping on a balcony](awesome-cat.png)
+```
+
+### Partials
+
+[Partials](https://markdoc.dev/docs/partials) are ways to reuse content across files (through [transclusion](https://en.wikipedia.org/wiki/Transclusion)).
+The partials defined in your configuration must be a directory of Markdoc files.
+
+For example, you could have a file structure like the following:
+
+```
+| markdoc/
+|-- partials/
+|   |-- content.mdoc
+|   └── post.mdoc
+```
+
+These files can be included in other files as follows:
+
+```markdown
+---
+title: Hello World
+---
+
+# Hello World
+
+This is a file that is processed by `markdoc-svelte`.
+
+{% partial file="content.mdoc" %}
+
+{% partial file="post.mdoc" %}
+```
+
+### Tags
+
+[Tags](https://markdoc.dev/docs/tags) are ways to extend Markdown syntax to do more.
+You can add functionality through Svelte components
+
+For example, you might want to create a custom Callout tag to highlight information on a page
+(these are also known as admonitions).
+First, define the tag in `markdoc/tags.ts`:
+
+```javascript
+import type { Config } from "markdoc-svelte";
+
+const tags: Config["tags"] = {
+  callout: {
+    // The Svelte component to render the tag
+    render: "Callout",
+    // What tags it can have as children
+    children: ["paragraph", "tag", "list"],
+    // Define the type of callout through an attribute
+    attributes: {
+      type: {
+        type: String,
+        default: "note",
+        matches: ["caution", "check", "note", "warning"],
+        errorLevel: "critical",
+      },
+      title: {
+        type: String,
+      },
+    },
+  },
+};
+
+export default tags;
+```
+
+Then create a Callout component for tag in `src/lib/components/Callout.svelte`:
+
+```svelte
+<script lang="ts">
+  let { title, type, children } = $props();
+</script>
+
+<div class={`callout-${type}`}>
+  <div class="content">
+    <div class="copy">
+      <span class="title">{title}</span>
+      <span>{@render children()}</span>
+    </div>
+  </div>
+</div>
+```
+
+Then you can use the Callout tag in a Markdoc file:
+
+```markdown
+---
+title: Hello World
+---
+
+{% callout type="caution" title="Hello" %}
+This is a caution callout.
+{% /callout %}
 ```
 
 ### Typographer
@@ -271,105 +480,144 @@ See the options in action at the [markdown-it demo](https://markdown-it.github.i
 (select or deselect `typographer`).
 Defaults to false.
 
-### Extensions
+### Validation level
 
-By default, files ending in `.mdoc` and `.md` are preprocessed.
-To use other extensions, add them to the `extensions` array in the options:
+The preprocessor validates whether the Markdoc is valid.
+By default, it throws an error on files for issues at the `error` or `critical` level.
+To debug, you can set the level to a lower level to stop the build for any errors at that level or above.
+Possible values in ascending order: `debug`, `info`, `warning`, `error`, `critical`.
 
-```javascript
-import { markdoc } from "markdoc-svelte";
+### Variables
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  extensions: [".svelte", ".mdoc", ".md"],
-  preprocess: [
-    markdoc({
-      extensions: [".svelte", ".mdoc", ".md"],
-    }),
-  ],
-};
-```
+[Variables](https://markdoc.dev/docs/variables) are ways to customize your documents at runtime.
+This way the Markdoc content stays the same, but the generated HTML can vary,
+such as if you're publishing the same content to various sites.
 
-### Layout
-
-To give your processed Markdoc a layout, pass the path to the layout file:
+For example, you might define a `$site.name` variable in `markdoc/variables.ts`:
 
 ```javascript
-import { markdoc } from "markdoc-svelte";
+import type { Config } from "markdoc-svelte";
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  extensions: [".svelte", ".md"],
-  preprocess: [
-    markdoc({
-      layout: "/path/to/layout.svelte",
-    }),
-  ],
-};
+const variables: Config["variables"] = {
+  site: {
+    name: "Markdoc Svelte",
+  },
+}
+
+export default variables
 ```
 
-[Frontmatter](#frontmatter) in YAML format is automatically passed to your layout as props.
-The content is passed as children that can then be rendered.
+Then you can use the variable in a Markdoc file:
+
+```markdown
+---
+title: Hello World
+---
+
+This is published on the {% $site.name %} site.
+```
+
+## Advanced
+
+### Markdoc limitations
+
+Markdoc has a few Markdown syntax limitations, see [Markdoc FAQ](https://markdoc.dev/docs/faq).
+
+### @sveltejs/enhanced-img
+
+To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images, you can customize the default images Node with a custom Svelte component.
+See the example [custom node](#nodes).
+
+### Page table of contents
+
+Each proccessed page automatically exports a `headings` property with all headings on the page and IDs for each.
+Add IDs with [annotations](https://markdoc.dev/docs/syntax#annotations) or they are generated automatically.
+Use this list to generate a table of contents for the page, as in the following example:
 
 ```svelte
 <script lang="ts">
-  let {
-    children,
-    title = '',
-  } = $props()
+  import type { PageProps } from './$types';
+
+  let { data }: PageProps = $props();
+  const { frontmatter, headings } = data.page;
+
+  // Filter only h1 and h2 headings
+  const filteredHeadings = headings?.filter((heading) => heading.level <= 2) ?? [];
 </script>
 
-<h1>{ title }</h1>
+<svelte:head>
+  <title>{data.page.frontmatter?.title ?? 'Undefined title'}</title>
+</svelte:head>
 
-<!-- Article content -->
-{@render children?.()}
+{#if filteredHeadings.length > 0}
+  <ul>
+    {#each filteredHeadings as heading}
+      <li>
+        <a href={`#${heading.id}`}>{heading.text}</a>
+      </li>
+    {/each}
+  </ul>
+{/if}
+
+<data.page.default />
 ```
 
-### Schema path
+### Index page example
 
-To define Markdoc options, you can use a directory that holds multiple options.
-You can define each option as a single file or a directory with an `index.js` file that exports the option.
-Except for partials, which is a directory holding Markdoc files.
+Each processed page exports a slug based on the file name.
+This is a convenient way to generate an index page without reaching into the document.
 
-Example structure:
+Glob import these slugs as data for your index page.
+For example, if all of your pages end with the extension `.md`,
+Add the following to `src/routes/blog/+page.ts`:
 
-```tree
-markdoc
-├── functions.js
-├── nodes
-│   ├── heading.js
-│   ├── index.js
-│   └── callout.js
-├── partials
-│   ├── content.mdoc
-│   └── more-content.mdoc
-├── tags.js
-└── variables.js
-```
+```typescript
+import type { MarkdocModule } from "markdoc-svelte";
 
-By default, the preprocessor looks for your Markdoc schema definition in a `./markdoc` directory at the app root.
-To use a different path, define the directory in the options as a relative path.
+import type { PageLoad } from "./$types";
 
-```javascript
-import { markdoc } from "markdoc-svelte";
+const markdownModules = import.meta.glob("$lib/markdown/*.md");
 
-/** @type {import('@sveltejs/kit').Config} */
-const config = {
-  preprocess: [
-    markdoc({
-      schema: "./path/to/schema/directory",
+export const load: PageLoad = async () => {
+  const content = await Promise.all(
+    Object.values(markdownModules).map(async (importModule) => {
+      // Dynamically import each module
+      const module = (await importModule()) as MarkdocModule;
+      // Pass only slug and frontmatter to the page data
+      return {
+        slug: module.slug,
+        frontmatter: module.frontmatter,
+      };
     }),
-  ],
+  );
+  return { content };
 };
 ```
 
-### Markdoc config options
+Then use this data to build an index page at `src/routes/blog/+page.svelte`:
 
-In addition to the option to include Markdoc configuration as a single directory,
-you can pass each option individually:
+```svelte
+<script lang="ts">
+  import type { PageProps } from './$types';
 
-- [Functions](#functions)
-- [Nodes](#nodes)
-- [Partials](#partials)
-- [Tags](#tags)
-- [Variables](#variables)
+  let { data }: PageProps = $props();
+  const { content } = data;
+</script>
+
+<h1>Table of Contents</h1>
+<ul>
+  {#each content as item, i (item.slug)}
+    <li class={'item-' + i}>
+      <a href="/{item.slug}">
+        <h2>{item.frontmatter?.title || item.slug}</h2>
+        {#if item.frontmatter?.description}
+          <span>{item.frontmatter.description}</span>
+        {/if}
+        {#if item.frontmatter?.published}
+          <span>{item.frontmatter.published}</span>
+        {/if}
+      </a>
+    </li>
+  {/each}
+</ul>
+```

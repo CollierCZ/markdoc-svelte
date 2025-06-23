@@ -1,0 +1,12 @@
+name: "Setup"
+description: "Setup Node.js environment and dependencies"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: "lts/*"
+    - name: Install Dependencies
+      shell: bash
+      run: npm ci

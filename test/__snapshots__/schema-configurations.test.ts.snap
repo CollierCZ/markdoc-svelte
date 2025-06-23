@@ -1,0 +1,118 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Schema Configuration Combinations > Combining sources > accepts directory and options with options overriding the directory 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test heading","id":"test-heading"}];
+</script>
+<script>
+	import OverrideTag from '$lib/components/OverrideTag.svelte';
+</script>
+<article><h1 class="custom-heading">Test heading</h1><p><OverrideTag>Tag content</OverrideTag></p><p>Function value: TRANSFORMED: a tested variable</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Edge cases > handles empty schema parts gracefully 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"This is some basic Markdoc","id":"this-is-some-basic-markdoc"},{"level":2,"title":"More fancy stuff","id":"more-fancy-stuff"}];
+</script>
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
+`;
+
+exports[`Schema Configuration Combinations > Edge cases > handles missing schema directory gracefully 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"This is some basic Markdoc","id":"this-is-some-basic-markdoc"},{"level":2,"title":"More fancy stuff","id":"more-fancy-stuff"}];
+</script>
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
+`;
+
+exports[`Schema Configuration Combinations > Edge cases > handles schema files with no default export 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"This is some basic Markdoc","id":"this-is-some-basic-markdoc"},{"level":2,"title":"More fancy stuff","id":"more-fancy-stuff"}];
+</script>
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h2>More fancy stuff</h2><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
+`;
+
+exports[`Schema Configuration Combinations > File variations > prefers .ts files over .js files 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test","id":"test"}];
+</script>
+<script>
+	import TypeScriptTag from '$lib/components/TypeScriptTag.svelte';
+</script>
+<article><h1>Test</h1><p><TypeScriptTag>content</TypeScriptTag></p></article>"
+`;
+
+exports[`Schema Configuration Combinations > File variations > prefers individual files over index directories 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test","id":"test"}];
+</script>
+<script>
+	import FileTag from '$lib/components/FileTag.svelte';
+</script>
+<article><h1>Test</h1><p><FileTag>content</FileTag></p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Loading from a directory > loads schemas from index files in directories (tags/index.ts, nodes/index.ts) 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test heading","id":"test-heading"}];
+</script>
+<script>
+	import TestTag from '$lib/components/TestTag.svelte';
+</script>
+<article><h1 class="custom-heading">Test heading</h1><p><TestTag>Tag content</TestTag></p><p>Function value: TRANSFORMED: a tested variable</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Loading from a directory > loads schemas from individual files (tags.ts, nodes.ts, functions.ts, variables.ts) 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test heading","id":"test-heading"}];
+</script>
+<script>
+	import TestTag from '$lib/components/TestTag.svelte';
+</script>
+<article><h1 class="custom-heading">Test heading</h1><p><TestTag>Tag content</TestTag></p><p>Function value: TRANSFORMED: a tested variable</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Loading from a directory > loads schemas from mixed patterns (some individual files, some index directories) 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test heading","id":"test-heading"}];
+</script>
+<script>
+	import TestTag from '$lib/components/TestTag.svelte';
+</script>
+<article><h1 class="custom-heading">Test heading</h1><p><TestTag>Tag content</TestTag></p><p>Function value: TRANSFORMED: a tested variable</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Loading from a directory > processes partials in the schema directory 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test Document","id":"test-document"},{"level":1,"title":"Header","id":"header"}];
+</script>
+<article><h1 class="custom-heading">Test Document</h1><h1 class="custom-heading">Header</h1><p>This is content inside a partial.</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Loading from options > loads schema correctly when passed as an option (no schema directory) 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test heading","id":"test-heading"}];
+</script>
+<script>
+	import TestTag from '$lib/components/TestTag.svelte';
+</script>
+<article><h1 class="custom-heading">Test heading</h1><p><TestTag>Tag content</TestTag></p><p>Function value: TRANSFORMED: a tested variable</p></article>"
+`;
+
+exports[`Schema Configuration Combinations > Loading from options > processes partials when passed as option 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"Test Document","id":"test-document"},{"level":2,"title":"Header","id":"header"}];
+</script>
+<article><h1>Test Document</h1><h2>Header</h2><p>This is content inside a partial.</p></article>"
+`;

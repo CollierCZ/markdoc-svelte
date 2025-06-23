@@ -1,4 +1,5 @@
-import { markdoc } from "./main";
-import { escapeMarkdocBrackets, unescapeMarkdocBrackets } from "./utils";
+export { markdocPreprocess } from "./main.ts";
+export type { MarkdocModule } from "./types.ts";
 
-export { escapeMarkdocBrackets, markdoc, unescapeMarkdocBrackets };
+export { default as Markdoc } from "@markdoc/markdoc";
+export type { Config } from "@markdoc/markdoc";

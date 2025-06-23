@@ -3,10 +3,8 @@ import type {
   RenderableTreeNodes,
   Scalar,
 } from "@markdoc/markdoc";
-import MarkdownIt from "markdown-it";
-import { escapeMarkdocBrackets } from "./utils";
 
-const { escapeHtml } = MarkdownIt().utils;
+import { escapeHtml } from "./escape.ts";
 
 // Elements with no closing tag
 // https://html.spec.whatwg.org/#void-elements
@@ -26,67 +24,86 @@ const voidElements = new Set([
   "wbr",
 ]);
 
+/**
+ * Escapes children content for code and pre blocks.
+ * If content is a string, escapes Markdoc brackets.
+ * If it is an array, converts each child to a string, removes all new lines,
+ * applies Markdoc bracket escaping, and joins them back into a string.
+ * For other types, returns an empty string.
+ */
+const escapeChildrenToString = (
+  content: string | RenderableTreeNode[] | { [key: string]: Scalar },
+): string => {
+  if (typeof content === "string") {
+    return escapeHtml(content);
+  }
+  if (Array.isArray(content)) {
+    const processedChildren = content.map((child) => {
+      // eslint-disable-next-line @typescript-eslint/no-base-to-string
+      const childString = child?.toString() || "";
+      const noNewlines = childString.replace(/\n/g, "");
+      const escaped = escapeHtml(noNewlines);
+      return escaped;
+    });
+    return processedChildren.join("\n");
+  }
+  return "";
+};
+
+/**
+ * Renders a Markdoc node tree into an HTML string.
+ */
 const render = (node: RenderableTreeNodes): string => {
+  // Strings don't require any further processing.
   if (typeof node === "string") return node;
 
+  // If node is an array, join the rendered children.
   if (Array.isArray(node)) return node.map(render).join("");
 
+  // Fallback for null or non-objects.
   if (node === null || typeof node !== "object") return "";
 
+  // Destructure properties.
   const { name, attributes, children = [] } = node;
 
+  // If there’s no tag name, directly render the children.
   if (!name) return render(children);
 
-  const getOutput = () => {
-    // Add attributes to tag
-    const attributesList = Object.entries(attributes ?? {}).reduce(
-      (previous, [key, value]) =>
-        `${previous} ${key}="${escapeHtml(String(value))}"`,
-      ""
-    );
-    const openingTag = `<${name}${attributesList}`;
+  // Ensure the tag name is a string.
+  // eslint-disable-next-line @typescript-eslint/no-base-to-string
+  const tagName = String(name);
+  // Process tag attributes and escape their values.
+  const attributesList = Object.entries(attributes ?? {}).reduce(
+    (accumulator, [key, value]) =>
+      accumulator + ` ${key}="${escapeHtml(String(value))}"`,
+    "",
+  );
+  const openingTag = `<${tagName}${attributesList}`;
 
-    // Return only the opening tag if the tag is void (can't have content)
-    if (voidElements.has(name.toString())) return `${openingTag} />`;
+  // For void (self‑closing) elements.
+  if (voidElements.has(tagName)) return `${openingTag} />`;
 
-    if (typeof children === "number" || typeof children === "boolean")
-      return `${openingTag}></${name}>`;
+  // If children is a number or boolean, return an empty content element.
+  if (typeof children === "number" || typeof children === "boolean")
+    return `${openingTag}></${tagName}>`;
 
-    // If the node has actual children, process them
-    if (children?.length) {
-      const escapeChildrenToString = (
-        arrayOfChildren:
-          | string
-          | {
-              [key: string]: Scalar;
-            }
-          | RenderableTreeNode[]
-      ): string => {
-        if (typeof arrayOfChildren === "string")
-          return escapeMarkdocBrackets(arrayOfChildren);
-        if (Array.isArray(arrayOfChildren)) {
-          return arrayOfChildren
-            .map((child) =>
-              escapeMarkdocBrackets(
-                child?.toString().replace("\n", "") || "" // Don't break the string in the middle // Make sure we end up with strings, not null or undefined
-              )
-            )
-            .join("\n"); // Put the line breaks back in
-        }
-        return "";
-      };
-      if (name === "code") {
-        return `${openingTag}>${escapeChildrenToString(children)}</${name}>`;
-      }
-      if (name === "pre") {
-        return `${openingTag}><code>${escapeChildrenToString(children)}</code></${name}>`;
-      } else return `${openingTag}>${render(children)}</${name}>`;
+  // Process children.
+  if (children && (Array.isArray(children) ? children.length : true)) {
+    // Code elements don't need further processing
+    // Just escape characters Svelte brackets
+    if (tagName === "code") {
+      return `${openingTag}>${escapeChildrenToString(children)}</${tagName}>`;
     }
+    // Pre elements are like code elements, just with an extra added tag
+    if (tagName === "pre") {
+      return `${openingTag}><code>${escapeChildrenToString(children)}</code></${tagName}>`;
+    }
+    // Other elements need their children recursively rendered
+    return `${openingTag}>${render(children)}</${tagName}>`;
+  }
 
-    return `${openingTag}></${name}>`;
-  };
-
-  return getOutput();
+  // Fallback for no children.
+  return `${openingTag}></${tagName}>`;
 };
 
 export default render;
