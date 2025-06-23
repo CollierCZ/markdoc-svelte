@@ -41,6 +41,18 @@ export default tseslint.config(
     },
   },
   {
+    settings: {
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+
+          // Multiple tsconfigs/jsconfigs (Useful for monorepos, but discouraged in favor of `references` supported)
+          project: "packages/*/{ts,js}config.json",
+        },
+      },
+    },
+  },
+  {
     files: ["**/*.svelte", "**/*.svelte.js"],
     languageOptions: {
       parser: svelteParser,
@@ -58,5 +70,5 @@ export default tseslint.config(
       "**/dist",
       "**/node_modules",
     ],
-  },
+  }
 );
