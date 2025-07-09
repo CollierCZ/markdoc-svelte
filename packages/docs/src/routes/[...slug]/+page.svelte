@@ -13,7 +13,9 @@
 <div
   class="grid grid-cols-1 md:grid-cols-[200px_minmax(900px,_1fr)_100px] gap-8 max-w-4xl mx-auto pt-6 px-6 md:px-0"
 >
-  <Sidebar />
+  <div class="hidden md:block">
+    <Sidebar />
+  </div>
   <div class="prose">
     <h1>{title}</h1>
     <data.page.default />
