@@ -10,8 +10,8 @@
 </svelte:head>
 
 
-<div class="grid h-screen place-items-center">
-  <div>
+<div class="grid h-screen place-items-center pb-32">
+  <div class="grid place-items-center px-4 md:px-0">
     <h1 class="font-extrabold text-4xl">{title}</h1>
     <div class="prose">
       <data.page.default />
