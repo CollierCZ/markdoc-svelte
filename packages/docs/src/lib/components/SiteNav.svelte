@@ -7,11 +7,14 @@
   let { isOpen = $bindable() }: { isOpen: boolean } = $props();
 
   const closeNav = () => {
-    isOpen = false;
+    // On smaller screens, hide the nav to emphasize new page
+    if (!medium.current) {
+      isOpen = false;
+    }
   };
 </script>
 
-<nav class={["max-w-sm", medium ? !isOpen && "hidden" :"hidden"]}>
+<nav class={["max-w-sm", !isOpen && "hidden"]}>
   {#await getNavigationItems() then navItems}
     <ul
       class="[&_a]:underline [&_a]:hover:no-underline [&_a]:focus:no-underline"
