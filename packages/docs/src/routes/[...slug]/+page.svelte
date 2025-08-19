@@ -2,9 +2,11 @@
   import type { PageProps } from "./$types";
 
   import Sidebar from "$lib/components/Sidebar.svelte";
+  import TableOfContents from "$lib/components/TableOfContents.svelte";
 
   let { data }: PageProps = $props();
   const title = $derived(data.page.frontmatter?.title ?? "A great page");
+  console.log(data.page)
 </script>
 
 <svelte:head>
@@ -19,5 +21,8 @@
   <div class="prose">
     <h1>{title}</h1>
     <data.page.default />
+  </div>
+  <div class="hidden md:block">
+    <TableOfContents headings={data.page.headings} />
   </div>
 </div>

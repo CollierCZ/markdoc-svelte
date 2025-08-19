@@ -1,5 +1,6 @@
 <script lang="ts">
   import { MediaQuery } from "svelte/reactivity";
+
   import SiteNav from "./SiteNav.svelte";
 
   const medium = new MediaQuery("min-width: 768px");
