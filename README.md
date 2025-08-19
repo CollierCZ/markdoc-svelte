@@ -73,10 +73,9 @@ Dynamically import all files in the directory using a catchall route at `src/rou
 
 ```typescript
 import { error } from "@sveltejs/kit";
-import type { PageLoad } from "./$types";
 import type { MarkdocModule } from "markdoc-svelte";
 
-export const load: PageLoad = async ({ params }) => {
+export const load = async ({ params }) => {
   const slug = params.catchall;
   try {
     const page = (await import(`$lib/markdown/${slug}.md`)) as MarkdocModule;
@@ -91,9 +90,7 @@ Render the imported file as a Svelte component in a file at `src/routes/[...catc
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
 </script>
 
 <svelte:head>
@@ -124,9 +121,7 @@ Get it from the data you defined in `+page.ts`:
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
 </script>
 
 <svelte:head>
@@ -536,9 +531,7 @@ Use this list to generate a table of contents for the page, as in the following 
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
   const { frontmatter, headings } = data.page;
 
   // Filter only h1 and h2 headings
@@ -574,11 +567,9 @@ Add the following to `src/routes/blog/+page.ts`:
 ```typescript
 import type { MarkdocModule } from "markdoc-svelte";
 
-import type { PageLoad } from "./$types";
-
 const markdownModules = import.meta.glob("$lib/markdown/*.md");
 
-export const load: PageLoad = async () => {
+export const load = async () => {
   const content = await Promise.all(
     Object.values(markdownModules).map(async (importModule) => {
       // Dynamically import each module
@@ -588,7 +579,7 @@ export const load: PageLoad = async () => {
         slug: module.slug,
         frontmatter: module.frontmatter,
       };
-    }),
+    })
   );
   return { content };
 };
@@ -598,9 +589,7 @@ Then use this data to build an index page at `src/routes/blog/+page.svelte`:
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
   const { content } = data;
 </script>
 
