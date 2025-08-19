@@ -1,3 +1,4 @@
+/** @type {import('@markdoc/markdoc').Config['tags']} */
 export default {
   preferenceTag: {
     render: "JavaScriptTag",

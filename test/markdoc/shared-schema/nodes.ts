@@ -8,4 +8,4 @@ export default {
     },
     children: Markdoc.nodes.heading.children,
   },
-};
+} satisfies Markdoc.Config["nodes"];
