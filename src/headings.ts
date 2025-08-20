@@ -29,8 +29,8 @@ const getTextContent = (children: RenderableTreeNode[]): string => {
 };
 
 const getSlug = (
-	attributes: Record<string, any>, // eslint-disable-line @typescript-eslint/no-explicit-any
-	children: RenderableTreeNode[],
+  attributes: Record<string, any>, // eslint-disable-line @typescript-eslint/no-explicit-any
+  children: RenderableTreeNode[],
 ): string => {
   if (attributes.id && typeof attributes.id === "string") {
     return attributes.id;

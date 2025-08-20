@@ -144,7 +144,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       const fullConfig: Config = {
         // Start with base config loaded from the schema directory
         // Explicitly set options overwrite the base config
-        // For example, this processor's heading comes first so it's overwritten 
+        // For example, this processor's heading comes first so it's overwritten
         nodes: { heading, ...configFromSchema.nodes, ...nodes },
         tags: { ...configFromSchema.tags, ...tags },
         functions: { ...configFromSchema.functions, ...functions },
