@@ -579,7 +579,7 @@ export const load = async () => {
         slug: module.slug,
         frontmatter: module.frontmatter,
       };
-    })
+    }),
   );
   return { content };
 };

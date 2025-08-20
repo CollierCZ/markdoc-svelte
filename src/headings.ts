@@ -1,4 +1,5 @@
-import type { RenderableTreeNode, Tag } from "@markdoc/markdoc";
+import { Tag } from "@markdoc/markdoc";
+import type { RenderableTreeNode } from "@markdoc/markdoc";
 import slugify from "slugify";
 
 export interface Heading {
@@ -16,6 +17,26 @@ export interface Heading {
   id?: string;
 }
 
+const getTextContent = (children: RenderableTreeNode[]): string => {
+  return children.reduce((text: string, child): string => {
+    if (typeof child === "string" || typeof child === "number") {
+      return text + child;
+    } else if (typeof child === "object" && Tag.isTag(child)) {
+      return text + getTextContent(child.children);
+    }
+    return text;
+  }, "");
+};
+
+const getSlug = (tag: Tag): string => {
+  if (tag.attributes.id && typeof tag.attributes.id === "string") {
+    return tag.attributes.id;
+  }
+  return slugify(getTextContent(tag.children), {
+    lower: true,
+    strict: true,
+  }) as string;
+};
 /**
  * Recursively collects all heading nodes from a Markdoc AST
  * @param node - The Markdoc AST node to process
@@ -37,16 +58,11 @@ export function collectHeadings(
   if (typeof node === "object" && node !== null && "name" in node) {
     const tag = node as Tag;
     if (tag.name.match(/^h\d$/)) {
-      const title = tag.children[0];
-      if (typeof title === "string") {
-        sections.push({
-          level: parseInt(tag.name[1]),
-          title,
-          id:
-            (tag.attributes.id as string) ||
-            (slugify(title, { lower: true, strict: true }) as string),
-        });
-      }
+      sections.push({
+        level: parseInt(tag.name[1]),
+        title: getTextContent(tag.children),
+        id: getSlug(tag),
+      });
     }
 
     // Handle node children
