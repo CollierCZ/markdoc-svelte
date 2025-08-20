@@ -1,5 +1,5 @@
 import { Tag } from "@markdoc/markdoc";
-import type { RenderableTreeNode } from "@markdoc/markdoc";
+import type { RenderableTreeNode, Schema } from "@markdoc/markdoc";
 import slugify from "slugify";
 
 export interface Heading {
@@ -28,11 +28,14 @@ const getTextContent = (children: RenderableTreeNode[]): string => {
   }, "");
 };
 
-const getSlug = (tag: Tag): string => {
-  if (tag.attributes.id && typeof tag.attributes.id === "string") {
-    return tag.attributes.id;
+const getSlug = (
+	attributes: Record<string, any>, // eslint-disable-line @typescript-eslint/no-explicit-any
+	children: RenderableTreeNode[],
+): string => {
+  if (attributes.id && typeof attributes.id === "string") {
+    return attributes.id;
   }
-  return slugify(getTextContent(tag.children), {
+  return slugify(getTextContent(children), {
     lower: true,
     strict: true,
   }) as string;
@@ -61,7 +64,7 @@ export function collectHeadings(
       sections.push({
         level: parseInt(tag.name[1]),
         title: getTextContent(tag.children),
-        id: getSlug(tag),
+        id: getSlug(tag.attributes, tag.children),
       });
     }
 
@@ -75,3 +78,36 @@ export function collectHeadings(
 
   return sections;
 }
+
+export const heading: Schema = {
+  children: ["inline"],
+  attributes: {
+    id: { type: String },
+    level: { type: Number, required: true, default: 1 },
+  },
+  transform(node, config) {
+    const { level, ...attributes } = node.transformAttributes(config);
+    const children = node.transformChildren(config);
+
+    const slug = getSlug(node.attributes, children);
+
+    const render = config.nodes?.heading?.render ?? `h${level}`;
+
+    /**
+     * When the tag has a component as its render option,
+     * add an attribute to collect it as a header
+     * and also the level as a prop, not an HTML attribute.
+     */
+    const tagProps =
+      typeof render === "string"
+        ? { ...attributes, id: slug }
+        : {
+            ...attributes,
+            id: slug,
+            __collectHeading: true,
+            level: level as number,
+          };
+
+    return new Tag(render, tagProps, children);
+  },
+};

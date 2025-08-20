@@ -11,7 +11,7 @@ import {
 } from "./components.ts";
 import { handleValidationErrors } from "./errors.ts";
 import { findFirstDirectory, makePathProjectRelative } from "./files.ts";
-import { collectHeadings } from "./headings.ts";
+import { collectHeadings, heading } from "./headings.ts";
 import log from "./logs.ts";
 import loadPartials from "./partials.ts";
 import render from "./render.ts";
@@ -144,7 +144,8 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       const fullConfig: Config = {
         // Start with base config loaded from the schema directory
         // Explicitly set options overwrite the base config
-        nodes: { ...configFromSchema.nodes, ...nodes },
+        // For example, this processor's heading comes first so it's overwritten 
+        nodes: { heading, ...configFromSchema.nodes, ...nodes },
         tags: { ...configFromSchema.tags, ...tags },
         functions: { ...configFromSchema.functions, ...functions },
         partials: { ...partialsFromSchema, ...partialsFromPartials },
