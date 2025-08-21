@@ -1,3 +1,4 @@
+export { heading as headingNode } from "./headings.ts";
 export { markdocPreprocess } from "./main.ts";
 export type { MarkdocModule } from "./types.ts";
 
