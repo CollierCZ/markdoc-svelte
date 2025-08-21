@@ -19,19 +19,19 @@ import loadSchemas from "./schema.ts";
 import type { Options } from "./types.ts";
 
 const validOptionKeys: (keyof Options)[] = [
-  "extensions",
-  "schema",
-  "nodes",
-  "tags",
-  "variables",
-  "functions",
-  "partials",
-  "components",
-  "layout",
   "comments",
+  "components",
+  "extensions",
+  "functions",
+  "layout",
   "linkify",
+  "nodes",
+  "partials",
+  "schema",
+  "tags",
   "typographer",
   "validationLevel",
+  "variables",
 ];
 
 /**

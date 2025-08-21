@@ -18,40 +18,44 @@ export type ValidationLevel =
  */
 export interface Options {
   /**
+   * Enable adding Markdown comments to your documents.
+   * @default true
+   */
+  comments?: boolean;
+  /**
+   * Specify a directory to import Svelte components to customize Markdoc Nodes and Tags.
+   * Use import paths and aliases that Svelte can resolve.
+   * @default "$lib/components"
+   */
+  components?: string;
+  /**
    * File extensions to preprocess.
    * @default [".mdoc", ".md"]
    */
   extensions?: string[];
-  /**
-   * Specify a directory to import folders or files to use as Markdoc Schemas.
-   * Path is relative to Svelte project root.
-   * @default ["./markdoc", "./src/markdoc"]
-   */
-  schema?: string;
-  /**
-   * Import an object of nodes to use as Markdoc Nodes.
-   * Overwrites nodes with the same name from 'schema' directory.
-   * @default undefined
-   */
-  nodes?: Config["nodes"];
-  /**
-   * Import an object of tags to use as Markdoc Tags.
-   * Overwrites tags with the same name from 'schema' directory.
-   * @default undefined
-   */
-  tags?: Config["tags"];
-  /**
-   * Import an object of variables to use as Markdoc Variables.
-   * Overwrites variables with the same name from 'schema' directory.
-   * @default undefined
-   */
-  variables?: Config["variables"];
   /**
    * Import an object of functions to use as Markdoc Functions.
    * Overwrites functions with the same name from 'schema' directory.
    * @default undefined
    */
   functions?: Config["functions"];
+  /**
+   * Specify a Svelte component to use as a layout for the Markdoc file.
+   * Use import paths and aliases that Svelte can resolve.
+   * @default undefined
+   */
+  layout?: string;
+  /**
+   * Enable autoconvert URL-like text to links.
+   * @default false
+   */
+  linkify?: boolean;
+  /**
+   * Import an object of nodes to use as Markdoc Nodes.
+   * Overwrites nodes with the same name from 'schema' directory.
+   * @default undefined
+   */
+  nodes?: Config["nodes"];
   /**
    * Specify a directory to import files with 'extensions' as Markdoc Partials.
    * Default is to load partials from 'schema' directory.
@@ -61,27 +65,17 @@ export interface Options {
    */
   partials?: string;
   /**
-   * Specify a directory to import Svelte components to customize Markdoc Nodes and Tags.
-   * Use import paths and aliases that Svelte can resolve.
-   * @default "$lib/components"
+   * Specify a directory to import folders or files to use as Markdoc Schemas.
+   * Path is relative to Svelte project root.
+   * @default ["./markdoc", "./src/markdoc"]
    */
-  components?: string;
+  schema?: string;
   /**
-   * Specify a Svelte component to use as a layout for the Markdoc file.
-   * Use import paths and aliases that Svelte can resolve.
+   * Import an object of tags to use as Markdoc Tags.
+   * Overwrites tags with the same name from 'schema' directory.
    * @default undefined
    */
-  layout?: string;
-  /**
-   * Enable adding Markdown comments to your documents.
-   * @default true
-   */
-  comments?: boolean;
-  /**
-   * Enable autoconvert URL-like text to links.
-   * @default false
-   */
-  linkify?: boolean;
+  tags?: Config["tags"];
   /**
    * Enable some language-neutral replacement + quotes beautification.
    * @default false
@@ -92,6 +86,12 @@ export interface Options {
    * @default "error"
    */
   validationLevel?: ValidationLevel;
+  /**
+   * Import an object of variables to use as Markdoc Variables.
+   * Overwrites variables with the same name from 'schema' directory.
+   * @default undefined
+   */
+  variables?: Config["variables"];
 }
 
 /**
