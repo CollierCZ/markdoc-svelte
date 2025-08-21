@@ -1,0 +1,19 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Headings > adds IDs and exports headings even when a custom heading is included 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"This is some basic Markdoc","id":"this-is-some-basic-markdoc"},{"level":1,"title":"More fancy stuff","id":"more-fancy-stuff"}];
+</script>
+<article><h1 class="custom-heading" id="this-is-some-basic-markdoc">This is some basic Markdoc</h1><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><h1 class="custom-heading" id="more-fancy-stuff">More fancy stuff</h1><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
+`;
+
+exports[`Headings > adds IDs and exports headings even when the custom heading is a custom component 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<script>
+	import HeadingComponent from '$lib/components/HeadingComponent.svelte';
+</script>
+<article><HeadingComponent id="this-is-some-basic-markdoc">This is some basic Markdoc</HeadingComponent><p>With a paragraph.</p><p>Some text <strong>in bold</strong> and <em>in italic</em>.</p><p>And a <a href="https://example.com">link</a>.</p><HeadingComponent id="more-fancy-stuff">More fancy stuff</HeadingComponent><p>Some <code>&lt;p&gt;</code> inline code.</p><p>And a code block:</p><pre data-language="javascript"><code>&lcub;&lcub;% test %&rcub;&rcub;</code></pre><p>And even a table with a nested list:</p><table><thead><tr><th>Table header 1</th><th>Table header 2</th></tr></thead><tbody><tr><td><ul><li>Row 1 Cell 1 Item 1</li><li>Row 1 Cell 1 Item 2</li></ul></td><td>Row 1 Cell 2</td></tr><tr><td>Row 2 Cell 1</td><td>Row 2 cell 2</td></tr></tbody></table></article>"
+`;
