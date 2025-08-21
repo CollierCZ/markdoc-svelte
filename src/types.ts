@@ -40,6 +40,11 @@ export interface Options {
    */
   functions?: Config["functions"];
   /**
+   * Whether to add IDs to all headings and generate and export a list of headings.
+   * @default false
+   */
+  headingIds?: boolean;
+  /**
    * Specify a Svelte component to use as a layout for the Markdoc file.
    * Use import paths and aliases that Svelte can resolve.
    * @default undefined

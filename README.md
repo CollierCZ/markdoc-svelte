@@ -16,6 +16,7 @@ Use Markdoc defaults out of the box or configure Markdoc schema to your needs.
   - [Relative imports](#relative-imports)
 - [Preprocessor Options](#preprocessor-options)
   - [Functions](#functions)
+  - [Heading IDs](#heading-ids)
   - [Nodes](#nodes)
   - [Partials](#partials)
   - [Tags](#tags)
@@ -270,6 +271,7 @@ const config = {
 | `components`      | string              | `"$lib/components"`              | Svelte components directory for custom nodes and tags                     |
 | `extensions`      | string[]            | `[".mdoc", ".md"]`               | Files to process with Markdoc                                             |
 | `functions`       | Config['functions'] | -                                | [Functions config](#functions)                                            |
+| `headingIds`      | boolean             | `false`                          | Add IDs to headings without them and include them in export               |
 | `layout`          | string              | -                                | Default layout for all processed Markdown files                           |
 | `linkify`         | boolean             | `false`                          | Auto-convert bare URLs to links                                           |
 | `nodes`           | Config['nodes']     | -                                | [Nodes config](#nodes)                                                    |
@@ -312,6 +314,16 @@ title: Hello World
 
 This is a {% uppercase(markdown) %} file that is processed by `markdoc-svelte`.
 ```
+
+### Heading IDs
+
+If you want to build a table of contents for a page or just have links to specific headings, set `headingIds` to `true.
+You can add your own IDs in the original file with [annotations](https://markdoc.dev/docs/syntax#annotations)
+or they are generated automatically.
+Each heading element in the generated HTML has an `id` attribute you can use to link to directly.
+
+Each page then also exports a `headings` property: a list of all headings with their text, level, and ID.
+Use the list to generate a [table of contents](#page-table-of-contents).
 
 ### Nodes
 
@@ -525,8 +537,8 @@ See the example [custom node](#nodes).
 
 ### Page table of contents
 
-Each proccessed page automatically exports a `headings` property with all headings on the page and IDs for each.
-Add IDs with [annotations](https://markdoc.dev/docs/syntax#annotations) or they are generated automatically.
+When you have the [`headingIds` option](#heading-ids) set to `true`,
+each proccessed page automatically exports a `headings` property with all headings on the page and IDs for each.
 Use this list to generate a table of contents for the page, as in the following example:
 
 ```svelte
@@ -534,7 +546,7 @@ Use this list to generate a table of contents for the page, as in the following 
   let { data } = $props();
   const { frontmatter, headings } = data.page;
 
-  // Filter only h1 and h2 headings
+  // Include only h1 and h2 headings
   const filteredHeadings = headings?.filter((heading) => heading.level <= 2) ?? [];
 </script>
 

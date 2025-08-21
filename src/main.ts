@@ -23,6 +23,7 @@ const validOptionKeys: (keyof Options)[] = [
   "components",
   "extensions",
   "functions",
+  "headingIds",
   "layout",
   "linkify",
   "nodes",
@@ -67,6 +68,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   const componentsPath = options.components || "$lib/components";
   const layoutPath = options.layout;
   const allowComments = options.comments ?? true;
+  const processHeadings = options.headingIds ?? false;
   const linkify = options.linkify ?? false;
   const typographer = options.typographer ?? false;
   const validationLevel = options.validationLevel || "error";
@@ -144,8 +146,13 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       const fullConfig: Config = {
         // Start with base config loaded from the schema directory
         // Explicitly set options overwrite the base config
-        // For example, this processor's heading comes first so it's overwritten
-        nodes: { heading, ...configFromSchema.nodes, ...nodes },
+        // For example, if processing headings,
+        // This processor's heading comes first so it's overwritten
+        nodes: {
+          ...(processHeadings ? { heading } : {}), // Only include if passed as option
+          ...configFromSchema.nodes,
+          ...nodes,
+        },
         tags: { ...configFromSchema.tags, ...tags },
         functions: { ...configFromSchema.functions, ...functions },
         partials: { ...partialsFromSchema, ...partialsFromPartials },
@@ -166,7 +173,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       const transformedContent = await Markdoc.transform(ast, fullConfig);
 
       // --- Collect headings from transformed content ---
-      const headings = collectHeadings(transformedContent);
+      const headings = processHeadings
+        ? collectHeadings(transformedContent)
+        : [];
 
       // Render Markdoc AST to Svelte
       const svelteContent = render(transformedContent);
