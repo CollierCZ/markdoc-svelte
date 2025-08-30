@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import type { Options } from "../src/types.ts";
 import type { Processed } from "svelte/compiler";
 
-import { basicMarkdoc } from "./constants.ts";
+import { markdocWithHeadings } from "./constants.ts";
 import basicHeadingNode from "./markdoc/heading-tests/basicHeading.ts";
 import customComponentNode from "./markdoc/heading-tests/customComponentHeading.ts";
 
@@ -14,7 +14,7 @@ describe("Headings", () => {
       headingIds: true,
       nodes: { heading: basicHeadingNode.heading },
     } as Options).markup!({
-      content: basicMarkdoc,
+      content: markdocWithHeadings,
       filename: "test.md",
     })) as Processed;
 
@@ -26,7 +26,7 @@ describe("Headings", () => {
       headingIds: true,
       nodes: { heading: customComponentNode.heading },
     } as Options).markup!({
-      content: basicMarkdoc,
+      content: markdocWithHeadings,
       filename: "test.md",
     })) as Processed;
 

@@ -58,20 +58,36 @@ export function collectHeadings(
   }
 
   // Handle single node
-  if (typeof node === "object" && node !== null && "name" in node) {
-    const tag = node as Tag;
-    if (tag.name.match(/^h\d$/)) {
+  if (typeof node === "object" && node !== null) {
+    // Handle headings passed as custom components
+    if (
+      node.attributes?.__collectHeading === true &&
+      typeof node.attributes?.level === "number"
+    ) {
       sections.push({
-        level: parseInt(tag.name[1]),
-        title: getTextContent(tag.children),
-        id: getSlug(tag.attributes, tag.children),
+        level: node.attributes?.level,
+        title: getTextContent(node.children),
+        id: getSlug(node.attributes, node.children),
       });
     }
 
-    // Handle node children
-    if (tag.children) {
-      for (const child of tag.children) {
-        collectHeadings(child, sections);
+    if ("name" in node) {
+      const tag = node as Tag;
+
+      // Handle basic headings
+      if (tag.name.match(/^h\d$/)) {
+        sections.push({
+          level: parseInt(tag.name[1]),
+          title: getTextContent(tag.children),
+          id: getSlug(tag.attributes, tag.children),
+        });
+      }
+
+      // Handle node children
+      if (tag.children) {
+        for (const child of tag.children) {
+          collectHeadings(child, sections);
+        }
       }
     }
   }
@@ -94,6 +110,8 @@ export const heading: Schema = {
     const render = config.nodes?.heading?.render ?? `h${level}`;
 
     /**
+     * TODO: THis doesn't work because render is a string even for custom components
+     * 
      * When the tag has a component as its render option,
      * add an attribute to collect it as a header
      * and also the level as a prop, not an HTML attribute.
