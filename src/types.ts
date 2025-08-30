@@ -43,7 +43,7 @@ export interface Options {
    * Whether to add IDs to all headings and generate and export a list of headings.
    * @default false
    */
-  headingIds?: boolean;
+  headingIds?: boolean | SluggerType;
   /**
    * Specify a Svelte component to use as a layout for the Markdoc file.
    * Use import paths and aliases that Svelte can resolve.
@@ -119,4 +119,10 @@ export interface MarkdocModule {
    * Optional list of headings from the Markdoc file.
    */
   headings?: Heading[];
+}
+
+export type SluggerType = ((value: string) => string)
+
+export interface MarkdocSvelteConfig extends Config {
+  headingSlugger?: SluggerType
 }

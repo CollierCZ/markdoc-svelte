@@ -1,7 +1,8 @@
 import { basename, extname } from "path";
 
 import Markdoc from "@markdoc/markdoc";
-import type { Config, ParserArgs } from "@markdoc/markdoc";
+import type { ParserArgs } from "@markdoc/markdoc";
+import slug from "slug";
 import type { PreprocessorGroup } from "svelte/compiler";
 import YAML from "yaml";
 
@@ -11,12 +12,12 @@ import {
 } from "./components.ts";
 import { handleValidationErrors } from "./errors.ts";
 import { findFirstDirectory, makePathProjectRelative } from "./files.ts";
-import { collectHeadings, heading } from "./headings.ts";
+import { collectHeadings, heading, type Heading } from "./headings.ts";
 import log from "./logs.ts";
 import loadPartials from "./partials.ts";
 import render from "./render.ts";
 import loadSchemas from "./schema.ts";
-import type { Options } from "./types.ts";
+import type { MarkdocSvelteConfig, Options } from "./types.ts";
 
 const validOptionKeys: (keyof Options)[] = [
   "comments",
@@ -45,7 +46,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   for (const key in options) {
     if (!validOptionKeys.includes(key as keyof Options)) {
       log.warn(
-        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`,
+        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`
       );
     }
   }
@@ -69,6 +70,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   const layoutPath = options.layout;
   const allowComments = options.comments ?? true;
   const processHeadings = options.headingIds ?? false;
+  // If passed `true`, use the default for slugging headings
+  // Otherwise, use the passed function
+  const headingSlugger = typeof processHeadings === "boolean" ? slug : processHeadings;
   const linkify = options.linkify ?? false;
   const typographer = options.typographer ?? false;
   const validationLevel = options.validationLevel || "error";
@@ -117,9 +121,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
 
       // Prepare to load schemas & partials
       const dependencies: string[] = [];
-      let configFromSchema: Config = {};
-      let partialsFromSchema: Config["partials"] = {};
-      let partialsFromPartials: Config["partials"] = {};
+      let configFromSchema: MarkdocSvelteConfig = {};
+      let partialsFromSchema: MarkdocSvelteConfig["partials"] = {};
+      let partialsFromPartials: MarkdocSvelteConfig["partials"] = {};
 
       // Discover optional schema directory
       const schemaDir = findFirstDirectory(schemaPaths);
@@ -143,7 +147,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       }
 
       // Assemble full config
-      const fullConfig: Config = {
+      const fullConfig: MarkdocSvelteConfig = {
         // Start with base config loaded from the schema directory
         // Explicitly set options overwrite the base config
         // For example, if processing headings,
@@ -158,6 +162,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         partials: { ...partialsFromSchema, ...partialsFromPartials },
         // Make $frontmatter available as variable
         variables: { ...configFromSchema.variables, ...variables, frontmatter },
+        headingSlugger
       };
 
       // Validate Markdoc AST
@@ -172,10 +177,14 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       // eslint-disable-next-line @typescript-eslint/await-thenable
       const transformedContent = await Markdoc.transform(ast, fullConfig);
 
-      // --- Collect headings from transformed content ---
-      const headings = processHeadings
-        ? collectHeadings(transformedContent)
-        : [];
+      // Collect headings from transformed content
+      const getHeadings = (): Heading[] => {
+        if (processHeadings) {
+          return collectHeadings(transformedContent, headingSlugger);
+        }
+        return [];
+      };
+      const headings = getHeadings()
 
       // Render Markdoc AST to Svelte
       const svelteContent = render(transformedContent);
@@ -203,7 +212,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         extractUsedSvelteComponents(transformedContent);
       const componentImportStatements = getComponentImports(
         usedSvelteComponentNames,
-        componentsPath,
+        componentsPath
       );
 
       // Construct script tag content

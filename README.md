@@ -265,22 +265,22 @@ const config = {
 
 ## Preprocessor Options
 
-| Option            | Type                | Default                          | Description                                                               |
-| ----------------- | ------------------- | -------------------------------- | ------------------------------------------------------------------------- |
-| `comments`        | boolean             | `true`                           | Enable [Markdown comments](https://spec.commonmark.org/0.30/#example-624) |
-| `components`      | string              | `"$lib/components"`              | Svelte components directory for custom nodes and tags                     |
-| `extensions`      | string[]            | `[".mdoc", ".md"]`               | Files to process with Markdoc                                             |
-| `functions`       | Config['functions'] | -                                | [Functions config](#functions)                                            |
-| `headingIds`      | boolean             | `false`                          | Add IDs to headings without them and include them in export               |
-| `layout`          | string              | -                                | Default layout for all processed Markdown files                           |
-| `linkify`         | boolean             | `false`                          | Auto-convert bare URLs to links                                           |
-| `nodes`           | Config['nodes']     | -                                | [Nodes config](#nodes)                                                    |
-| `partials`        | string              | -                                | [Partials](#partials) directory path                                      |
-| `schema`          | string              | `["./markdoc", "./src/markdoc"]` | Schema directory path                                                     |
-| `tags`            | Config['tags']      | -                                | [Tags config](#tags)                                                      |
-| `typographer`     | boolean             | `false`                          | Enable [typography replacements](#typographer)                            |
-| `validationLevel` | ValidationLevel     | `"error"`                        | [Validation strictness level](#validation-level)                          |
-| `variables`       | Config['variables'] | -                                | [Variables config](#variables)                                            |
+| Option            | Type                                     | Default                          | Description                                                               |
+| ----------------- | ---------------------------------------- | -------------------------------- | ------------------------------------------------------------------------- |
+| `comments`        | boolean                                  | `true`                           | Enable [Markdown comments](https://spec.commonmark.org/0.30/#example-624) |
+| `components`      | string                                   | `"$lib/components"`              | Svelte components directory for custom nodes and tags                     |
+| `extensions`      | string[]                                 | `[".mdoc", ".md"]`               | Files to process with Markdoc                                             |
+| `functions`       | Config['functions']                      | -                                | [Functions config](#functions)                                            |
+| `headingIds`      | boolean \| `((value: string) => string)` | `false`                          | Add IDs to headings without them and include them in export               |
+| `layout`          | string                                   | -                                | Default layout for all processed Markdown files                           |
+| `linkify`         | boolean                                  | `false`                          | Auto-convert bare URLs to links                                           |
+| `nodes`           | Config['nodes']                          | -                                | [Nodes config](#nodes)                                                    |
+| `partials`        | string                                   | -                                | [Partials](#partials) directory path                                      |
+| `schema`          | string                                   | `["./markdoc", "./src/markdoc"]` | Schema directory path                                                     |
+| `tags`            | Config['tags']                           | -                                | [Tags config](#tags)                                                      |
+| `typographer`     | boolean                                  | `false`                          | Enable [typography replacements](#typographer)                            |
+| `validationLevel` | ValidationLevel                          | `"error"`                        | [Validation strictness level](#validation-level)                          |
+| `variables`       | Config['variables']                      | -                                | [Variables config](#variables)                                            |
 
 ### Functions
 
@@ -324,6 +324,28 @@ Each heading element in the generated HTML has an `id` attribute you can use to 
 
 Each page then also exports a `headings` property: a list of all headings with their text, level, and ID.
 Use the list to generate a [table of contents](#page-table-of-contents).
+
+#### Custom ID Creation (Slugifying Function)
+
+By default, the preprocessor uses the [`slug` package](https://www.npmjs.com/package/slug).
+If you have requirements for ID creation, pass a function to the `headingIds` option.
+This function is used to generate the IDs.
+
+```javascript
+import { markdocPreprocess } from "markdoc-svelte";
+
+const customSlugger = (str: string): string => str.replaceAll(/[^a-z]/gi, "-");
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".svelte", ".mdoc"],
+  preprocess: [
+    markdocPreprocess({
+      headingIds: customSlugger,
+    }),
+  ],
+};
+```
 
 ### Nodes
 
@@ -591,7 +613,7 @@ export const load = async () => {
         slug: module.slug,
         frontmatter: module.frontmatter,
       };
-    }),
+    })
   );
   return { content };
 };

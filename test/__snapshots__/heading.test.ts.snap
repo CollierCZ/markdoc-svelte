@@ -17,3 +17,19 @@ exports[`Headings > adds IDs and exports headings even when the custom heading i
 </script>
 <article><HeadingComponent id="this-is-some-basic-markdoc">This is some basic Markdoc</HeadingComponent><p>With a paragraph.</p><HeadingComponent id="more-fancy-stuff">More fancy stuff</HeadingComponent><p>Content. Such great content.</p></article>"
 `;
+
+exports[`Headings > adds IDs when passed a custom slugifying function 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"This is some basic Markdoc","id":"This-is-some-basic-Markdoc"},{"level":2,"title":"More fancy stuff","id":"More-fancy-stuff"}];
+</script>
+<article><h1 id="This-is-some-basic-Markdoc">This is some basic Markdoc</h1><p>With a paragraph.</p><h2 id="More-fancy-stuff">More fancy stuff</h2><p>Content. Such great content.</p></article>"
+`;
+
+exports[`Headings > adds IDs when passed a custom slugifying function even for custom headings 1`] = `
+"<script module>
+	export const slug = "test";
+	export const headings = [{"level":1,"title":"This is some basic Markdoc","id":"This-is-some-basic-Markdoc"},{"level":1,"title":"More fancy stuff","id":"More-fancy-stuff"}];
+</script>
+<article><h1 class="custom-heading" id="This-is-some-basic-Markdoc">This is some basic Markdoc</h1><p>With a paragraph.</p><h1 class="custom-heading" id="More-fancy-stuff">More fancy stuff</h1><p>Content. Such great content.</p></article>"
+`;

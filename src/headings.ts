@@ -1,6 +1,7 @@
 import { Tag } from "@markdoc/markdoc";
 import type { RenderableTreeNode, Schema } from "@markdoc/markdoc";
-import slugify from "slugify";
+
+import type { MarkdocSvelteConfig, SluggerType } from "./types.ts";
 
 export interface Heading {
   /**
@@ -29,16 +30,14 @@ const getTextContent = (children: RenderableTreeNode[]): string => {
 };
 
 const getSlug = (
+  sluggifier: SluggerType,
   attributes: Record<string, any>, // eslint-disable-line @typescript-eslint/no-explicit-any
   children: RenderableTreeNode[],
 ): string => {
   if (attributes.id && typeof attributes.id === "string") {
     return attributes.id;
   }
-  return slugify(getTextContent(children), {
-    lower: true,
-    strict: true,
-  }) as string;
+  return sluggifier(getTextContent(children));
 };
 /**
  * Recursively collects all heading nodes from a Markdoc AST
@@ -47,12 +46,13 @@ const getSlug = (
  */
 export function collectHeadings(
   node: RenderableTreeNode | RenderableTreeNode[],
+  sluggifier: SluggerType,
   sections: Heading[] = [],
 ): Heading[] {
   // Handle array of nodes
   if (Array.isArray(node)) {
     for (const child of node) {
-      sections.push(...collectHeadings(child));
+      sections.push(...collectHeadings(child, sluggifier));
     }
     return sections;
   }
@@ -67,7 +67,7 @@ export function collectHeadings(
       sections.push({
         level: node.attributes?.level,
         title: getTextContent(node.children),
-        id: getSlug(node.attributes, node.children),
+        id: getSlug(sluggifier, node.attributes, node.children),
       });
     }
 
@@ -79,14 +79,14 @@ export function collectHeadings(
         sections.push({
           level: parseInt(tag.name[1]),
           title: getTextContent(tag.children),
-          id: getSlug(tag.attributes, tag.children),
+          id: getSlug(sluggifier, tag.attributes, tag.children),
         });
       }
 
       // Handle node children
       if (tag.children) {
         for (const child of tag.children) {
-          collectHeadings(child, sections);
+          collectHeadings(child, sluggifier, sections);
         }
       }
     }
@@ -101,11 +101,11 @@ export const heading: Schema = {
     id: { type: String },
     level: { type: Number, required: true, default: 1 },
   },
-  transform(node, config) {
+  transform(node, config: MarkdocSvelteConfig) {
     const { level, ...attributes } = node.transformAttributes(config);
     const children = node.transformChildren(config);
 
-    const slug = getSlug(node.attributes, children);
+    const slug = getSlug(config.headingSlugger, node.attributes, children);
 
     const render = config.nodes?.heading?.render ?? `h${level}`;
 
