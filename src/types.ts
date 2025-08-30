@@ -121,8 +121,8 @@ export interface MarkdocModule {
   headings?: Heading[];
 }
 
-export type SluggerType = ((value: string) => string)
+export type SluggerType = (value: string) => string;
 
 export interface MarkdocSvelteConfig extends Config {
-  headingSlugger?: SluggerType
+  headingSlugger?: SluggerType;
 }

@@ -110,8 +110,6 @@ export const heading: Schema = {
     const render = config.nodes?.heading?.render ?? `h${level}`;
 
     /**
-     * TODO: THis doesn't work because render is a string even for custom components
-     * 
      * When the tag has a component as its render option,
      * add an attribute to collect it as a header
      * and also the level as a prop, not an HTML attribute.

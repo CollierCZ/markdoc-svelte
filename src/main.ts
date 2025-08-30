@@ -46,7 +46,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   for (const key in options) {
     if (!validOptionKeys.includes(key as keyof Options)) {
       log.warn(
-        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`
+        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`,
       );
     }
   }
@@ -72,7 +72,8 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   const processHeadings = options.headingIds ?? false;
   // If passed `true`, use the default for slugging headings
   // Otherwise, use the passed function
-  const headingSlugger = typeof processHeadings === "boolean" ? slug : processHeadings;
+  const headingSlugger =
+    typeof processHeadings === "boolean" ? slug : processHeadings;
   const linkify = options.linkify ?? false;
   const typographer = options.typographer ?? false;
   const validationLevel = options.validationLevel || "error";
@@ -162,7 +163,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         partials: { ...partialsFromSchema, ...partialsFromPartials },
         // Make $frontmatter available as variable
         variables: { ...configFromSchema.variables, ...variables, frontmatter },
-        headingSlugger
+        headingSlugger,
       };
 
       // Validate Markdoc AST
@@ -184,7 +185,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         }
         return [];
       };
-      const headings = getHeadings()
+      const headings = getHeadings();
 
       // Render Markdoc AST to Svelte
       const svelteContent = render(transformedContent);
@@ -212,7 +213,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         extractUsedSvelteComponents(transformedContent);
       const componentImportStatements = getComponentImports(
         usedSvelteComponentNames,
-        componentsPath
+        componentsPath,
       );
 
       // Construct script tag content
