@@ -105,7 +105,9 @@ export const heading: Schema = {
     const { level, ...attributes } = node.transformAttributes(config);
     const children = node.transformChildren(config);
 
-    const slug = getSlug(config.headingSlugger, node.attributes, children);
+    const slug = config.headingSlugger
+      ? getSlug(config.headingSlugger, node.attributes, children)
+      : getTextContent(children);
 
     const render = config.nodes?.heading?.render ?? `h${level}`;
 
