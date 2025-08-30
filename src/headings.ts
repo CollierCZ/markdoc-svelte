@@ -65,7 +65,7 @@ export function collectHeadings(
       typeof node.attributes?.level === "number"
     ) {
       sections.push({
-        level: node.attributes?.level,
+        level: node.attributes?.level as number,
         title: getTextContent(node.children),
         id: getSlug(sluggifier, node.attributes, node.children),
       });
