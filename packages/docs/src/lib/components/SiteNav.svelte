@@ -1,6 +1,7 @@
 <script lang="ts">
   import { MediaQuery } from "svelte/reactivity";
 
+  import { resolve } from "$app/paths";
   import { navStyles } from "$lib/utils/classConst";
   import { getNavigationItems } from "$lib/utils/getNavigationItems";
   import { removeNumbersFromNavLinks } from "$lib/utils/handleNavNumbers";
@@ -29,8 +30,9 @@
                 <li>
                   <a
                     onclick={closeNav}
-                    href={`/docs/${removeNumbersFromNavLinks(childPath)}`}
-                    >{childData.title}</a
+                    href={resolve(
+                      `/docs/${removeNumbersFromNavLinks(childPath)}`
+                    )}>{childData.title}</a
                   >
                 </li>
               {/each}
@@ -40,7 +42,7 @@
           <li>
             <a
               onclick={closeNav}
-              href={`/docs/${removeNumbersFromNavLinks(itemPath)}`}
+              href={resolve(`/docs/${removeNumbersFromNavLinks(itemPath)}`)}
               >{itemData.title}</a
             >
           </li>

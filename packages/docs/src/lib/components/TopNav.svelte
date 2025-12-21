@@ -3,6 +3,8 @@
 
   import SiteNav from "./SiteNav.svelte";
 
+  import { resolve } from "$app/paths";
+
   const medium = new MediaQuery("min-width: 768px");
 
   let isOpen = $state(false);
@@ -11,7 +13,7 @@
 <nav
   class="px-6 lg:px-0 py-4 flex justify-between max-w-4xl mx-auto items-center border-b-2"
 >
-  <a class={!medium.current && "hidden"} href="/">Home </a>
+  <a class={!medium.current && "hidden"} href={resolve("/")}>Home </a>
   <button
     class={medium.current && "hidden"}
     onclick={() => {
@@ -26,7 +28,7 @@
     </svg>
   </button>
   <section class="*:pl-2">
-    <a href="/docs/get-started">Docs</a>
+    <a href={resolve("/docs/get-started")}>Docs</a>
     <a href="https://github.com/CollierCZ/markdoc-svelte">GitHub</a>
   </section>
 </nav>
