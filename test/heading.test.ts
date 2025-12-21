@@ -14,7 +14,7 @@ describe("Headings", () => {
   it("adds IDs and exports headings even when a custom heading is included", async () => {
     const result = (await markdocPreprocess({
       headingIds: true,
-      nodes: { heading: basicHeadingNode.heading },
+      nodes: { heading: basicHeadingNode },
     } as Options).markup!({
       content: markdocWithHeadings,
       filename: "test.md",
@@ -26,7 +26,7 @@ describe("Headings", () => {
   it("adds IDs and exports headings even when the custom heading is a custom component", async () => {
     const result = (await markdocPreprocess({
       headingIds: true,
-      nodes: { heading: customComponentNode.heading },
+      nodes: { heading: customComponentNode },
     } as Options).markup!({
       content: markdocWithHeadings,
       filename: "test.md",
@@ -49,7 +49,7 @@ describe("Headings", () => {
   it("adds IDs when passed a custom slugifying function even for custom headings", async () => {
     const result = (await markdocPreprocess({
       headingIds: customSlugger,
-      nodes: { heading: basicHeadingNode.heading },
+      nodes: { heading: basicHeadingNode },
     } as Options).markup!({
       content: markdocWithHeadings,
       filename: "test.md",

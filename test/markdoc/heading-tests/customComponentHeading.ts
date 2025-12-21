@@ -1,12 +1,11 @@
+import type { Schema } from "@markdoc/markdoc";
 import { headingNode } from "../../../src/index.ts";
 
 export default {
-  heading: {
-    render: "HeadingComponent",
-    attributes: {
-      ...headingNode.attributes,
-    },
-    children: headingNode.children,
-    transform: headingNode.transform,
+  render: "HeadingComponent",
+  attributes: {
+    ...headingNode.attributes,
   },
-};
+  children: headingNode.children,
+  transform: headingNode.transform,
+} satisfies Schema;

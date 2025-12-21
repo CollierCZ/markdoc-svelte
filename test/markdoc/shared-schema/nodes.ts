@@ -1,4 +1,6 @@
 import Markdoc from "@markdoc/markdoc";
+import type { Config } from "@markdoc/markdoc";
+
 export default {
   heading: {
     render: "h1",
@@ -8,4 +10,4 @@ export default {
     },
     children: Markdoc.nodes.heading.children,
   },
-} satisfies Markdoc.Config["nodes"];
+} satisfies Config["nodes"];
