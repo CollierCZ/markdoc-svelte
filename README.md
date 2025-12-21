@@ -317,9 +317,9 @@ This is a {% uppercase(markdown) %} file that is processed by `markdoc-svelte`.
 
 ### Heading IDs
 
-If you want to build a table of contents for a page or just have links to specific headings, set `headingIds` to `true.
-You can add your own IDs in the original file with [annotations](https://markdoc.dev/docs/syntax#annotations)
-or they are generated automatically.
+If you want to build a table of contents for a page or just have links to specific headings, set `headingIds` to `true`.
+Add unique IDs in the original file with [annotations](https://markdoc.dev/docs/syntax#annotations)
+or have them generated automatically.
 Each heading element in the generated HTML has an `id` attribute you can use to link to directly.
 
 Each page then also exports a `headings` property: a list of all headings with their text, level, and ID.
@@ -559,7 +559,7 @@ See the example [custom node](#nodes).
 
 ### Page table of contents
 
-When you have the [`headingIds` option](#heading-ids) set to `true`,
+When you have the [`headingIds` option](#heading-ids) enabled,
 each proccessed page automatically exports a `headings` property with all headings on the page and IDs for each.
 Use this list to generate a table of contents for the page, as in the following example:
 
