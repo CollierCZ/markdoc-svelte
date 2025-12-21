@@ -2,6 +2,7 @@ import { error, type HttpError } from "@sveltejs/kit";
 import type { MarkdocModule } from "markdoc-svelte";
 
 import type { PageLoad } from "./$types";
+import { removeNumbersFromNavLinks } from "$lib/utils/handleNavNumbers";
 
 interface Pages {
   [pagePath: string]: () => Promise<MarkdocModule>;
@@ -15,9 +16,9 @@ export const load: PageLoad = async ({ params }) => {
 
     // Find the one that matches the slug in the URL
     const matchingPage = Object.keys(allPages).find((pagePath) => {
-      const slugFromPath = pagePath
-        .replace("/src/content/", "")
-        .replace(".mdoc", "");
+      const slugFromPath = removeNumbersFromNavLinks(
+        pagePath.replace("/src/content/", "").replace(".mdoc", ""),
+      );
       return slug === slugFromPath;
     });
 

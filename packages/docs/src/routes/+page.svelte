@@ -18,7 +18,7 @@
     </div>
     <a
       class="rounded-lg bg-green-100 p-4 text-green-900"
-      href="/docs/01-get-started">Get started</a
+      href="/docs/get-started">Get started</a
     >
   </div>
 </div>

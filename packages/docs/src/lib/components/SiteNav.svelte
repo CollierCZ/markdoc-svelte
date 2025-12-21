@@ -3,6 +3,7 @@
 
   import { navStyles } from "$lib/utils/classConst";
   import { getNavigationItems } from "$lib/utils/getNavigationItems";
+  import { removeNumbersFromNavLinks } from "$lib/utils/handleNavNumbers";
 
   const medium = new MediaQuery("min-width: 768px");
 
@@ -26,7 +27,9 @@
             <ul class="pl-4">
               {#each Object.entries(itemData.children) as [childPath, childData] (childPath)}
                 <li>
-                  <a onclick={closeNav} href={`/docs/${childPath}`}
+                  <a
+                    onclick={closeNav}
+                    href={`/docs/${removeNumbersFromNavLinks(childPath)}`}
                     >{childData.title}</a
                   >
                 </li>
@@ -35,7 +38,10 @@
           </li>
         {:else}
           <li>
-            <a onclick={closeNav} href={`/docs/${itemPath}`}>{itemData.title}</a
+            <a
+              onclick={closeNav}
+              href={`/docs/${removeNumbersFromNavLinks(itemPath)}`}
+              >{itemData.title}</a
             >
           </li>
         {/if}

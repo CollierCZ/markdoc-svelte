@@ -26,7 +26,7 @@
     </svg>
   </button>
   <section class="*:pl-2">
-    <a href="/docs/01-get-started">Docs</a>
+    <a href="/docs/get-started">Docs</a>
     <a href="https://github.com/CollierCZ/markdoc-svelte">GitHub</a>
   </section>
 </nav>
