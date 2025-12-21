@@ -2,6 +2,7 @@
   import { MediaQuery } from "svelte/reactivity";
 
   import { getNavigationItems } from "$lib/utils/getNavigationItems";
+  import { navStyles } from "$lib/utils/classConst";
 
   const medium = new MediaQuery("min-width: 768px");
 
@@ -17,9 +18,7 @@
 
 <nav class={["max-w-sm", !isOpen && "hidden"]}>
   {#await getNavigationItems() then navItems}
-    <ul
-      class="[&_a]:underline [&_a]:hover:no-underline [&_a]:focus:no-underline"
-    >
+    <ul class={navStyles}>
       {#each Object.entries(navItems) as [itemPath, itemData] (itemPath)}
         {#if itemData.children}
           <li class="pt-2">

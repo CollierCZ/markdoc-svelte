@@ -1,17 +1,22 @@
 <script lang="ts">
-  import type { MarkdocModule } from "markdoc-svelte"
+  import { navStyles } from "$lib/utils/classConst";
+  import type { MarkdocModule } from "markdoc-svelte";
   const { headings }: MarkdocModule = $props();
 
-  // Include only h1 and h2 headings
-  const filteredHeadings = headings?.filter((heading) => heading.level <= 2) ?? [];
+  // Include only headings up to h3
+  const filteredHeadings =
+    headings?.filter((heading) => heading.level <= 3) ?? [];
 </script>
 
 {#if filteredHeadings.length > 0}
-  <ul>
-    {#each filteredHeadings as heading (heading.id)}
-      <li>
-        <a href={`#${heading.id}`}>{heading.title}</a>
-      </li>
-    {/each}
-  </ul>
+  <nav>
+    <h2 class="pb-2 font-semibold">On This Page</h2>
+    <ul class={navStyles}>
+      {#each filteredHeadings as heading (heading.id)}
+        <li class="pb-1">
+          <a href={`#${heading.id}`}>{heading.title}</a>
+        </li>
+      {/each}
+    </ul>
+  </nav>
 {/if}
