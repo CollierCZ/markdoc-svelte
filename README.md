@@ -429,15 +429,15 @@ const nodes: Config["nodes"] = {
       let src = node.attributes.src;
 
       // Use base path if passed as variable
-      const basePath = config.variables.basePath || '';
+      const basePath = config.variables.basePath || "";
 
       // Rewrite relative paths to absolute
-      if (src.startsWith('./') || src.startsWith('../')) {
+      if (src.startsWith("./") || src.startsWith("../")) {
         src = path.posix.join(basePath, src);
       }
 
       // Return a new node with modified src attribute
-      return new Markdoc.Tag('EnhancedImage', {
+      return new Markdoc.Tag("EnhancedImage", {
         ...node.attributes,
         src,
       });
