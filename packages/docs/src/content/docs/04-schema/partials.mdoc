@@ -1,0 +1,31 @@
+---
+title: Partials
+---
+
+[Partials](https://markdoc.dev/docs/partials) are ways to reuse content across files (through [transclusion](https://en.wikipedia.org/wiki/Transclusion)).
+The partials defined in your configuration must be a directory of Markdoc files.
+
+For example, you could have a file structure like the following:
+
+```
+| markdoc/
+|-- partials/
+|   |-- content.mdoc
+|   └── post.mdoc
+```
+
+These files can be included in other files as follows:
+
+```markdown {% process=false %}
+---
+title: Hello World
+---
+
+# Hello World
+
+This is a file that is processed by `markdoc-svelte`.
+
+{% partial file="content.mdoc" %}
+
+{% partial file="post.mdoc" %}
+```

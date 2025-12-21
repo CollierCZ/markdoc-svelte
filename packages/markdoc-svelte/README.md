@@ -1,5 +1,7 @@
 # markdoc-svelte
 
+<span class="badge-npmversion"><a href="https://npmjs.org/package/markdoc-svelte" title="View this project on NPM"><img src="https://img.shields.io/npm/v/markdoc-svelte.svg" alt="NPM version" /></a></span>
+
 Process Markdown and Markdoc files into Svelte components using [Markdoc](https://markdoc.dev/).
 Use Markdoc defaults out of the box or configure Markdoc schema to your needs.
 

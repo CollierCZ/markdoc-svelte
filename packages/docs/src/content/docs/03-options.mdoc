@@ -1,0 +1,36 @@
+---
+title: Preprocessor options
+---
+
+The following table shows all of the options available for `markdoc-svelte`:
+
+| Option            | Type                                   | Default                          | Description                                                                  |
+| ----------------- | -------------------------------------- | -------------------------------- | ---------------------------------------------------------------------------- |
+| `comments`        | boolean                                | `true`                           | Enable [Markdown comments](https://spec.commonmark.org/0.30/#example-624)    |
+| `components`      | string                                 | `"$lib/components"`              | Svelte components directory for custom nodes and tags                        |
+| `extensions`      | string[]                               | `[".mdoc", ".md"]`               | Files to process with Markdoc                                                |
+| `functions`       | Config['functions']                    | -                                | [Functions config](./schema/functions)                                       |
+| `headingIds`      | boolean \| ((value: string) => string) |	false                           |	Add [IDs to headings](./heading-ids) without them and include them in export |
+| `layout`          | string                                 | -                                | Default layout for all processed Markdown files                              |
+| `linkify`         | boolean                                | `false`                          | Auto-convert bare URLs to links                                              |
+| `nodes`           | Config['nodes']                        | -                                | [Nodes config](./schema/nodes)                                               |
+| `partials`        | string                                 | -                                | [Partials](./schema/partials) directory path                                 |
+| `schema`          | string                                 | `["./markdoc", "./src/markdoc"]` | [Schema](./schema/customize-markdoc) directory path                          |
+| `tags`            | Config['tags']                         | -                                | [Tags config](./schema/tags)                                                 |
+| `typographer`     | boolean                                | `false`                          | Enable [typography replacements](#typographer)                               |
+| `validationLevel` | ValidationLevel                        | `"error"`                        | [Validation strictness level](#validation-level)                             |
+| `variables`       | Config['variables']                    | -                                | [Variables config](./schema/variables)                                       |
+
+## Typographer
+
+Choose whether to turn on typographic replacements from [markdown-it](https://github.com/markdown-it/markdown-it).
+See the options in action at the [markdown-it demo](https://markdown-it.github.io/)
+(select or deselect `typographer`).
+Defaults to false.
+
+## Validation level
+
+The preprocessor validates whether the Markdoc is valid.
+By default, it throws an error on files for issues at the `error` or `critical` level.
+To debug, set the level to a lower level to stop the build for any errors at that level or above.
+Possible values in ascending order: `debug`, `info`, `warning`, `error`, `critical`.

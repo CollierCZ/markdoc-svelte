@@ -1,0 +1,131 @@
+---
+title: Customize Markdoc
+---
+
+To add additional features to the syntax of your files, customize your Markdoc schema.
+Use any of the following extensions:
+
+- [Functions](./functions)
+- [Nodes](./nodes)
+- [Partials](./partials)
+- [Tags](./tags)
+- [Variables](./variables)
+
+Customize schema in one of two ways:
+
+- **For a single extension** or simple extensions, pass directly to the preprocessor options.
+- **For multiple extensions at once** or more complex configurations,
+  create a configuration folder with schema definitions.
+
+For each extension (such as `nodes`),
+schema definitions passed directly overwrite configuration from a folder.
+
+## Direct definitions
+
+To define any of the extension points directly,
+pass it to the preprocessor options as the name of the extension.
+For example, to define a `$site.name` variable, pass the following:
+
+```javascript
+import { markdocPreprocess } from "markdoc-svelte";
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".svelte", ".mdoc"],
+  preprocess: [
+    markdocPreprocess({
+      variables: {
+        site: {
+          name: "Markdoc Svelte",
+        },
+      },
+    }),
+  ],
+};
+```
+
+## Configuration folder
+
+For multiple extensions or more complex configurations, create a folder with your entire Markdoc schema.
+
+By default, the preprocessor looks for a schema in the `./markdoc` and `./src/markdoc` directories.
+
+Define each extension point as a single file
+or as a directory with an `index.ts` or `index.js` file that exports it.
+Partials must be a directory holding Markdoc files.
+
+All extension points are optional.
+
+Example structure:
+
+```
+markdoc
+├── functions.ts
+├── nodes
+│   ├── heading.ts
+│   ├── index.ts
+│   └── callout.ts
+├── partials
+│   ├── content.mdoc
+│   └── more-content.mdoc
+├── tags.ts
+└── variables.ts
+```
+
+For example, create custom nodes in `markdoc/nodes.ts`:
+
+```typescript
+import type { Config } from "markdoc-svelte";
+import { Markdoc } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image: {
+    render: "EnhancedImage",
+    attributes: {
+      ...Markdoc.nodes.image.attributes, // Include the default image attributes
+    },
+  },
+};
+
+export default nodes;
+```
+
+Or create an index file to export all custom nodes from `markdoc/nodes/index.ts`
+(remember to use [relative imports](#relative-imports)):
+
+```typescript
+import image from "./image.ts";
+import link from "./link.ts";
+import paragraph from "./paragraph.ts";
+import type { Config } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image,
+  link,
+  paragraph,
+};
+
+export default nodes;
+```
+
+## Relative imports
+
+Use relative imports to import definitions from either `.js` or `.ts` files.
+Just remember to include the file extension.
+
+For example, if you define custom functions in `src/lib/functions.js`,
+add them to your schema as follows:
+
+```javascript
+import { markdocPreprocess } from "markdoc-svelte";
+import functions from "./src/lib/functions.js";
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  preprocess: [
+    markdocPreprocess({
+      functions: functions,
+    }),
+  ],
+};
+```

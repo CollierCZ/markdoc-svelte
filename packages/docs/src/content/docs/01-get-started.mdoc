@@ -1,0 +1,77 @@
+---
+title: Get started
+---
+
+## Install
+
+Install `markdoc-svelte` in your SvelteKit project.
+
+```bash
+npm install markdoc-svelte
+```
+
+Amend your SvelteKit config in `svelte.config.js` to:
+
+- Process files with the extensions you choose (such as `.mdoc` and `.md`).
+- Include the preprocessor.
+
+```javascript
+import { markdocPreprocess } from "markdoc-svelte";
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".svelte", ".mdoc", ".md"],
+  preprocess: [markdocPreprocess()],
+};
+```
+
+## Basic example
+
+Create a directory to hold your markdoc files: `src/lib/markdoc`
+
+In that directory (at `src/lib/markdown/content.md`), add an example with basic Markdown syntax:
+
+```markdown
+---
+title: Hello World
+---
+
+# Hello World
+
+This is a file that is processed by `markdoc-svelte`.
+
+![Alt text](/path/to/image.jpg)
+```
+
+Dynamically import all files in the directory using a catchall route at `src/routes/[...catchall]/+page.ts`:
+
+```typescript
+import { error } from "@sveltejs/kit";
+import type { MarkdocModule } from "markdoc-svelte";
+
+export const load = async ({ params }) => {
+  const slug = params.catchall;
+  try {
+    const page = (await import(`$lib/markdown/${slug}.md`)) as MarkdocModule;
+    return { page };
+  } catch {
+    throw error(404, `No corresponding file found for the slug "${slug}"`);
+  }
+};
+```
+
+Render the imported file as a Svelte component in a file at `src/routes/[...catchall]/+page.svelte`:
+
+```svelte
+<script lang="ts">
+  let { data } = $props();
+</script>
+
+<svelte:head>
+  <title>{data.page.frontmatter?.title ?? 'Undefined title'}</title>
+</svelte:head>
+
+<data.page.default />
+```
+
+Run your dev server and visit `/content` to see the rendered file.

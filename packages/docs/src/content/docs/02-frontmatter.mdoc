@@ -1,0 +1,31 @@
+---
+title: Frontmatter
+---
+
+Optionally define YAML frontmatter in your file.
+Then use it in your content with the `$frontmatter` variable.
+
+```markdown
+---
+title: Why I switched to Markdoc
+description: What the benefits of Markdoc are and how to take advantage of them.
+---
+
+# {% $frontmatter.title %}
+```
+
+You can also access the frontmatter in your Svelte page components.
+Get it from the data you defined in `+page.ts`:
+
+```svelte
+<script lang="ts">
+  let { data } = $props();
+</script>
+
+<svelte:head>
+  <title>{data.page.frontmatter?.title ?? 'Default title'}</title>
+  <meta name="description" content={data.page.frontmatter?.description ?? 'Default description'} />
+</svelte:head>
+
+<data.page.default />
+```

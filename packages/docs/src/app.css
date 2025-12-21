@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/typography';
+@theme {
+  --color-codeblock-500: oklch(0.3244 0.0229 264.18);
+}

@@ -1,0 +1,34 @@
+---
+title: Table of contents
+---
+
+When you have the [`headingIds` option](#heading-ids) enabled,
+each proccessed page automatically exports a `headings` property with all headings on the page and IDs for each.
+Add IDs with [annotations](https://markdoc.dev/docs/syntax#annotations) or they are generated automatically.
+Use this list to generate a table of contents for the page, as in the following example:
+
+```svelte
+<script lang="ts">
+  let { data } = $props();
+  const { frontmatter, headings } = data.page;
+
+  // Include only h1 and h2 headings
+  const filteredHeadings = headings?.filter((heading) => heading.level <= 2) ?? [];
+</script>
+
+<svelte:head>
+  <title>{data.page.frontmatter?.title ?? 'Undefined title'}</title>
+</svelte:head>
+
+{#if filteredHeadings.length > 0}
+  <ul>
+    {#each filteredHeadings as heading}
+      <li>
+        <a href={`#${heading.id}`}>{heading.text}</a>
+      </li>
+    {/each}
+  </ul>
+{/if}
+
+<data.page.default />
+```

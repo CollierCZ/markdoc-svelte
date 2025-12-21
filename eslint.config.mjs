@@ -27,6 +27,29 @@ export default tseslint.config(
     },
   },
   {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          // Use `_` to mark start of intentionally unused variables
+          args: "all",
+          argsIgnorePattern: "^_",
+          caughtErrors: "all",
+          caughtErrorsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          ignoreRestSiblings: true,
+        },
+      ],
+      "@typescript-eslint/only-throw-error": [
+        "error",
+        {
+          allow: ["HttpError"],
+        },
+      ],
+    },
+  },
+  {
     plugins: {
       importPlugin: importPlugin,
     },
@@ -38,6 +61,18 @@ export default tseslint.config(
           "newlines-between": "always",
         },
       ],
+    },
+  },
+  {
+    settings: {
+      "import/resolver": {
+        typescript: {
+          alwaysTryTypes: true, // always try to resolve types under `<root>@types` directory even it doesn't contain any source code, like `@types/unist`
+
+          // Multiple tsconfigs/jsconfigs (Useful for monorepos, but discouraged in favor of `references` supported)
+          project: "packages/*/{ts,js}config.json",
+        },
+      },
     },
   },
   {
@@ -53,10 +88,12 @@ export default tseslint.config(
     ignores: [
       "**/*.js",
       "**/*.mjs",
-      "test",
-      "coverage",
-      "dist",
-      "node_modules",
+      "**/test",
+      "**/coverage",
+      "**/dist",
+      "**/node_modules",
+      "**/build",
+      "**/.svelte-kit",
     ],
-  },
+  }
 );

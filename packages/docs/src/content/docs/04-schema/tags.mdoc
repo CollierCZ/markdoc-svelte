@@ -1,0 +1,66 @@
+---
+title: Tags
+---
+
+[Tags](https://markdoc.dev/docs/tags) are ways to extend Markdown syntax to do more.
+Use them to add functionality through Svelte components.
+
+For example, you might want to create a custom Callout tag to highlight information on a page
+(these are also known as admonitions).
+First, define the tag in `markdoc/tags.ts`:
+
+```javascript
+import type { Config } from "markdoc-svelte";
+
+const tags: Config["tags"] = {
+  callout: {
+    // The Svelte component to render the tag
+    render: "Callout",
+    // What tags it can have as children
+    children: ["paragraph", "tag", "list"],
+    // Define the type of callout through an attribute
+    attributes: {
+      type: {
+        type: String,
+        default: "note",
+        matches: ["caution", "check", "note", "warning"],
+        errorLevel: "critical",
+      },
+      title: {
+        type: String,
+      },
+    },
+  },
+};
+
+export default tags;
+```
+
+Then create a Callout component for tag in `src/lib/components/Callout.svelte`:
+
+```svelte
+<script lang="ts">
+  let { title, type, children } = $props();
+</script>
+
+<div class={`callout-${type}`}>
+  <div class="content">
+    <div class="copy">
+      <span class="title">{title}</span>
+      <span>{@render children()}</span>
+    </div>
+  </div>
+</div>
+```
+
+Then use the Callout tag in a Markdoc file:
+
+```markdown {% process=false %}
+---
+title: Hello World
+---
+
+{% callout type="caution" title="Hello" %}
+This is a caution callout.
+{% /callout %}
+```

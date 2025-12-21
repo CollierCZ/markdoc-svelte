@@ -1,0 +1,34 @@
+---
+title: Functions
+---
+
+[Functions](https://markdoc.dev/docs/functions) enable you to add custom utilities to Markdown
+so you can transform content and variables.
+
+For example, you could add a function for transforming strings to uppercase to `markdoc/functions.ts`:
+
+```javascript
+import type { Config } from "markdoc-svelte";
+
+const functions: Config["functions"] = {
+  uppercase: {
+    transform(parameters) {
+      const string = parameters[0];
+
+      return typeof string === "string" ? string.toUpperCase() : string;
+    },
+  },
+};
+
+export default functions;
+```
+
+Then use the custom function in a Markdown file:
+
+```markdown {% process=false %}
+---
+title: Hello World
+---
+
+This is a {% uppercase(markdown) %} file that is processed by `markdoc-svelte`.
+```

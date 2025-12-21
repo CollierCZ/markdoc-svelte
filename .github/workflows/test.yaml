@@ -7,9 +7,11 @@ jobs:
   test-svelte:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       - uses: "./.github/shared/setup-node"
-      - name: Test
-        run: npm run test
+        # Build before test to get the SvelteKit files
       - name: Test build
-        run: npm run build
+        run: pnpm build
+      - name: Test
+        run: pnpm test

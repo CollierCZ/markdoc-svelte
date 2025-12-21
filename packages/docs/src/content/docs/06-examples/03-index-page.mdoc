@@ -1,0 +1,57 @@
+---
+title: Index page example
+---
+
+Each processed page exports a slug based on the file name.
+This is a convenient way to generate an index page without reaching into the document.
+
+Glob import these slugs as data for your index page.
+For example, if all of your pages end with the extension `.md`,
+Add the following to `src/routes/blog/+page.ts`:
+
+```typescript
+import type { MarkdocModule } from "markdoc-svelte";
+
+const markdownModules = import.meta.glob("$lib/markdown/*.md");
+
+export const load = async () => {
+  const content = await Promise.all(
+    Object.values(markdownModules).map(async (importModule) => {
+      // Dynamically import each module
+      const module = (await importModule()) as MarkdocModule;
+      // Pass only slug and frontmatter to the page data
+      return {
+        slug: module.slug,
+        frontmatter: module.frontmatter,
+      };
+    }),
+  );
+  return { content };
+};
+```
+
+Then use this data to build an index page at `src/routes/blog/+page.svelte`:
+
+```svelte
+<script lang="ts">
+  let { data } = $props();
+  const { content } = data;
+</script>
+
+<h1>Table of Contents</h1>
+<ul>
+  {#each content as item, i (item.slug)}
+    <li class={'item-' + i}>
+      <a href="/{item.slug}">
+        <h2>{item.frontmatter?.title || item.slug}</h2>
+        {#if item.frontmatter?.description}
+          <span>{item.frontmatter.description}</span>
+        {/if}
+        {#if item.frontmatter?.published}
+          <span>{item.frontmatter.published}</span>
+        {/if}
+      </a>
+    </li>
+  {/each}
+</ul>
+```

@@ -4,9 +4,15 @@ description: "Setup Node.js environment and dependencies"
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-node@v4
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        run_install: false
+    - name: Install Node.js with cache
+      uses: actions/setup-node@v4
       with:
         node-version: "lts/*"
+        cache: 'pnpm'
     - name: Install Dependencies
       shell: bash
-      run: npm ci
+      run: pnpm install
