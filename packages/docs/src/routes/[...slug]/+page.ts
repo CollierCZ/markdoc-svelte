@@ -2,6 +2,7 @@ import { error, type HttpError } from "@sveltejs/kit";
 import type { MarkdocModule } from "markdoc-svelte";
 
 import type { PageLoad } from "./$types";
+
 import { removeNumbersFromNavLinks } from "$lib/utils/handleNavNumbers";
 
 interface Pages {
