@@ -27,7 +27,7 @@
     <data.page.default />
   </div>
   {#if headings}
-    <div class="hidden sm:block sm:sticky top-0">
+    <div class="hidden sm:block">
       <TableOfContents {headings} />
     </div>
   {/if}

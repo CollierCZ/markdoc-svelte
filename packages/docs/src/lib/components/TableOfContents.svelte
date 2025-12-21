@@ -11,7 +11,7 @@
 </script>
 
 {#if filteredHeadings.length > 0}
-  <nav>
+  <nav class="sticky top-0">
     <h2 class="pb-2 font-semibold">On This Page</h2>
     <ul class={navStyles}>
       {#each filteredHeadings as heading (heading.id)}
