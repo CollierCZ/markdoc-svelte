@@ -136,7 +136,7 @@ Get it from the data you defined in `+page.ts`:
 ## Customize Markdoc
 
 To add additional features to the syntax of your files, customize your Markdoc schema.
-You can add the following extensions:
+Use any of the following extensions:
 
 - [Nodes](#nodes)
 - [Tags](#tags)
@@ -144,7 +144,7 @@ You can add the following extensions:
 - [Functions](#functions)
 - [Partials](#partials)
 
-You can customize schema in two ways:
+Customize schema in one of two ways:
 
 - **For a single extension** or simple extensions, pass directly to the preprocessor options.
 - **For multiple extensions at once** or more complex configurations,
@@ -243,7 +243,7 @@ export default nodes;
 
 ### Relative imports
 
-You can use relative imports to import definitions from either `.js` or `.ts` files.
+Use relative imports to import definitions from either `.js` or `.ts` files.
 Just remember to include the file extension.
 
 For example, if you define custom functions in `src/lib/functions.js`,
@@ -305,7 +305,7 @@ const functions: Config["functions"] = {
 export default functions;
 ```
 
-Then you can use the custom function in a Markdown file:
+Then use the custom function in a Markdown file:
 
 ```markdown
 ---
@@ -320,7 +320,7 @@ This is a {% uppercase(markdown) %} file that is processed by `markdoc-svelte`.
 If you want to build a table of contents for a page or just have links to specific headings, set `headingIds` to `true`.
 Add unique IDs in the original file with [annotations](https://markdoc.dev/docs/syntax#annotations)
 or have them generated automatically.
-Each heading element in the generated HTML has an `id` attribute you can use to link to directly.
+Each heading element in the generated HTML has an `id` attribute to link to directly.
 
 Each page then also exports a `headings` property: a list of all headings with their text, level, and ID.
 Use the list to generate a [table of contents](#page-table-of-contents).
@@ -479,7 +479,7 @@ This is a file that is processed by `markdoc-svelte`.
 ### Tags
 
 [Tags](https://markdoc.dev/docs/tags) are ways to extend Markdown syntax to do more.
-You can add functionality through Svelte components
+Use them to add functionality through Svelte components.
 
 For example, you might want to create a custom Callout tag to highlight information on a page
 (these are also known as admonitions).
@@ -529,7 +529,7 @@ Then create a Callout component for tag in `src/lib/components/Callout.svelte`:
 </div>
 ```
 
-Then you can use the Callout tag in a Markdoc file:
+Then use the Callout tag in a Markdoc file:
 
 ```markdown
 ---
@@ -552,7 +552,7 @@ Defaults to false.
 
 The preprocessor validates whether the Markdoc is valid.
 By default, it throws an error on files for issues at the `error` or `critical` level.
-To debug, you can set the level to a lower level to stop the build for any errors at that level or above.
+To debug, set the level to a lower level to stop the build for any errors at that level or above.
 Possible values in ascending order: `debug`, `info`, `warning`, `error`, `critical`.
 
 ### Variables
@@ -575,7 +575,7 @@ const variables: Config["variables"] = {
 export default variables
 ```
 
-Then you can use the variable in a Markdoc file:
+Then use the variable in a Markdoc file:
 
 ```markdown
 ---
@@ -594,7 +594,7 @@ Markdoc has a few Markdown syntax limitations, see [Markdoc FAQ](https://markdoc
 ### @sveltejs/enhanced-img
 
 To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images,
-you can customize the default images Node with a custom Svelte component.
+customize the default images Nnde with a custom Svelte component.
 See the example [custom node](#nodes) including the option for relative paths to images.
 
 ### Page table of contents
