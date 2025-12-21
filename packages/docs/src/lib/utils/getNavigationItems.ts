@@ -1,6 +1,6 @@
 import type { MarkdocModule } from "markdoc-svelte";
 
-import type { NavItems } from "$lib/types";
+import type { DirectoryData, NavItems } from "$lib/types";
 
 export const getNavigationItems = async (): Promise<NavItems> => {
   const allPages = import.meta.glob("/src/content/docs/**/*.mdoc");
@@ -57,12 +57,12 @@ export const getNavigationItems = async (): Promise<NavItems> => {
               dirPath.match(dirName),
             );
 
-            const [_, dirData] = matchingDir;
+            const [_, getDirData] = matchingDir;
 
             return {
               ...existingNavItems,
               [dirName]: {
-                title: (await dirData()).title,
+                title: ((await getDirData()) as DirectoryData).title,
                 children: {
                   [slug]: {
                     title: pageTitle,

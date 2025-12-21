@@ -6,14 +6,15 @@
 
   const copy = async (text: string): Promise<string | null> => {
     if (browser) {
-      return await navigator.clipboard
+      const clipboardResult = await navigator.clipboard
         ?.writeText(text)
         .then(() => {
           return "Copied text";
         })
         .catch(() => {
           return null;
-        });
+        }) as string;
+      return clipboardResult;
     }
     return null;
   };
