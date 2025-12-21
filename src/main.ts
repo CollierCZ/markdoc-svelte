@@ -46,7 +46,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   for (const key in options) {
     if (!validOptionKeys.includes(key as keyof Options)) {
       log.warn(
-        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`,
+        `Invalid option "${key}" provided and ignored. Check the documentation for valid options.`
       );
     }
   }
@@ -70,10 +70,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   const layoutPath = options.layout;
   const allowComments = options.comments ?? true;
   const processHeadings = options.headingIds ?? false;
-  // If passed `true`, use the default for slugging headings
-  // Otherwise, use the passed function
+  // Use custom slugger if provided, or fallback to default
   const headingSlugger =
-    typeof processHeadings === "boolean" ? slug : processHeadings;
+    typeof processHeadings === "function" ? processHeadings : slug;
   const linkify = options.linkify ?? false;
   const typographer = options.typographer ?? false;
   const validationLevel = options.validationLevel || "error";
@@ -213,7 +212,7 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
         extractUsedSvelteComponents(transformedContent);
       const componentImportStatements = getComponentImports(
         usedSvelteComponentNames,
-        componentsPath,
+        componentsPath
       );
 
       // Construct script tag content
