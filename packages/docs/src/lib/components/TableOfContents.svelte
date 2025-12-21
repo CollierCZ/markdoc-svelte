@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { navStyles } from "$lib/utils/classConst";
   import type { MarkdocModule } from "markdoc-svelte";
+
+  import { navStyles } from "$lib/utils/classConst";
   const { headings }: MarkdocModule = $props();
 
   // Include only headings up to h3

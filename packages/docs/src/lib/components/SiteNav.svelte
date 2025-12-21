@@ -1,8 +1,8 @@
 <script lang="ts">
   import { MediaQuery } from "svelte/reactivity";
 
-  import { getNavigationItems } from "$lib/utils/getNavigationItems";
   import { navStyles } from "$lib/utils/classConst";
+  import { getNavigationItems } from "$lib/utils/getNavigationItems";
 
   const medium = new MediaQuery("min-width: 768px");
 
