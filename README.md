@@ -325,7 +325,7 @@ Each heading element in the generated HTML has an `id` attribute you can use to 
 Each page then also exports a `headings` property: a list of all headings with their text, level, and ID.
 Use the list to generate a [table of contents](#page-table-of-contents).
 
-#### Custom ID Creation (Slugifying Function)
+#### Custom ID creator (slugifier)
 
 By default, the preprocessor uses the [`slug` package](https://www.npmjs.com/package/slug).
 If you have requirements for ID creation, pass a function to the `headingIds` option.
@@ -405,6 +405,45 @@ Now your EnhancedImage component handles images added through standard Markdown 
 
 ```markdown
 ![A cat sleeping on a balcony](awesome-cat.png)
+```
+
+#### Relative paths to images
+
+If you're using relative paths to your images in Markdoc,
+adjust the custom node to account for this.
+For example, you could have the custom node as follows:
+
+```typescript
+import type { Config } from "markdoc-svelte";
+import { markdocPreprocess } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image: {
+    render: "EnhancedImage",
+    attributes: {
+      // Include the default image attributes
+      ...Markdoc.nodes.image.attributes,
+    },
+    transform(node, config) {
+      // Get the original src
+      let src = node.attributes.src;
+
+      // Use base path if passed as variable
+      const basePath = config.variables.basePath || '';
+
+      // Rewrite relative paths to absolute
+      if (src.startsWith('./') || src.startsWith('../')) {
+        src = path.posix.join(basePath, src);
+      }
+
+      // Return a new node with modified src attribute
+      return new Markdoc.Tag('EnhancedImage', {
+        ...node.attributes,
+        src,
+      });
+    },
+  },
+};
 ```
 
 ### Partials
@@ -554,8 +593,9 @@ Markdoc has a few Markdown syntax limitations, see [Markdoc FAQ](https://markdoc
 
 ### @sveltejs/enhanced-img
 
-To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images, you can customize the default images Node with a custom Svelte component.
-See the example [custom node](#nodes).
+To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images,
+you can customize the default images Node with a custom Svelte component.
+See the example [custom node](#nodes) including the option for relative paths to images.
 
 ### Page table of contents
 
