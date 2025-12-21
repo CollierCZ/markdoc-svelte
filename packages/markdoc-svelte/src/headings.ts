@@ -1,4 +1,4 @@
-import { Tag } from "@markdoc/markdoc";
+import Markdoc from "@markdoc/markdoc";
 import type { RenderableTreeNode, Schema } from "@markdoc/markdoc";
 
 import type { MarkdocSvelteConfig, SluggerType } from "./types.ts";
@@ -22,7 +22,7 @@ const getTextContent = (children: RenderableTreeNode[]): string => {
   return children.reduce((text: string, child): string => {
     if (typeof child === "string" || typeof child === "number") {
       return text + child;
-    } else if (typeof child === "object" && Tag.isTag(child)) {
+    } else if (typeof child === "object" && Markdoc.Tag.isTag(child)) {
       return text + getTextContent(child.children);
     }
     return text;
@@ -72,7 +72,7 @@ export function collectHeadings(
     }
 
     if ("name" in node) {
-      const tag = node as Tag;
+      const tag = node as Markdoc.Tag;
 
       // Handle basic headings
       if (tag.name.match(/^h\d$/)) {
@@ -126,6 +126,6 @@ export const heading: Schema = {
             level: level as number,
           };
 
-    return new Tag(render, tagProps, children);
+    return new Markdoc.Tag(render, tagProps, children);
   },
 };
