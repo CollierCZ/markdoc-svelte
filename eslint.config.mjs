@@ -47,6 +47,7 @@ export default tseslint.config(
           allow: ["HttpError"],
         },
       ],
+      "import/no-unresolved": [2, { ignore: ["^\\$app"] }],
     },
   },
   {
