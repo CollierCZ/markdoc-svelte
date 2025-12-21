@@ -1,4 +1,5 @@
 <script lang="ts">
+  // eslint-disable-next-line import/no-unresolved
   import { browser } from "$app/environment";
 
   let { textToCopy }: { textToCopy: string } = $props();
