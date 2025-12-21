@@ -8,6 +8,7 @@ const config = {
   preprocess: [
     markdocPreprocess({
       extensions: [".mdoc"],
+      headingIds: true,
       schema: "./markdoc",
       typographer: true,
     }),
