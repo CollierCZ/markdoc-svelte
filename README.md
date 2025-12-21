@@ -16,6 +16,7 @@ Use Markdoc defaults out of the box or configure Markdoc schema to your needs.
   - [Relative imports](#relative-imports)
 - [Preprocessor Options](#preprocessor-options)
   - [Functions](#functions)
+  - [Heading IDs](#heading-ids)
   - [Nodes](#nodes)
   - [Partials](#partials)
   - [Tags](#tags)
@@ -73,10 +74,9 @@ Dynamically import all files in the directory using a catchall route at `src/rou
 
 ```typescript
 import { error } from "@sveltejs/kit";
-import type { PageLoad } from "./$types";
 import type { MarkdocModule } from "markdoc-svelte";
 
-export const load: PageLoad = async ({ params }) => {
+export const load = async ({ params }) => {
   const slug = params.catchall;
   try {
     const page = (await import(`$lib/markdown/${slug}.md`)) as MarkdocModule;
@@ -91,9 +91,7 @@ Render the imported file as a Svelte component in a file at `src/routes/[...catc
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
 </script>
 
 <svelte:head>
@@ -124,9 +122,7 @@ Get it from the data you defined in `+page.ts`:
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
 </script>
 
 <svelte:head>
@@ -140,7 +136,7 @@ Get it from the data you defined in `+page.ts`:
 ## Customize Markdoc
 
 To add additional features to the syntax of your files, customize your Markdoc schema.
-You can add the following extensions:
+Use any of the following extensions:
 
 - [Nodes](#nodes)
 - [Tags](#tags)
@@ -148,7 +144,7 @@ You can add the following extensions:
 - [Functions](#functions)
 - [Partials](#partials)
 
-You can customize schema in two ways:
+Customize schema in one of two ways:
 
 - **For a single extension** or simple extensions, pass directly to the preprocessor options.
 - **For multiple extensions at once** or more complex configurations,
@@ -247,7 +243,7 @@ export default nodes;
 
 ### Relative imports
 
-You can use relative imports to import definitions from either `.js` or `.ts` files.
+Use relative imports to import definitions from either `.js` or `.ts` files.
 Just remember to include the file extension.
 
 For example, if you define custom functions in `src/lib/functions.js`,
@@ -269,21 +265,22 @@ const config = {
 
 ## Preprocessor Options
 
-| Option            | Type                | Default                          | Description                                                               |
-| ----------------- | ------------------- | -------------------------------- | ------------------------------------------------------------------------- |
-| `comments`        | boolean             | `true`                           | Enable [Markdown comments](https://spec.commonmark.org/0.30/#example-624) |
-| `components`      | string              | `"$lib/components"`              | Svelte components directory for custom nodes and tags                     |
-| `extensions`      | string[]            | `[".mdoc", ".md"]`               | Files to process with Markdoc                                             |
-| `functions`       | Config['functions'] | -                                | [Functions config](#functions)                                            |
-| `layout`          | string              | -                                | Default layout for all processed Markdown files                           |
-| `linkify`         | boolean             | `false`                          | Auto-convert bare URLs to links                                           |
-| `nodes`           | Config['nodes']     | -                                | [Nodes config](#nodes)                                                    |
-| `partials`        | string              | -                                | [Partials](#partials) directory path                                      |
-| `schema`          | string              | `["./markdoc", "./src/markdoc"]` | Schema directory path                                                     |
-| `tags`            | Config['tags']      | -                                | [Tags config](#tags)                                                      |
-| `typographer`     | boolean             | `false`                          | Enable [typography replacements](#typographer)                            |
-| `validationLevel` | ValidationLevel     | `"error"`                        | [Validation strictness level](#validation-level)                          |
-| `variables`       | Config['variables'] | -                                | [Variables config](#variables)                                            |
+| Option            | Type                                     | Default                          | Description                                                               |
+| ----------------- | ---------------------------------------- | -------------------------------- | ------------------------------------------------------------------------- |
+| `comments`        | boolean                                  | `true`                           | Enable [Markdown comments](https://spec.commonmark.org/0.30/#example-624) |
+| `components`      | string                                   | `"$lib/components"`              | Svelte components directory for custom nodes and tags                     |
+| `extensions`      | string[]                                 | `[".mdoc", ".md"]`               | Files to process with Markdoc                                             |
+| `functions`       | Config['functions']                      | -                                | [Functions config](#functions)                                            |
+| `headingIds`      | boolean \| `((value: string) => string)` | `false`                          | Add IDs to headings without them and include them in export               |
+| `layout`          | string                                   | -                                | Default layout for all processed Markdown files                           |
+| `linkify`         | boolean                                  | `false`                          | Auto-convert bare URLs to links                                           |
+| `nodes`           | Config['nodes']                          | -                                | [Nodes config](#nodes)                                                    |
+| `partials`        | string                                   | -                                | [Partials](#partials) directory path                                      |
+| `schema`          | string                                   | `["./markdoc", "./src/markdoc"]` | Schema directory path                                                     |
+| `tags`            | Config['tags']                           | -                                | [Tags config](#tags)                                                      |
+| `typographer`     | boolean                                  | `false`                          | Enable [typography replacements](#typographer)                            |
+| `validationLevel` | ValidationLevel                          | `"error"`                        | [Validation strictness level](#validation-level)                          |
+| `variables`       | Config['variables']                      | -                                | [Variables config](#variables)                                            |
 
 ### Functions
 
@@ -308,7 +305,7 @@ const functions: Config["functions"] = {
 export default functions;
 ```
 
-Then you can use the custom function in a Markdown file:
+Then use the custom function in a Markdown file:
 
 ```markdown
 ---
@@ -316,6 +313,38 @@ title: Hello World
 ---
 
 This is a {% uppercase(markdown) %} file that is processed by `markdoc-svelte`.
+```
+
+### Heading IDs
+
+If you want to build a table of contents for a page or just have links to specific headings, set `headingIds` to `true`.
+Add unique IDs in the original file with [annotations](https://markdoc.dev/docs/syntax#annotations)
+or have them generated automatically.
+Each heading element in the generated HTML has an `id` attribute to link to directly.
+
+Each page then also exports a `headings` property: a list of all headings with their text, level, and ID.
+Use the list to generate a [table of contents](#page-table-of-contents).
+
+#### Custom ID creator (slugifier)
+
+By default, the preprocessor uses the [`slug` package](https://www.npmjs.com/package/slug).
+If you have requirements for ID creation, pass a function to the `headingIds` option.
+This function is used to generate the IDs.
+
+```javascript
+import { markdocPreprocess } from "markdoc-svelte";
+
+const customSlugger = (str: string): string => str.replaceAll(/[^a-z]/gi, "-");
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".svelte", ".mdoc"],
+  preprocess: [
+    markdocPreprocess({
+      headingIds: customSlugger,
+    }),
+  ],
+};
 ```
 
 ### Nodes
@@ -378,6 +407,45 @@ Now your EnhancedImage component handles images added through standard Markdown 
 ![A cat sleeping on a balcony](awesome-cat.png)
 ```
 
+#### Relative paths to images
+
+If you're using relative paths to your images in Markdoc,
+adjust the custom node to account for this.
+For example, you could have the custom node as follows:
+
+```typescript
+import type { Config } from "markdoc-svelte";
+import { markdocPreprocess } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image: {
+    render: "EnhancedImage",
+    attributes: {
+      // Include the default image attributes
+      ...Markdoc.nodes.image.attributes,
+    },
+    transform(node, config) {
+      // Get the original src
+      let src = node.attributes.src;
+
+      // Use base path if passed as variable
+      const basePath = config.variables.basePath || "";
+
+      // Rewrite relative paths to absolute
+      if (src.startsWith("./") || src.startsWith("../")) {
+        src = path.posix.join(basePath, src);
+      }
+
+      // Return a new node with modified src attribute
+      return new Markdoc.Tag("EnhancedImage", {
+        ...node.attributes,
+        src,
+      });
+    },
+  },
+};
+```
+
 ### Partials
 
 [Partials](https://markdoc.dev/docs/partials) are ways to reuse content across files (through [transclusion](https://en.wikipedia.org/wiki/Transclusion)).
@@ -411,7 +479,7 @@ This is a file that is processed by `markdoc-svelte`.
 ### Tags
 
 [Tags](https://markdoc.dev/docs/tags) are ways to extend Markdown syntax to do more.
-You can add functionality through Svelte components
+Use them to add functionality through Svelte components.
 
 For example, you might want to create a custom Callout tag to highlight information on a page
 (these are also known as admonitions).
@@ -461,7 +529,7 @@ Then create a Callout component for tag in `src/lib/components/Callout.svelte`:
 </div>
 ```
 
-Then you can use the Callout tag in a Markdoc file:
+Then use the Callout tag in a Markdoc file:
 
 ```markdown
 ---
@@ -484,7 +552,7 @@ Defaults to false.
 
 The preprocessor validates whether the Markdoc is valid.
 By default, it throws an error on files for issues at the `error` or `critical` level.
-To debug, you can set the level to a lower level to stop the build for any errors at that level or above.
+To debug, set the level to a lower level to stop the build for any errors at that level or above.
 Possible values in ascending order: `debug`, `info`, `warning`, `error`, `critical`.
 
 ### Variables
@@ -507,7 +575,7 @@ const variables: Config["variables"] = {
 export default variables
 ```
 
-Then you can use the variable in a Markdoc file:
+Then use the variable in a Markdoc file:
 
 ```markdown
 ---
@@ -525,23 +593,22 @@ Markdoc has a few Markdown syntax limitations, see [Markdoc FAQ](https://markdoc
 
 ### @sveltejs/enhanced-img
 
-To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images, you can customize the default images Node with a custom Svelte component.
-See the example [custom node](#nodes).
+To use the [enhanced-img plugin](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) with Markdown images,
+customize the default images Nnde with a custom Svelte component.
+See the example [custom node](#nodes) including the option for relative paths to images.
 
 ### Page table of contents
 
-Each proccessed page automatically exports a `headings` property with all headings on the page and IDs for each.
-Add IDs with [annotations](https://markdoc.dev/docs/syntax#annotations) or they are generated automatically.
+When you have the [`headingIds` option](#heading-ids) enabled,
+each proccessed page automatically exports a `headings` property with all headings on the page and IDs for each.
 Use this list to generate a table of contents for the page, as in the following example:
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
   const { frontmatter, headings } = data.page;
 
-  // Filter only h1 and h2 headings
+  // Include only h1 and h2 headings
   const filteredHeadings = headings?.filter((heading) => heading.level <= 2) ?? [];
 </script>
 
@@ -574,11 +641,9 @@ Add the following to `src/routes/blog/+page.ts`:
 ```typescript
 import type { MarkdocModule } from "markdoc-svelte";
 
-import type { PageLoad } from "./$types";
-
 const markdownModules = import.meta.glob("$lib/markdown/*.md");
 
-export const load: PageLoad = async () => {
+export const load = async () => {
   const content = await Promise.all(
     Object.values(markdownModules).map(async (importModule) => {
       // Dynamically import each module
@@ -598,9 +663,7 @@ Then use this data to build an index page at `src/routes/blog/+page.svelte`:
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
   const { content } = data;
 </script>
 

@@ -119,6 +119,39 @@ describe("File extensions", () => {
   });
 });
 
+describe("Headings", () => {
+  it("doesn't add IDs or export headings by default", async () => {
+    const result = (await markdocPreprocess().markup!({
+      content: basicMarkdoc,
+      filename: "test.md",
+    })) as Processed;
+
+    expect(result.code).toMatchSnapshot();
+  });
+
+  it("adds IDs and exports headings when passed as an option", async () => {
+    const result = (await markdocPreprocess({
+      headingIds: true,
+    } as Options).markup!({
+      content: basicMarkdoc,
+      filename: "test.md",
+    })) as Processed;
+
+    expect(result.code).toMatchSnapshot();
+  });
+
+  it("doesn't add IDs or export headings when passed false", async () => {
+    const result = (await markdocPreprocess({
+      headingIds: false,
+    } as Options).markup!({
+      content: basicMarkdoc,
+      filename: "test.md",
+    })) as Processed;
+
+    expect(result.code).toMatchSnapshot();
+  });
+});
+
 describe("Layout", () => {
   it("properly puts the parsed file in a layout when passed as an option", async () => {
     const layoutOptions = {
