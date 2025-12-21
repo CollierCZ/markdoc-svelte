@@ -27,6 +27,7 @@ export default [
       typescript({
         sourceMap: true,
         inlineSources: true,
+        exclude: ["**/*.test.ts"],
       }),
       nodeResolve(),
       terser(),

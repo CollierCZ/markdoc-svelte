@@ -59,3 +59,42 @@ Now your EnhancedImage component handles images added through standard Markdown 
 ```markdown
 ![A cat sleeping on a balcony](awesome-cat.png)
 ```
+
+## Relative paths to images
+
+If you're using relative paths to your images in Markdoc,
+adjust the custom node to account for this.
+For example, you could have the custom node as follows:
+
+```typescript
+import type { Config } from "markdoc-svelte";
+import { markdocPreprocess } from "markdoc-svelte";
+
+const nodes: Config["nodes"] = {
+  image: {
+    render: "EnhancedImage",
+    attributes: {
+      // Include the default image attributes
+      ...Markdoc.nodes.image.attributes,
+    },
+    transform(node, config) {
+      // Get the original src
+      let src = node.attributes.src;
+
+      // Use base path if passed as variable
+      const basePath = config.variables.basePath || "";
+
+      // Rewrite relative paths to absolute
+      if (src.startsWith("./") || src.startsWith("../")) {
+        src = path.posix.join(basePath, src);
+      }
+
+      // Return a new node with modified src attribute
+      return new Markdoc.Tag("EnhancedImage", {
+        ...node.attributes,
+        src,
+      });
+    },
+  },
+};
+```

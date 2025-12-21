@@ -188,6 +188,16 @@ keywords:
 Content. Such great content.
 `;
 
+export const markdocWithHeadings = `
+# This is some basic Markdoc
+
+With a paragraph.
+
+## More fancy stuff
+
+Content. Such great content.
+`;
+
 export const markdocWithTypography = `${basicMarkdoc}
 ## Typographic replacements
 

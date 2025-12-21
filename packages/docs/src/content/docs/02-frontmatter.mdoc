@@ -19,9 +19,7 @@ Get it from the data you defined in `+page.ts`:
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
 </script>
 
 <svelte:head>

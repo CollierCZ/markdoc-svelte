@@ -1,13 +1,11 @@
 import { error, type HttpError } from "@sveltejs/kit";
 import type { MarkdocModule } from "markdoc-svelte";
 
-import type { PageLoad } from "./$types";
-
 interface Pages {
   [pagePath: string]: () => Promise<MarkdocModule>;
 }
 
-export const load: PageLoad = async ({ params }) => {
+export const load = async ({ params }) => {
   const slug = params.slug;
   try {
     // Get all of the pages in the content directory

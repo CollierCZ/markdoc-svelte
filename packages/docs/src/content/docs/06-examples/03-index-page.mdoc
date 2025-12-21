@@ -12,11 +12,9 @@ Add the following to `src/routes/blog/+page.ts`:
 ```typescript
 import type { MarkdocModule } from "markdoc-svelte";
 
-import type { PageLoad } from "./$types";
-
 const markdownModules = import.meta.glob("$lib/markdown/*.md");
 
-export const load: PageLoad = async () => {
+export const load = async () => {
   const content = await Promise.all(
     Object.values(markdownModules).map(async (importModule) => {
       // Dynamically import each module
@@ -36,9 +34,7 @@ Then use this data to build an index page at `src/routes/blog/+page.svelte`:
 
 ```svelte
 <script lang="ts">
-  import type { PageProps } from './$types';
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
   const { content } = data;
 </script>
 

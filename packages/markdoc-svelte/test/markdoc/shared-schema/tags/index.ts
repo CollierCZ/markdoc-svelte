@@ -1,5 +1,6 @@
 import { customComponent } from "./custom-component.ts";
 import { anotherComponent } from "./another-component.ts";
+import type { Config } from "@markdoc/markdoc";
 
 const tags = {
   "custom-component": customComponent,
@@ -9,6 +10,6 @@ const tags = {
     attributes: {},
     children: ["text"],
   },
-};
+} satisfies Config["tags"];
 
 export default tags;

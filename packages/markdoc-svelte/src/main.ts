@@ -1,7 +1,8 @@
 import { basename, extname } from "path";
 
 import Markdoc from "@markdoc/markdoc";
-import type { Config, ParserArgs } from "@markdoc/markdoc";
+import type { ParserArgs } from "@markdoc/markdoc";
+import slug from "slug";
 import type { PreprocessorGroup } from "svelte/compiler";
 import YAML from "yaml";
 
@@ -11,27 +12,28 @@ import {
 } from "./components.ts";
 import { handleValidationErrors } from "./errors.ts";
 import { findFirstDirectory, makePathProjectRelative } from "./files.ts";
-import { collectHeadings } from "./headings.ts";
+import { collectHeadings, heading, type Heading } from "./headings.ts";
 import log from "./logs.ts";
 import loadPartials from "./partials.ts";
 import render from "./render.ts";
 import loadSchemas from "./schema.ts";
-import type { Options } from "./types.ts";
+import type { MarkdocSvelteConfig, Options } from "./types.ts";
 
 const validOptionKeys: (keyof Options)[] = [
-  "extensions",
-  "schema",
-  "nodes",
-  "tags",
-  "variables",
-  "functions",
-  "partials",
-  "components",
-  "layout",
   "comments",
+  "components",
+  "extensions",
+  "functions",
+  "headingIds",
+  "layout",
   "linkify",
+  "nodes",
+  "partials",
+  "schema",
+  "tags",
   "typographer",
   "validationLevel",
+  "variables",
 ];
 
 /**
@@ -67,6 +69,10 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
   const componentsPath = options.components || "$lib/components";
   const layoutPath = options.layout;
   const allowComments = options.comments ?? true;
+  const processHeadings = options.headingIds ?? false;
+  // Use custom slugger if provided, or fallback to default
+  const headingSlugger =
+    typeof processHeadings === "function" ? processHeadings : slug;
   const linkify = options.linkify ?? false;
   const typographer = options.typographer ?? false;
   const validationLevel = options.validationLevel || "error";
@@ -115,9 +121,9 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
 
       // Prepare to load schemas & partials
       const dependencies: string[] = [];
-      let configFromSchema: Config = {};
-      let partialsFromSchema: Config["partials"] = {};
-      let partialsFromPartials: Config["partials"] = {};
+      let configFromSchema: MarkdocSvelteConfig = {};
+      let partialsFromSchema: MarkdocSvelteConfig["partials"] = {};
+      let partialsFromPartials: MarkdocSvelteConfig["partials"] = {};
 
       // Discover optional schema directory
       const schemaDir = findFirstDirectory(schemaPaths);
@@ -141,15 +147,22 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       }
 
       // Assemble full config
-      const fullConfig: Config = {
+      const fullConfig: MarkdocSvelteConfig = {
         // Start with base config loaded from the schema directory
         // Explicitly set options overwrite the base config
-        nodes: { ...configFromSchema.nodes, ...nodes },
+        // For example, if processing headings,
+        // This processor's heading comes first so it's overwritten
+        nodes: {
+          ...(processHeadings ? { heading } : {}), // Only include if passed as option
+          ...configFromSchema.nodes,
+          ...nodes,
+        },
         tags: { ...configFromSchema.tags, ...tags },
         functions: { ...configFromSchema.functions, ...functions },
         partials: { ...partialsFromSchema, ...partialsFromPartials },
         // Make $frontmatter available as variable
         variables: { ...configFromSchema.variables, ...variables, frontmatter },
+        headingSlugger,
       };
 
       // Validate Markdoc AST
@@ -164,8 +177,14 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       // eslint-disable-next-line @typescript-eslint/await-thenable
       const transformedContent = await Markdoc.transform(ast, fullConfig);
 
-      // --- Collect headings from transformed content ---
-      const headings = collectHeadings(transformedContent);
+      // Collect headings from transformed content
+      const getHeadings = (): Heading[] => {
+        if (processHeadings) {
+          return collectHeadings(transformedContent, headingSlugger);
+        }
+        return [];
+      };
+      const headings = getHeadings();
 
       // Render Markdoc AST to Svelte
       const svelteContent = render(transformedContent);

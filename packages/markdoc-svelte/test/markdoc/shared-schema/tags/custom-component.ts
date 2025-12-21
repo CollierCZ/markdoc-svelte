@@ -1,5 +1,5 @@
 import { Tag } from "@markdoc/markdoc";
-import type { Config, Node } from "@markdoc/markdoc";
+import type { Config, Node, Schema } from "@markdoc/markdoc";
 
 export const customComponent = {
   render: "CustomComponent",
@@ -12,4 +12,4 @@ export const customComponent = {
     const children = node.transformChildren(config);
     return new Tag(this.render, attributes, children);
   },
-};
+} satisfies Schema;

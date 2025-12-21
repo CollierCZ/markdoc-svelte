@@ -1,10 +1,8 @@
 <script lang="ts">
-  import type { PageProps } from "./$types";
-
   import Sidebar from "$lib/components/Sidebar.svelte";
   import TableOfContents from "$lib/components/TableOfContents.svelte";
 
-  let { data }: PageProps = $props();
+  let { data } = $props();
   const title = $derived(data.page.frontmatter?.title ?? "A great page");
   console.log(data.page)
 </script>

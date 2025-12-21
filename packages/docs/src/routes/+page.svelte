@@ -1,7 +1,5 @@
 <script lang="ts">
-  import type { PageProps } from "./$types";
-
-  let { data }: PageProps = $props();
+  let { data } = $props();
   const title = data.page.frontmatter?.title;
 </script>
 

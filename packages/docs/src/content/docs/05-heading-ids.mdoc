@@ -1,0 +1,34 @@
+---
+title: Heading IDs
+---
+
+If you want to build a table of contents for a page or just have links to specific headings,
+set `headingIds` to `true` (or use a [custom slugifier](#custom-id-creator-slugifier)).
+Add unique IDs in the original file with [annotations](https://markdoc.dev/docs/syntax#annotations)
+or have them generated automatically.
+Each heading element in the generated HTML has an `id` attribute to link to directly.
+
+Each page then also exports a `headings` property: a list of all headings with their text, level, and ID.
+Use the list to generate a [table of contents](#page-table-of-contents).
+
+## Custom ID creator (slugifier)
+
+By default, the preprocessor uses the [`slug` package](https://www.npmjs.com/package/slug).
+If you have requirements for ID creation, pass a function to the `headingIds` option.
+This function is used to generate the IDs.
+
+```javascript
+import { markdocPreprocess } from "markdoc-svelte";
+
+const customSlugger = (str: string): string => str.replaceAll(/[^a-z]/gi, "-");
+
+/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  extensions: [".svelte", ".mdoc"],
+  preprocess: [
+    markdocPreprocess({
+      headingIds: customSlugger,
+    }),
+  ],
+};
+```
