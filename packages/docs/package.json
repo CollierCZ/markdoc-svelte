@@ -29,7 +29,7 @@
     "@vitest/coverage-v8": "^4.0.16",
     "globals": "^16.5.0",
     "jsdom": "^27.3.0",
-    "markdoc-svelte": "^4.0.0",
+    "markdoc-svelte": "^4.1.0",
     "shiki": "^3.20.0",
     "svelte": "^5.46.0",
     "svelte-check": "^4.3.5",
