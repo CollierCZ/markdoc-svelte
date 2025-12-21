@@ -1,6 +1,6 @@
 <script lang="ts">
   let { data } = $props();
-  const title = data.page.frontmatter?.title;
+  const title = $derived(data.page.frontmatter?.title);
 </script>
 
 <svelte:head>

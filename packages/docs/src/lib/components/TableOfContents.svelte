@@ -4,8 +4,9 @@
   const { headings }: MarkdocModule = $props();
 
   // Include only headings up to h3
-  const filteredHeadings =
-    headings?.filter((heading) => heading.level <= 3) ?? [];
+  const filteredHeadings = $derived(
+    headings?.filter((heading) => heading.level <= 3) ?? []
+  );
 </script>
 
 {#if filteredHeadings.length > 0}
