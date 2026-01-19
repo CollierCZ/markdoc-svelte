@@ -1,4 +1,5 @@
 import Markdoc from "@markdoc/markdoc";
+import { getSingletonHighlighter } from "shiki";
 
 const fence = {
   render: "CodeBlock",
@@ -21,15 +22,30 @@ const fence = {
 
     const codeWithoutEmptyLastLine = code.replace(/\n$/, "");
 
-    const opts = {
-      code: codeWithoutEmptyLastLine,
+    // Prerender the code on the server to improve performance
+    const highlighter = async (highCode, highLang) => {
+      const langToLoad = highLang || "text";
+      const highlighterTool = await getSingletonHighlighter({
+        themes: ["nord"],
+        langs: [langToLoad],
+      });
+      await highlighterTool.loadTheme("nord");
+      const html = highlighterTool.codeToHtml(highCode, {
+        lang: langToLoad,
+        theme: "nord",
+      });
+      return html;
     };
+    const codeHtml = await highlighter(
+      codeWithoutEmptyLastLine,
+      attributes.language,
+    );
 
-    if (attributes.language) {
-      opts.lang = attributes.language;
-    }
-
-    return new Markdoc.Tag(this.render, opts);
+    return new Markdoc.Tag(this.render, {
+      code: codeWithoutEmptyLastLine,
+      codeHtml,
+      lang: attributes.language,
+    });
   },
 };
 
