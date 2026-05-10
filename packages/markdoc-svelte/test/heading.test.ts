@@ -4,7 +4,7 @@ import { describe, it, expect } from "vitest";
 import type { Options } from "../src/types.ts";
 import type { Processed } from "svelte/compiler";
 
-import { markdocWithHeadings } from "./constants.ts";
+import { basicMarkdoc, markdocWithHeadings } from "./constants.ts";
 import basicHeadingNode from "./markdoc/heading-tests/basicHeading.ts";
 import customComponentNode from "./markdoc/heading-tests/customComponentHeading.ts";
 
@@ -18,9 +18,29 @@ Some text
 ## Second heading {% #two %}
 
 And more
-`
+`;
 
 describe("Headings", () => {
+  it("doesn't collect headings or set IDs if told not to", async () => {
+    const result = (await markdocPreprocess({
+      headingIds: false,
+    } as Options).markup!({
+      content: markdocWithHeadings,
+      filename: "test.md",
+    })) as Processed;
+
+    expect(result.code).toMatchSnapshot();
+  });
+
+  it("doesn't collect headings or override IDs if not told to", async () => {
+    const result = (await markdocPreprocess().markup!({
+      content: headingMarkdocWithExplicitID,
+      filename: "test.md",
+    })) as Processed;
+
+    expect(result.code).toMatchSnapshot();
+  });
+
   it("handles explicitly set heading IDs", async () => {
     const result = (await markdocPreprocess({
       headingIds: true,
@@ -31,7 +51,6 @@ describe("Headings", () => {
 
     expect(result.code).toMatchSnapshot();
   });
-
 
   it("adds IDs and exports headings even when a custom heading is included", async () => {
     const result = (await markdocPreprocess({

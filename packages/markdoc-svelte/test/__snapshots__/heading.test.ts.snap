@@ -34,6 +34,20 @@ exports[`Headings > adds IDs when passed a custom slugifying function even for c
 <article><h1 class="custom-heading" id="This-is-some-basic-Markdoc">This is some basic Markdoc</h1><p>With a paragraph.</p><h1 class="custom-heading" id="More-fancy-stuff">More fancy stuff</h1><p>Content. Such great content.</p></article>"
 `;
 
+exports[`Headings > doesn't collect headings or override IDs if not told to 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1 id="overview">This is some Markdoc </h1><p>Some text</p><h2 id="two">Second heading </h2><p>And more</p></article>"
+`;
+
+exports[`Headings > doesn't collect headings or set IDs if told not to 1`] = `
+"<script module>
+	export const slug = "test";
+</script>
+<article><h1>This is some basic Markdoc</h1><p>With a paragraph.</p><h2>More fancy stuff</h2><p>Content. Such great content.</p></article>"
+`;
+
 exports[`Headings > handles explicitly set heading IDs 1`] = `
 "<script module>
 	export const slug = "test";
