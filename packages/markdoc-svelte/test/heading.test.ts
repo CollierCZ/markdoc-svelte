@@ -10,7 +10,29 @@ import customComponentNode from "./markdoc/heading-tests/customComponentHeading.
 
 const customSlugger = (str: string): string => str.replaceAll(/[^a-z]/gi, "-");
 
+const headingMarkdocWithExplicitID = `
+# This is some Markdoc {% #overview %}
+
+Some text
+
+## Second heading {% #two %}
+
+And more
+`
+
 describe("Headings", () => {
+  it("handles explicitly set heading IDs", async () => {
+    const result = (await markdocPreprocess({
+      headingIds: true,
+    } as Options).markup!({
+      content: headingMarkdocWithExplicitID,
+      filename: "test.md",
+    })) as Processed;
+
+    expect(result.code).toMatchSnapshot();
+  });
+
+
   it("adds IDs and exports headings even when a custom heading is included", async () => {
     const result = (await markdocPreprocess({
       headingIds: true,
