@@ -11,6 +11,7 @@ exports[`Headings > adds IDs and exports headings even when a custom heading is 
 exports[`Headings > adds IDs and exports headings even when the custom heading is a custom component 1`] = `
 "<script module>
 	export const slug = "test";
+	export const headings = [{"level":1,"title":"This is some basic Markdoc","id":"this-is-some-basic-markdoc"},{"level":1,"title":"More fancy stuff","id":"more-fancy-stuff"}];
 </script>
 <script>
 	import HeadingComponent from '$lib/components/HeadingComponent.svelte';
