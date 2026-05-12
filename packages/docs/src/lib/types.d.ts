@@ -3,7 +3,7 @@ export interface DirectoryData {
 }
 export interface NavItems {
   [path: string]: {
-    title: string;
+    title?: string;
     children?: NavItems;
   };
 }
