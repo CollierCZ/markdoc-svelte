@@ -4,11 +4,13 @@ import type { DirectoryData, NavItems } from "$lib/types";
 
 export const getNavigationItems = async (): Promise<NavItems> => {
   const allPages = import.meta.glob("/src/content/docs/**/*.mdoc");
-  const allDirs = import.meta.glob("/src/content/docs/**/meta.json");
+  const allDirs = import.meta.glob<DirectoryData>(
+    "/src/content/docs/**/meta.json",
+  );
   const docsDir = "/src/content/docs/";
 
   // If no pages found in the docs directory
-  if (!Object.keys(allPages)) return;
+  if (!Object.keys(allPages)) return {};
 
   // Go through each file and get its path and title
   const navItems = await Object.entries(allPages).reduce(
@@ -26,7 +28,7 @@ export const getNavigationItems = async (): Promise<NavItems> => {
         const isInDir = slug.match(/^(?<dirName>.*)\//);
 
         // If it's in a directory
-        if (isInDir) {
+        if (isInDir && isInDir.groups) {
           // Get everything before the slash
           const dirName = isInDir.groups["dirName"];
 
@@ -57,12 +59,13 @@ export const getNavigationItems = async (): Promise<NavItems> => {
               dirPath.match(dirName),
             );
 
+            if (!matchingDir) return existingNavItems;
             const [_, getDirData] = matchingDir;
 
             return {
               ...existingNavItems,
               [dirName]: {
-                title: ((await getDirData()) as DirectoryData).title,
+                title: (await getDirData()).title,
                 children: {
                   [slug]: {
                     title: pageTitle,
@@ -83,11 +86,13 @@ export const getNavigationItems = async (): Promise<NavItems> => {
         return newNavItems;
       } catch (err) {
         console.error(
-          `Error getting navigation information for the file ${filePath}: ${err}`,
+          `Error getting navigation information for the file ${filePath}: `,
+          err,
         );
+        return await navItemAcc;
       }
     },
-    Promise.resolve({} as unknown as NavItems),
+    Promise.resolve({} as NavItems),
   );
 
   return navItems;

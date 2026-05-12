@@ -1,17 +1,17 @@
 {
   "devDependencies": {
-    "@eslint/js": "^9.29.0",
-    "@tsconfig/svelte": "^5.0.4",
-    "eslint": "^9.25.1",
-    "eslint-config-prettier": "^10.1.2",
-    "eslint-import-resolver-typescript": "^4.4.3",
+    "@eslint/js": "^10.0.1",
+    "@tsconfig/svelte": "^5.0.8",
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-svelte": "^3.5.1",
-    "globals": "^16.2.0",
-    "prettier": "^3.5.3",
-    "prettier-plugin-svelte": "^3.3.3",
-    "svelte-eslint-parser": "^1.2.0",
-    "typescript-eslint": "^8.31.0"
+    "eslint-plugin-svelte": "^3.17.1",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.3",
+    "prettier-plugin-svelte": "^3.5.1",
+    "svelte-eslint-parser": "^1.6.1",
+    "typescript-eslint": "^8.59.2"
   },
   "packageManager": "pnpm@10.26.1+sha512.664074abc367d2c9324fdc18037097ce0a8f126034160f709928e9e9f95d98714347044e5c3164d65bd5da6c59c6be362b107546292a8eecb7999196e5ce58fa",
   "scripts": {

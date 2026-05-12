@@ -18,6 +18,8 @@ export interface Heading {
   id?: string;
 }
 
+const isBasicHeading = (tagName: string) => tagName.match(/^h\d$/);
+
 const getTextContent = (children: RenderableTreeNode[]): string => {
   return children.reduce((text: string, child): string => {
     if (typeof child === "string" || typeof child === "number") {
@@ -39,60 +41,67 @@ const getSlug = (
   }
   return sluggifier(getTextContent(children));
 };
+
+export interface HeadingsObject {
+  headings: Heading[];
+  node: RenderableTreeNode;
+}
+
 /**
- * Recursively collects all heading nodes from a Markdoc AST
- * @param node - The Markdoc AST node to process
- * @returns Array of heading objects with title, level, and other attributes
+ * Recursively collects all heading nodes from tree
+ * after transform (to resolve variables and the like)
+ * @param topNode - The top-level renderable tree node of the document
+ * @param sluggifier - The function to create an ID if not present
+ * @returns Array of heading objects with title, level, and other attributes and nodes without extraneous attributes
  */
 export function collectHeadings(
-  node: RenderableTreeNode | RenderableTreeNode[],
+  topNode: RenderableTreeNode,
   sluggifier: SluggerType,
-  sections: Heading[] = [],
-): Heading[] {
-  // Handle array of nodes
-  if (Array.isArray(node)) {
-    for (const child of node) {
-      sections.push(...collectHeadings(child, sluggifier));
-    }
-    return sections;
-  }
+): HeadingsObject {
+  // If document empty, don't continue
+  if (!Markdoc.Tag.isTag(topNode)) return { headings: [], node: topNode };
+  if (!topNode?.children) return { headings: [], node: topNode };
 
-  // Handle single node
-  if (typeof node === "object" && node !== null) {
-    // Handle headings passed as custom components
-    if (
-      node.attributes?.__collectHeading === true &&
-      typeof node.attributes?.level === "number"
-    ) {
-      sections.push({
-        level: node.attributes?.level as number,
-        title: getTextContent(node.children),
-        id: getSlug(sluggifier, node.attributes, node.children),
-      });
-    }
+  return topNode.children.reduce(
+    (acc, child, index) => {
+      // If not a tag, don't continue
+      if (!Markdoc.Tag.isTag(child)) return acc;
+      const headingList = acc.headings;
 
-    if ("name" in node) {
-      const tag = node as Markdoc.Tag;
-
-      // Handle basic headings
-      if (tag.name.match(/^h\d$/)) {
-        sections.push({
-          level: parseInt(tag.name[1]),
-          title: getTextContent(tag.children),
-          id: getSlug(sluggifier, tag.attributes, tag.children),
+      // Only process tags marked as needing it
+      if (
+        child.attributes?.__collectHeading === true &&
+        typeof child.attributes?.level === "number"
+      ) {
+        const { __collectHeading, level, ...otherChildAttributes } =
+          child.attributes;
+        headingList.push({
+          level,
+          title: getTextContent(child.children),
+          id: getSlug(sluggifier, child.attributes, child.children),
         });
-      }
+        const newChild = {
+          ...child,
+          attributes: {
+            ...otherChildAttributes,
+            ...(isBasicHeading(child.name) ? {} : { level }),
+          },
+        };
 
-      // Handle node children
-      if (tag.children) {
-        for (const child of tag.children) {
-          collectHeadings(child, sluggifier, sections);
-        }
+        const updatedChildren = [...acc.node.children];
+        updatedChildren[index] = newChild;
+        return {
+          headings: headingList,
+          node: { ...acc.node, children: updatedChildren },
+        };
       }
-    }
-  }
-
-  return sections;
+      return acc;
+    },
+    {
+      headings: [] as Heading[],
+      node: topNode,
+    },
+  );
 }
 
 export const heading: Schema = {
@@ -112,19 +121,15 @@ export const heading: Schema = {
     const render = config.nodes?.heading?.render ?? `h${level}`;
 
     /**
-     * When the tag has a component as its render option,
-     * add an attribute to collect it as a header
-     * and also the level as a prop, not an HTML attribute.
+     * Pass level along and manually mark the tag
+     * as being a heading to collect.
      */
-    const tagProps =
-      typeof render === "string"
-        ? { ...attributes, id: slug }
-        : {
-            ...attributes,
-            id: slug,
-            __collectHeading: true,
-            level: level as number,
-          };
+    const tagProps = {
+      ...attributes,
+      id: slug,
+      __collectHeading: true,
+      level: level as number,
+    };
 
     return new Markdoc.Tag(render, tagProps, children);
   },

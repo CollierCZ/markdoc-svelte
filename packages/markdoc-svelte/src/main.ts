@@ -12,7 +12,7 @@ import {
 } from "./components.ts";
 import { handleValidationErrors } from "./errors.ts";
 import { findFirstDirectory, makePathProjectRelative } from "./files.ts";
-import { collectHeadings, heading, type Heading } from "./headings.ts";
+import { collectHeadings, heading, type HeadingsObject } from "./headings.ts";
 import log from "./logs.ts";
 import loadPartials from "./partials.ts";
 import render from "./render.ts";
@@ -178,16 +178,17 @@ export const markdocPreprocess = (options: Options = {}): PreprocessorGroup => {
       const transformedContent = await Markdoc.transform(ast, fullConfig);
 
       // Collect headings from transformed content
-      const getHeadings = (): Heading[] => {
+      const getHeadings = (): HeadingsObject => {
         if (processHeadings) {
-          return collectHeadings(transformedContent, headingSlugger);
+          const result = collectHeadings(transformedContent, headingSlugger);
+          return result;
         }
-        return [];
+        return { headings: [], node: transformedContent };
       };
-      const headings = getHeadings();
+      const { headings, node: transformedContentWithHeadings } = getHeadings();
 
       // Render Markdoc AST to Svelte
-      const svelteContent = render(transformedContent);
+      const svelteContent = render(transformedContentWithHeadings);
 
       // Define frontmatter string for Svelte
       // Extract filename without path and extension
