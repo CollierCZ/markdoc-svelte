@@ -10,7 +10,7 @@ export const getNavigationItems = async (): Promise<NavItems> => {
   const docsDir = "/src/content/docs/";
 
   // If no pages found in the docs directory
-  if (!Object.keys(allPages)) return {} as NavItems;
+  if (!Object.keys(allPages)) return {};
 
   // Go through each file and get its path and title
   const navItems = await Object.entries(allPages).reduce(
