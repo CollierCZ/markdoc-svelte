@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declarationDir": "dist"
-  }
+    "declarationDir": "dist",
+    "rootDir": "../.."
+  },
+  "include": ["src", "tsdown.config.ts"]
 }
