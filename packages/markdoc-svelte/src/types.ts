@@ -7,11 +7,7 @@ import type { Heading } from "./headings.ts";
  * The validation levels for the preprocessor.
  */
 export type ValidationLevel =
-  | "debug"
-  | "info"
-  | "warning"
-  | "error"
-  | "critical";
+  "debug" | "info" | "warning" | "error" | "critical";
 
 /**
  * Configuration options for the Markdoc preprocessor
